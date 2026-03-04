@@ -796,10 +796,10 @@ struct CorpseRunSaveData
     u16 markerMapSection;
     u32 markerSpawnCounter;
 
-    // Run economy payload
+    // Stored Souls payload
     u32 droppedSouls;
 
-    // Stored party payload
+    // Stored party payload (State 1 recovery only; cleared on salvage transition)
     u8 partyCount;
     struct CorpseRunPartySnapshot partySnapshot[PARTY_SIZE];
 

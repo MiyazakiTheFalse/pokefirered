@@ -1479,7 +1479,10 @@ void CB1_Overworld(void)
 static void OverworldBasic(void)
 {
     if (IsCorpseRunFeatureEnabled())
+    {
         CorpseRun_TryRecoverByTouch();
+        CorpseRun_UpdateSalvageStateFromParty();
+    }
 
     ScriptContext_RunScript();
     RunTasks();

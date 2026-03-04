@@ -5,10 +5,9 @@
 
 enum CorpseRunState
 {
-    CR_OFF = 0,
-    CR_ACTIVE,
-    CR_RECOVERED,
-    CR_FAILED,
+    CR_NORMAL = 0,
+    CR_ACTIVE_1,
+    CR_SALVAGE,
 };
 
 enum
@@ -32,5 +31,6 @@ bool8 CorpseRun_CanGainExpFromCurrentBattle(void);
 bool8 CorpseRun_CanGainCurrencyFromCurrentBattle(void);
 bool8 CorpseRun_CanCaptureInCurrentBattle(void);
 bool8 CorpseRun_ShouldRunPostBattleScripts(void);
+void CorpseRun_UpdateSalvageStateFromParty(void);
 
 #endif // GUARD_CORPSE_RUN_H

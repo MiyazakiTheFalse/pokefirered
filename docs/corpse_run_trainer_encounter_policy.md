@@ -1,6 +1,6 @@
 # Corpse-run trainer encounter policy
 
-This table defines whether trainer encounters are treated as **corpse-run escape encounters** while `corpseRun.state == CR_ACTIVE`.
+This table defines whether trainer encounters are treated as **corpse-run escape encounters** while `corpseRun.state == CR_ACTIVE_1`.
 
 | Category | Policy | Notes |
 | --- | --- | --- |
@@ -12,7 +12,7 @@ This table defines whether trainer encounters are treated as **corpse-run escape
 
 ## Side-effect suppression during corpse-run encounters
 
-When in corpse-run mode (`CR_ACTIVE`), trainer battle side effects are suppressed for non-critical trainer encounters:
+When in corpse-run mode (`CR_ACTIVE_1`), trainer battle side effects are suppressed for non-critical trainer encounters:
 
 - badge/story advancement
 - rematch registration/clear operations

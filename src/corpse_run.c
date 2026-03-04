@@ -76,13 +76,12 @@ static bool8 CorpseRun_IsValidTransition(u8 from, u8 to)
 {
     switch (from)
     {
-    case CR_OFF:
-        return to == CR_ACTIVE;
-    case CR_ACTIVE:
-        return to == CR_RECOVERED || to == CR_FAILED;
-    case CR_RECOVERED:
-    case CR_FAILED:
-        return to == CR_OFF || to == CR_ACTIVE;
+    case CR_NORMAL:
+        return to == CR_ACTIVE_1;
+    case CR_ACTIVE_1:
+        return to == CR_NORMAL || to == CR_SALVAGE;
+    case CR_SALVAGE:
+        return to == CR_NORMAL;
     default:
         return FALSE;
     }
@@ -127,7 +126,7 @@ static bool8 CorpseRun_IsSchemaValid(const struct CorpseRunSaveData *save)
         return FALSE;
     if (save->payloadChecksum != CorpseRun_CalcPayloadChecksum(save))
         return FALSE;
-    if (save->state > CR_FAILED)
+    if (save->state > CR_SALVAGE)
         return FALSE;
     if (!CorpseRun_IsPartyPayloadSane(save))
         return FALSE;
@@ -168,13 +167,12 @@ static void CorpseRun_SetState(u8 newState)
 
     switch (newState)
     {
-    case CR_ACTIVE:
+    case CR_ACTIVE_1:
         gSaveBlock1Ptr->corpseRun.rewardSuppressed = TRUE;
         gSaveBlock1Ptr->corpseRun.trainerOverride = TRUE;
         break;
-    case CR_RECOVERED:
-    case CR_FAILED:
-    case CR_OFF:
+    case CR_SALVAGE:
+    case CR_NORMAL:
         gSaveBlock1Ptr->corpseRun.rewardSuppressed = FALSE;
         gSaveBlock1Ptr->corpseRun.trainerOverride = FALSE;
         break;
@@ -227,17 +225,22 @@ static void CorpseRun_SpawnMarkerAtPlayer(void)
 void CorpseRun_ResetSaveData(void)
 {
     CpuFill32(0, &gSaveBlock1Ptr->corpseRun, sizeof(gSaveBlock1Ptr->corpseRun));
-    gSaveBlock1Ptr->corpseRun.state = CR_OFF;
+    gSaveBlock1Ptr->corpseRun.state = CR_NORMAL;
     CorpseRun_DespawnMarker();
     CorpseRun_FinalizeForSave();
 }
 
 void CorpseRun_HandlePlayerDefeat(void)
 {
-    if (gSaveBlock1Ptr->corpseRun.state == CR_ACTIVE)
+    if (gSaveBlock1Ptr->corpseRun.state == CR_ACTIVE_1)
     {
-        CorpseRun_SetState(CR_FAILED);
+        gSaveBlock1Ptr->corpseRun.partyCount = 0;
+        CpuFill32(0, gSaveBlock1Ptr->corpseRun.partySnapshot, sizeof(gSaveBlock1Ptr->corpseRun.partySnapshot));
+        gSaveBlock1Ptr->corpseRun.droppedSouls = 0;
         CorpseRun_DespawnMarker();
+        CorpseRun_SetState(CR_SALVAGE);
+        CorpseRun_FinalizeForSave();
+        return;
     }
 
     gSaveBlock1Ptr->corpseRun.deathMapGroup = gSaveBlock1Ptr->location.mapGroup;
@@ -249,13 +252,13 @@ void CorpseRun_HandlePlayerDefeat(void)
 
     CorpseRun_SerializeParty();
     CorpseRun_SpawnMarkerAtPlayer();
-    CorpseRun_SetState(CR_ACTIVE);
+    CorpseRun_SetState(CR_ACTIVE_1);
     CorpseRun_FinalizeForSave();
 }
 
 void CorpseRun_TryRecoverByTouch(void)
 {
-    if (gSaveBlock1Ptr->corpseRun.state != CR_ACTIVE || !gSaveBlock1Ptr->corpseRun.markerSpawned)
+    if (gSaveBlock1Ptr->corpseRun.state != CR_ACTIVE_1 || !gSaveBlock1Ptr->corpseRun.markerSpawned)
         return;
 
     if (gSaveBlock1Ptr->location.mapGroup != gSaveBlock1Ptr->corpseRun.markerMapGroup
@@ -266,8 +269,10 @@ void CorpseRun_TryRecoverByTouch(void)
      && gSaveBlock1Ptr->pos.y == gSaveBlock1Ptr->corpseRun.markerY)
     {
         gSaveBlock1Ptr->corpseRun.droppedSouls = 0;
+        gSaveBlock1Ptr->corpseRun.partyCount = 0;
+        CpuFill32(0, gSaveBlock1Ptr->corpseRun.partySnapshot, sizeof(gSaveBlock1Ptr->corpseRun.partySnapshot));
         CorpseRun_DespawnMarker();
-        CorpseRun_SetState(CR_RECOVERED);
+        CorpseRun_SetState(CR_NORMAL);
         CorpseRun_FinalizeForSave();
     }
 }
@@ -277,12 +282,8 @@ void CorpseRun_OnMapEnter(void)
     if (!CorpseRun_IsSchemaValid(&gSaveBlock1Ptr->corpseRun))
         CorpseRun_ResetSaveData();
 
-    if (gSaveBlock1Ptr->corpseRun.state == CR_RECOVERED || gSaveBlock1Ptr->corpseRun.state == CR_FAILED)
-        CorpseRun_SetState(CR_OFF);
-
-    // Save/quit policy: active runs persist exactly as captured. On continue,
-    // the player may either recover at the marker or fail on the next defeat.
-    if (gSaveBlock1Ptr->corpseRun.state == CR_ACTIVE && gSaveBlock1Ptr->corpseRun.markerSpawned)
+    // Save/quit policy: active state 1 persists exactly as captured.
+    if (gSaveBlock1Ptr->corpseRun.state == CR_ACTIVE_1 && gSaveBlock1Ptr->corpseRun.markerSpawned)
         CorpseRun_TryRecoverByTouch();
 
     CorpseRun_FinalizeForSave();
@@ -294,46 +295,72 @@ void CorpseRun_DebugReset(void)
 }
 
 
+void CorpseRun_UpdateSalvageStateFromParty(void)
+{
+    u8 i;
+
+    if (gSaveBlock1Ptr->corpseRun.state != CR_SALVAGE)
+        return;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) != SPECIES_NONE
+         && GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG) == FALSE
+         && GetMonData(&gPlayerParty[i], MON_DATA_HP) != 0)
+        {
+            CorpseRun_SetState(CR_NORMAL);
+            CorpseRun_FinalizeForSave();
+            return;
+        }
+    }
+}
+
 bool8 CorpseRun_IsActive(void)
 {
-    return gSaveBlock1Ptr->corpseRun.state == CR_ACTIVE;
+    return gSaveBlock1Ptr->corpseRun.state == CR_ACTIVE_1;
 }
 
 bool8 CorpseRun_CanUseBagInCurrentBattle(void)
 {
-    return !CorpseRun_IsActive();
+    return gSaveBlock1Ptr->corpseRun.state == CR_NORMAL;
 }
 
 bool8 CorpseRun_CanRunFromCurrentBattle(void)
 {
-    return TRUE;
+    if (gSaveBlock1Ptr->corpseRun.state == CR_SALVAGE)
+        return TRUE;
+
+    return gSaveBlock1Ptr->corpseRun.state == CR_NORMAL;
 }
 
 bool8 CorpseRun_CanGainExpFromCurrentBattle(void)
 {
-    return !CorpseRun_IsActive();
+    return gSaveBlock1Ptr->corpseRun.state == CR_NORMAL;
 }
 
 bool8 CorpseRun_CanGainCurrencyFromCurrentBattle(void)
 {
-    return !CorpseRun_IsActive();
+    return gSaveBlock1Ptr->corpseRun.state == CR_NORMAL;
 }
 
 bool8 CorpseRun_CanCaptureInCurrentBattle(void)
 {
-    return !CorpseRun_IsActive();
+    if (gSaveBlock1Ptr->corpseRun.state == CR_SALVAGE)
+        return TRUE;
+
+    return gSaveBlock1Ptr->corpseRun.state == CR_NORMAL;
 }
 
 bool8 CorpseRun_ShouldRunPostBattleScripts(void)
 {
-    return !CorpseRun_IsActive();
+    return gSaveBlock1Ptr->corpseRun.state == CR_NORMAL;
 }
 
 bool8 CorpseRun_IsEscapeTrainerEncounter(u16 trainerId, u8 trainerBattleMode)
 {
     u8 trainerClass;
 
-    if (gSaveBlock1Ptr->corpseRun.state != CR_ACTIVE)
+    if (gSaveBlock1Ptr->corpseRun.state != CR_ACTIVE_1)
         return FALSE;
 
     if (trainerId > NUM_TRAINERS)
@@ -366,7 +393,7 @@ bool8 CorpseRun_ShouldBypassDefeatPersistenceForCurrentBattle(void)
 
 bool8 CorpseRun_ShouldSuppressTrainerBattleSideEffects(void)
 {
-    if (gSaveBlock1Ptr->corpseRun.state != CR_ACTIVE)
+    if (gSaveBlock1Ptr->corpseRun.state != CR_ACTIVE_1)
         return FALSE;
 
     if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER))
