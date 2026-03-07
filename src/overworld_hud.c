@@ -1,6 +1,7 @@
 #include "global.h"
 #include "chase_stamina.h"
 #include "gflib.h"
+#include "menu.h"
 #include "overworld.h"
 #include "overworld_hud.h"
 #include "script.h"
@@ -172,10 +173,9 @@ static void OverworldHud_UpdateChaseIcons(void)
     // These are HUD-only indicators for chase pressure (screen-space icons),
     // not the overworld pursuing object events handled by chase_overworld.c.
     if (ChaseStamina_IsChaseActive())
-        iconCount = min(ChaseStamina_GetActiveChasers(), CHASE_ICON_COUNT_MAX);
-    else if (sChaseResolvedDisplayFrames != 0)
-        iconCount = 1;
         chaserCount = ChaseStamina_GetActiveChasers();
+    else if (sChaseResolvedDisplayFrames != 0)
+        chaserCount = 1;
     else
         chaserCount = 0;
 
