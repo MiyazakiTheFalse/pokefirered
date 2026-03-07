@@ -269,7 +269,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("ROXANNE"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_LeaderRoxanne),
     },
     [TRAINER_LEADER_BRAWLY] = {
@@ -279,7 +279,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("BRAWLY"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_LeaderBrawly),
     },
     [TRAINER_LEADER_TATE_LIZA] = {
@@ -289,7 +289,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("TATE&LIZA"),
         .items = {},
         .doubleBattle = TRUE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE | AI_SCRIPT_SETUP_FIRST_TURN | AI_SCRIPT_DOUBLE_BATTLE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_LeaderTateLiza),
     },
     [TRAINER_SCHOOL_KID_M] = {
@@ -819,7 +819,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("WATTSON"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_LeaderWattson),
     },
     [TRAINER_LEADER_FLANNERY] = {
@@ -829,7 +829,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("FLANNERY"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_LeaderFlannery),
     },
     [TRAINER_LEADER_NORMAN] = {
@@ -839,7 +839,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("NORMAN"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_LeaderNorman),
     },
     [TRAINER_LEADER_WINONA] = {
@@ -849,7 +849,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("WINONA"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_LeaderWinona),
     },
     [TRAINER_LEADER_WALLACE] = {
@@ -859,7 +859,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("WALLACE"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_LeaderWallace),
     },
     [TRAINER_ELITE_FOUR_GLACIA] = {
@@ -3499,7 +3499,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("GIOVANNI"),
         .items = {ITEM_HYPER_POTION, ITEM_HYPER_POTION, ITEM_FULL_HEAL},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_LeaderGiovanni),
     },
     [TRAINER_TEAM_ROCKET_GRUNT] = {
@@ -4139,7 +4139,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("BROCK"),
         .items = {},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_LeaderBrock),
     },
     [TRAINER_LEADER_MISTY] = {
@@ -4149,7 +4149,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("MISTY"),
         .items = {ITEM_SUPER_POTION},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_LeaderMisty),
     },
     [TRAINER_LEADER_LT_SURGE] = {
@@ -4159,7 +4159,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("LT. SURGE"),
         .items = {ITEM_SUPER_POTION, ITEM_FULL_HEAL},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_LeaderLtSurge),
     },
     [TRAINER_LEADER_ERIKA] = {
@@ -4169,7 +4169,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("ERIKA"),
         .items = {ITEM_HYPER_POTION, ITEM_FULL_HEAL},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_LeaderErika),
     },
     [TRAINER_LEADER_KOGA] = {
@@ -4179,7 +4179,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("KOGA"),
         .items = {ITEM_HYPER_POTION, ITEM_HYPER_POTION, ITEM_FULL_HEAL},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_LeaderKoga),
     },
     [TRAINER_LEADER_BLAINE] = {
@@ -4189,7 +4189,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("BLAINE"),
         .items = {ITEM_HYPER_POTION, ITEM_HYPER_POTION, ITEM_FULL_HEAL},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_LeaderBlaine),
     },
     [TRAINER_LEADER_SABRINA] = {
@@ -4199,7 +4199,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("SABRINA"),
         .items = {ITEM_HYPER_POTION, ITEM_HYPER_POTION, ITEM_FULL_HEAL},
         .doubleBattle = FALSE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE,
         .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_LeaderSabrina),
     },
     [TRAINER_GENTLEMAN_THOMAS] = {
@@ -7429,7 +7429,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("BROCK & MISTY"),
         .items = {ITEM_SUPER_POTION},
         .doubleBattle = TRUE,
-        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_PREDICTION_HEURISTICS,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_HP_AWARE | AI_SCRIPT_PREFER_STRONGEST_MOVE | AI_SCRIPT_SETUP_FIRST_TURN | AI_SCRIPT_DOUBLE_BATTLE,
         .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_LeaderBrockMisty),
     },
 };
