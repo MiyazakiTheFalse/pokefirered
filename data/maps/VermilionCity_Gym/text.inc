@@ -10,13 +10,6 @@ VermilionCity_Gym_Text_LtSurgeIntro::
     .string "The same as I'll do to you!{PLAY_BGM}{MUS_ENCOUNTER_GYM_LEADER}$"
 
 
-VermilionCity_Gym_Text_LtSurgeNeedsFieldDrill::
-    .string "Hold it, kid! That's protocol.\p"
-    .string "No one challenges me until they've\n"
-    .string "cleared the ROUTE 6 field drill.\p"
-    .string "Pass that doubles readiness check,\n"
-    .string "then report back and we'll battle!$"
-
 VermilionCity_Gym_Text_LtSurgePostBattle::
     .string "A little word of advice, kid!\p"
     .string "Electricity is sure powerful!\p"
