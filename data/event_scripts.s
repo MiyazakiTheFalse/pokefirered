@@ -93,6 +93,7 @@ gStdScriptsEnd::
 	.include "data/maps/BattleColosseum_4P/scripts.inc"
 	.include "data/maps/UnionRoom/scripts.inc"
 	.include "data/maps/ViridianForest/scripts.inc"
+	.include "data/maps/ViridianForest_Route3ShortcutCave/scripts.inc"
 	.include "data/maps/MtMoon_1F/scripts.inc"
 	.include "data/maps/MtMoon_B1F/scripts.inc"
 	.include "data/maps/MtMoon_B2F/scripts.inc"
