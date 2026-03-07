@@ -14,6 +14,7 @@
 #include "random.h"
 #include "string_util.h"
 #include "strings.h"
+#include "util.h"
 #include "wild_encounter.h"
 #include "battle_anim.h"
 #include "event_data.h"
