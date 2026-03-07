@@ -67,6 +67,14 @@ Route6_Text_ElijahPostBattle::
     .string "Or, am I just bad?\l"
     .string "Which do you think?$"
 
+
+Route6_Text_UnderpassGuard::
+    .string "Tunnel's still closed for safety.
+"
+    .string "BROCK and MISTY are running drills
+"
+    .string "until cleanup is done.$"
+
 Route6_Text_UndergroundPathSign::
     .string "UNDERGROUND PATH\n"
     .string "CERULEAN CITY - VERMILION CITY$"
