@@ -212,6 +212,13 @@
       "elevation": 3,
       "dest_map": "MAP_ROUTE2_VIRIDIAN_FOREST_NORTH_ENTRANCE",
       "dest_warp_id": "1"
+    },
+    {
+      "x": 49,
+      "y": 8,
+      "elevation": 3,
+      "dest_map": "MAP_VIRIDIAN_FOREST_ROUTE3_SHORTCUT_CAVE",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],
