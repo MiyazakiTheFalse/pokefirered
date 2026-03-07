@@ -454,6 +454,7 @@ static bool8 TryGetChaserSpawnCoords(struct ObjectEvent *referenceObjectEvent, s
 
 static bool8 TrySpawnChaserNearPlayer(struct ObjectEvent *referenceObjectEvent, u8 localId, u8 chaserIndex, s16 playerX, s16 playerY, u8 *objectEventId)
 {
+    const struct ObjectEventGraphicsInfo *graphicsInfo = GetObjectEventGraphicsInfo(CHASE_OVERWORLD_GFX_ID);
     s16 candidateX;
     s16 candidateY;
     u8 elevation;
@@ -462,6 +463,7 @@ static bool8 TrySpawnChaserNearPlayer(struct ObjectEvent *referenceObjectEvent, 
         return FALSE;
 
     elevation = MapGridGetElevationAt(candidateX, candidateY);
+    PatchObjectPalette(graphicsInfo->paletteTag, graphicsInfo->paletteSlot);
     SpawnSpecialObjectEventParameterized(CHASE_OVERWORLD_GFX_ID, MOVEMENT_TYPE_FACE_DOWN, localId, candidateX + MAP_OFFSET, candidateY + MAP_OFFSET, elevation);
 
     if (!TryGetObjectEventIdByLocalIdAndMap(localId, sSpawnedMapNum, sSpawnedMapGroup, objectEventId))
