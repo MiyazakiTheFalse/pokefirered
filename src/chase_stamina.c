@@ -120,6 +120,14 @@ bool8 ChaseStamina_IsChaseActive(void)
     return sActiveChasers != 0 && sChaseStepsRemaining != 0;
 }
 
+bool8 ChaseStamina_IsChaseTargetParalyzed(void)
+{
+    if (!gSaveBlock1Ptr->chaseTargetSnapshot.isValid)
+        return FALSE;
+
+    return (gSaveBlock1Ptr->chaseTargetSnapshot.status & STATUS1_PARALYSIS) != 0;
+}
+
 static bool8 IsTileChaseEncounterEligible(u8 encounterType, u8 metatileBehavior)
 {
     if (encounterType == TILE_ENCOUNTER_LAND)

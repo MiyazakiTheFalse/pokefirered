@@ -16,6 +16,7 @@ u8 ChaseStamina_GetMax(void);
 u8 ChaseStamina_GetActiveChasers(void);
 u16 ChaseStamina_GetChaseStepsRemaining(void);
 bool8 ChaseStamina_IsChaseActive(void);
+bool8 ChaseStamina_IsChaseTargetParalyzed(void);
 
 u16 PkmnCenterStaminaUpgrade_Preview(void);
 u16 PkmnCenterStaminaUpgrade_Purchase(void);

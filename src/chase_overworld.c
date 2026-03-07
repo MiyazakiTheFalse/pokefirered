@@ -36,6 +36,13 @@
 #define CHASE_OVERWORLD_IDLE_ANIM_PERIOD 24
 #define CHASE_OVERWORLD_RESPAWN_SEARCH_MAX_RADIUS 4
 
+enum ChaseOverworldSpeedPolicy
+{
+    CHASE_OVERWORLD_SPEED_SLOW,
+    CHASE_OVERWORLD_SPEED_NORMAL,
+    CHASE_OVERWORLD_SPEED_FAST,
+};
+
 static const u8 sAllMoveDirections[] =
 {
     DIR_NORTH,
@@ -222,6 +229,7 @@ static void UpdateChaseCues(void)
 static EWRAM_DATA u8 sChaserRelocationCooldown[CHASE_OVERWORLD_MAX_CHASERS];
 static EWRAM_DATA u8 sChaserAttentionCooldown[CHASE_OVERWORLD_MAX_CHASERS];
 static EWRAM_DATA bool8 sChaserWasInProximity[CHASE_OVERWORLD_MAX_CHASERS];
+static EWRAM_DATA bool8 sChaserParalysisStepToggle[CHASE_OVERWORLD_MAX_CHASERS];
 
 static u8 GetDirectionTowardCoords(s16 fromX, s16 fromY, s16 toX, s16 toY)
 {
@@ -302,6 +310,7 @@ static void DespawnChasers(void)
         sChaserRelocationCooldown[i] = 0;
         sChaserAttentionCooldown[i] = 0;
         sChaserWasInProximity[i] = FALSE;
+        sChaserParalysisStepToggle[i] = FALSE;
     }
 
     sChasersSpawned = FALSE;
@@ -370,7 +379,18 @@ static u16 GetDistanceScore(s16 fromX, s16 fromY, s16 toX, s16 toY, u8 direction
     return dx + dy;
 }
 
-static bool8 TryQueueChaserStep(struct ObjectEvent *objectEvent, s16 targetX, s16 targetY, bool8 activePursuit)
+static enum ChaseOverworldSpeedPolicy GetChaserSpeedPolicy(bool8 activePursuit, bool8 targetParalyzed)
+{
+    if (!activePursuit)
+        return CHASE_OVERWORLD_SPEED_NORMAL;
+
+    if (targetParalyzed)
+        return CHASE_OVERWORLD_SPEED_NORMAL;
+
+    return CHASE_OVERWORLD_SPEED_FAST;
+}
+
+static bool8 TryQueueChaserStep(struct ObjectEvent *objectEvent, s16 targetX, s16 targetY, enum ChaseOverworldSpeedPolicy speedPolicy)
 {
     u8 i;
     u8 dirOrder[ARRAY_COUNT(sAllMoveDirections)];
@@ -403,7 +423,13 @@ static bool8 TryQueueChaserStep(struct ObjectEvent *objectEvent, s16 targetX, s1
         MoveCoords(direction, &testX, &testY);
         if (GetCollisionAtCoords(objectEvent, testX, testY, direction) == COLLISION_NONE)
         {
-            u8 movementAction = activePursuit ? GetWalkFastMovementAction(direction) : GetWalkNormalMovementAction(direction);
+            u8 movementAction;
+
+            if (speedPolicy == CHASE_OVERWORLD_SPEED_FAST)
+                movementAction = GetWalkFastMovementAction(direction);
+            else
+                movementAction = GetWalkNormalMovementAction(direction);
+
             return ObjectEventSetHeldMovement(objectEvent, movementAction);
         }
     }
@@ -696,6 +722,7 @@ static void SpawnOrSyncChasers(void)
             sChaserRelocationCooldown[i] = 0;
             sChaserAttentionCooldown[i] = 0;
             sChaserWasInProximity[i] = FALSE;
+            sChaserParalysisStepToggle[i] = FALSE;
             continue;
         }
 
@@ -713,6 +740,7 @@ static void SpawnOrSyncChasers(void)
             sChaserStalledFrames[i] = 0;
             sChaserAttentionCooldown[i] = 0;
             sChaserWasInProximity[i] = FALSE;
+            sChaserParalysisStepToggle[i] = FALSE;
         }
 
         if (objectEventId >= OBJECT_EVENTS_COUNT
@@ -733,6 +761,8 @@ static void SpawnOrSyncChasers(void)
             u16 distanceToPlayer = GetManhattanDistance(chaser->currentCoords.x, chaser->currentCoords.y, playerX, playerY);
             bool8 isInProximity = (distanceToPlayer <= CHASE_OVERWORLD_PROXIMITY_RANGE);
             bool8 activePursuit = (distanceToPlayer <= (CHASE_OVERWORLD_PROXIMITY_RANGE + 2));
+            bool8 targetParalyzed = ChaseStamina_IsChaseTargetParalyzed();
+            enum ChaseOverworldSpeedPolicy speedPolicy = GetChaserSpeedPolicy(activePursuit, targetParalyzed);
 
             if (sChaserAttentionCooldown[i] != 0)
                 sChaserAttentionCooldown[i]--;
@@ -754,7 +784,21 @@ static void SpawnOrSyncChasers(void)
 
             sChaserWasInProximity[i] = isInProximity;
 
-            if (TryQueueChaserStep(chaser, playerX, playerY, activePursuit))
+            if (targetParalyzed && activePursuit)
+            {
+                sChaserParalysisStepToggle[i] = !sChaserParalysisStepToggle[i];
+                if (!sChaserParalysisStepToggle[i])
+                {
+                    UpdateChaserVisibilityPriority(chaser);
+                    continue;
+                }
+            }
+            else
+            {
+                sChaserParalysisStepToggle[i] = FALSE;
+            }
+
+            if (TryQueueChaserStep(chaser, playerX, playerY, speedPolicy))
             {
                 sChaserStalledFrames[i] = 0;
             }
