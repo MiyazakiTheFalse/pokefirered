@@ -459,7 +459,7 @@ static bool8 TrySpawnChaserNearPlayer(struct ObjectEvent *referenceObjectEvent, 
     s16 candidateY;
     u8 elevation;
 
-    if (!TryGetChaserSpawnCoords(referenceObjectEvent, playerX, playerY, chaserIndex, FALSE, &candidateX, &candidateY))
+    if (!TryGetChaserSpawnCoords(referenceObjectEvent, playerX, playerY, chaserIndex, TRUE, &candidateX, &candidateY))
         return FALSE;
 
     elevation = MapGridGetElevationAt(candidateX, candidateY);
