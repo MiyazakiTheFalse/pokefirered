@@ -43,6 +43,8 @@
 #define CHASE_EXTRA_STEPS_PER_CHASER 15
 #define CHASE_REENGAGE_COUNTDOWN_MIN 3
 #define CHASE_REENGAGE_COUNTDOWN_MAX 5
+#define CHASE_REENGAGE_FALLBACK_COUNTDOWN_MIN 1
+#define CHASE_REENGAGE_FALLBACK_COUNTDOWN_MAX 2
 #define CHASE_SPECIES_VARIANCE_MAX 24
 #define CHASE_AREA_ROUTE_BONUS 10
 #define CHASE_AREA_UNDERGROUND_BONUS 18
@@ -289,6 +291,11 @@ static void RollChaseReengageStepCountdown(void)
     sChaseReengageStepCountdown = (Random() % (CHASE_REENGAGE_COUNTDOWN_MAX - CHASE_REENGAGE_COUNTDOWN_MIN + 1)) + CHASE_REENGAGE_COUNTDOWN_MIN;
 }
 
+static void RollChaseFallbackReengageStepCountdown(void)
+{
+    sChaseReengageStepCountdown = (Random() % (CHASE_REENGAGE_FALLBACK_COUNTDOWN_MAX - CHASE_REENGAGE_FALLBACK_COUNTDOWN_MIN + 1)) + CHASE_REENGAGE_FALLBACK_COUNTDOWN_MIN;
+}
+
 static u16 GetChaseSpecies(void)
 {
     // The overworld chase sprite intentionally uses Meowth as a generic placeholder
@@ -467,10 +474,16 @@ bool8 ChaseStamina_TryStartChaseEncounter(u32 metatileAttributes)
         return FALSE;
 
     if (!IsValidChaseEncounterContext(metatileAttributes))
+    {
+        RollChaseFallbackReengageStepCountdown();
         return FALSE;
+    }
 
     if (!IsCurrentTileChaseEncounterEligible())
+    {
+        RollChaseFallbackReengageStepCountdown();
         return FALSE;
+    }
 
     if (sActiveChasers >= 2)
     {
@@ -480,10 +493,14 @@ bool8 ChaseStamina_TryStartChaseEncounter(u32 metatileAttributes)
             encounterCount = 1;
 
         if (!SweetScentWildEncounterWithCount(encounterCount))
+        {
+            RollChaseFallbackReengageStepCountdown();
             return FALSE;
+        }
     }
     else if (!SweetScentWildEncounter())
     {
+        RollChaseFallbackReengageStepCountdown();
         return FALSE;
     }
 
@@ -500,9 +517,7 @@ bool8 ChaseStamina_ShouldSuppressRandomEncounters(void)
         return FALSE;
     }
 
-    // Once re-engage countdown expires, allow a regular encounter roll as a
-    // fallback if a forced chase encounter cannot be generated this step.
-    return ChaseStamina_IsChaseActive() && sChaseReengageStepCountdown != 0;
+    return ChaseStamina_IsChaseActive();
 }
 
 
