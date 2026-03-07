@@ -43,6 +43,7 @@ extern const u8 gText_NoDecorationsInUse[];
 extern const u8 gText_Cancel[];
 extern const u8 gText_Increase[];
 extern const u8 gText_Decrease[];
+extern const u8 gMenuText_Confirm[];
 extern const u8 gText_Color161Shadow161[];
 extern const u8 gText_GoBackPrevMenu[];
 extern const u8 gText_CantPlaceInRoom[];
@@ -1025,6 +1026,10 @@ extern const u8 gText_TrainerCardName[];
 extern const u8 gText_TrainerCardIDNo[];
 extern const u8 gText_TrainerCardMoney[];
 extern const u8 gText_SoulsHudLabel[];
+extern const u8 gText_StaminaHudLabel[];
+extern const u8 gText_ChaseHudInactive[];
+extern const u8 gText_ChaseHudChasersLabel[];
+extern const u8 gText_ChaseHudStepsLabel[];
 extern const u8 gText_TrainerCardYen[];
 extern const u8 gText_TrainerCardPokedex[];
 extern const u8 gText_TrainerCardNull[];
@@ -1134,6 +1139,7 @@ extern const u8 gText_Register2[];
 extern const u8 gText_Exit[];
 extern const u8 gText_HealPokemon[];
 extern const u8 gText_LevelUpPokemon[];
+extern const u8 gText_UpgradeStamina[];
 
 // wireless_communication_status_screen
 extern const u8 gText_Dynamic0Players[];

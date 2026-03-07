@@ -9,6 +9,7 @@
 #include "battle_message.h"
 #include "battle_scripts.h"
 #include "battle_setup.h"
+#include "chase_stamina.h"
 #include "berry.h"
 #include "data.h"
 #include "decompress.h"
@@ -699,6 +700,7 @@ static void CB2_InitBattleInternal(void)
     gReservedSpritePaletteCount = 4;
     SetVBlankCallback(VBlankCB_Battle);
     SetUpBattleVars();
+    ChaseStamina_OnBattleStart();
 
     if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
         SetMainCallback2(CB2_HandleStartMultiBattle);
@@ -3466,6 +3468,13 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
     u8 holdEffect = 0;
     u8 holdEffectParam = 0;
     u16 moveBattler1 = 0, moveBattler2 = 0;
+
+    if (!ignoreChosenMoves && ChaseStamina_ShouldPrioritizeWildOpponent(battler1, battler2))
+    {
+        if (GetBattlerSide(battler1) == B_SIDE_PLAYER)
+            return 1;
+        return 0;
+    }
 
     if (WEATHER_HAS_EFFECT)
     {

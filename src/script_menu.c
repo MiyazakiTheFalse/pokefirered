@@ -47,6 +47,7 @@ static const struct MenuAction sMultichoiceList_YesNo[] = {
 static const struct MenuAction sMultichoiceList_PkmnCenterNurse[] = {
     { gText_HealPokemon },
     { gText_LevelUpPokemon },
+    { gText_UpgradeStamina },
     { gOtherText_Exit }
 };
 
@@ -54,7 +55,7 @@ static const struct MenuAction sMultichoiceList_PkmnCenterLevelUpAmount[] = {
     { gText_Increase },
     { gText_Decrease },
     { gText_Confirm3 },
-    { gText_Cancel }
+    { gOtherText_Exit }
 };
 
 static const struct MenuAction sMultichoiceList_TrainerCardIconTint[] = {

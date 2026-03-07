@@ -26,6 +26,7 @@
 #include "battle.h"
 #include "battle_transition.h"
 #include "battle_controllers.h"
+#include "chase_stamina.h"
 #include "constants/battle_setup.h"
 #include "constants/event_objects.h"
 #include "constants/items.h"
@@ -248,6 +249,18 @@ void StartWildBattle(void)
         DoStandardWildBattle();
 }
 
+void StartDoubleWildBattle(void)
+{
+    LockPlayerFieldControls();
+    FreezeObjectEvents();
+    StopPlayerAvatar();
+    gMain.savedCallback = CB2_EndWildBattle;
+    gBattleTypeFlags = BATTLE_TYPE_DOUBLE;
+    CreateBattleStartTask(GetWildBattleTransition(), 0);
+    IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
+    IncrementGameStat(GAME_STAT_WILD_BATTLES);
+}
+
 static void DoStandardWildBattle(void)
 {
     LockPlayerFieldControls();
@@ -435,6 +448,7 @@ static void StartPokedudeBattle(void)
 
 static void CB2_EndWildBattle(void)
 {
+    ChaseStamina_OnWildBattleEnded(gBattleOutcome, gBattleTypeFlags);
     CpuFill16(0, (void *)BG_PLTT, BG_PLTT_SIZE);
     ResetOamRange(0, 128);
     if (IsPlayerDefeated(gBattleOutcome) == TRUE)
@@ -450,6 +464,7 @@ static void CB2_EndWildBattle(void)
 
 static void CB2_EndScriptedWildBattle(void)
 {
+    ChaseStamina_OnWildBattleEnded(gBattleOutcome, gBattleTypeFlags);
     CpuFill16(0, (void *)BG_PLTT, BG_PLTT_SIZE);
     ResetOamRange(0, 128);
     if (IsPlayerDefeated(gBattleOutcome) == TRUE)

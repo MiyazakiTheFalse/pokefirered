@@ -36,3 +36,12 @@ PalletTown_PlayersHouse_1F_Text_MovieOnTVGirlOnBrickRoad::
 PalletTown_PlayersHouse_1F_Text_OopsWrongSide::
     .string "Oops, wrong side…$"
 
+PalletTown_PlayersHouse_1F_Text_MomGaveRunningShoes::
+    .string "MOM: {PLAYER}! Wait.\p"
+    .string "If you're heading out,\n"
+    .string "take these with you.\p"
+    .string "The roads aren't as safe\n"
+    .string "as they used to be.\p"
+    .string "RUNNING SHOES will help\n"
+    .string "you move faster.\p"
+    .string "Be careful out there.$"
