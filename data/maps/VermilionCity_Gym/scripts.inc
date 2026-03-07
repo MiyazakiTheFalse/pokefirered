@@ -205,12 +205,18 @@ VermilionCity_Gym_EventScript_SetBeamsOn::
 
 VermilionCity_Gym_EventScript_LtSurge::
 	famechecker FAMECHECKER_LTSURGE, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
+	goto_if_unset FLAG_DEFEATED_BROCK_MISTY_DUO, VermilionCity_Gym_EventScript_LtSurgeNeedsFieldDrill
 	setvar VAR_0x8004, 4
 	specialvar VAR_RESULT, GetCorpseRunFieldBlockReason
 	goto_if_ne VAR_RESULT, 0, EventScript_CorpseRun_GymBattleBlocked
 	trainerbattle_single TRAINER_LEADER_LT_SURGE, VermilionCity_Gym_Text_LtSurgeIntro, VermilionCity_Gym_Text_LtSurgeDefeat, VermilionCity_Gym_EventScript_DefeatedLtSurge, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM34_FROM_SURGE, VermilionCity_Gym_EventScript_GiveTM34
 	msgbox VermilionCity_Gym_Text_LtSurgePostBattle
+	release
+	end
+
+VermilionCity_Gym_EventScript_LtSurgeNeedsFieldDrill::
+	msgbox VermilionCity_Gym_Text_LtSurgeNeedsFieldDrill
 	release
 	end
 

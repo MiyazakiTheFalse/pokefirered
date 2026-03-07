@@ -5649,6 +5649,25 @@ static const struct TrainerMonItemCustomMovesAbility sParty_LeaderMisty[] = {
     },
 };
 
+static const struct TrainerMonItemCustomMovesAbility sParty_LeaderBrockMisty[] = {
+    {
+        .iv = 0,
+        .lvl = 19,
+        .species = SPECIES_ONIX,
+        .heldItem = ITEM_NONE,
+        .ability = 0,
+        .moves = {MOVE_ROCK_TOMB, MOVE_BIND, MOVE_SCREECH, MOVE_TACKLE},
+    },
+    {
+        .iv = 0,
+        .lvl = 19,
+        .species = SPECIES_STARMIE,
+        .heldItem = ITEM_MYSTIC_WATER,
+        .ability = 0,
+        .moves = {MOVE_WATER_PULSE, MOVE_SWIFT, MOVE_RAPID_SPIN, MOVE_RECOVER},
+    },
+};
+
 static const struct TrainerMonItemCustomMovesAbility sParty_LeaderLtSurge[] = {
     {
         .iv = 0,

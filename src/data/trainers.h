@@ -7422,4 +7422,14 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
         .party = NO_ITEM_DEFAULT_MOVES(sParty_CueBallPaxton),
     },
+    [TRAINER_LEADER_BROCK_MISTY] = {
+        .trainerClass = TRAINER_CLASS_COOL_COUPLE,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_COOL | F_TRAINER_FEMALE,
+        .trainerPic = TRAINER_PIC_COOL_COUPLE,
+        .trainerName = _("BROCK & MISTY"),
+        .items = {ITEM_SUPER_POTION},
+        .doubleBattle = TRUE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+        .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_LeaderBrockMisty),
+    },
 };

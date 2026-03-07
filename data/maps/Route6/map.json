@@ -41,31 +41,33 @@
       "flag": "0"
     },
     {
+      "local_id": "LOCALID_ROUTE6_BROCK",
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_CAMPER",
+      "graphics_id": "OBJ_EVENT_GFX_BROCK",
       "x": 12,
       "y": 21,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
       "movement_range_x": 1,
       "movement_range_y": 1,
-      "trainer_type": "TRAINER_TYPE_NORMAL",
+      "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "Route6_EventScript_RickyDrill",
+      "script": "Route6_EventScript_Brock",
       "flag": "0"
     },
     {
+      "local_id": "LOCALID_ROUTE6_MISTY",
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_PICNICKER",
+      "graphics_id": "OBJ_EVENT_GFX_MISTY",
       "x": 13,
       "y": 21,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
       "movement_range_x": 1,
       "movement_range_y": 1,
-      "trainer_type": "TRAINER_TYPE_NORMAL",
+      "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "Route6_EventScript_NancyDrill",
+      "script": "Route6_EventScript_Misty",
       "flag": "0"
     },
     {
@@ -109,6 +111,21 @@
       "trainer_sight_or_berry_tree_id": "3",
       "script": "Route6_EventScript_Jeff",
       "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_ROUTE6_UNDERPASS_GUARD",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_GUARD",
+      "x": 19,
+      "y": 14,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Route6_EventScript_UnderpassGuard",
+      "flag": "FLAG_HIDE_ROUTE5_ROUTE6_UNDERPASS_GUARDS"
     }
   ],
   "warp_events": [

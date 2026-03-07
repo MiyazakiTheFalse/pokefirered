@@ -23,6 +23,11 @@ VermilionCity_Gym_Text_LtSurgePostBattle::
     .string "But, it's useless against GROUND-\n"
     .string "type POKéMON!$"
 
+VermilionCity_Gym_Text_LtSurgeNeedsFieldDrill::
+    .string "Not so fast, kid! BROCK and MISTY\n"
+    .string "told me to wait till you pass their\n"
+    .string "doubles field drill on ROUTE 6.$"
+
 VermilionCity_Gym_Text_ExplainThunderBadgeTakeThis::
     .string "The THUNDERBADGE cranks up your\n"
     .string "POKéMON's SPEED!\p"
