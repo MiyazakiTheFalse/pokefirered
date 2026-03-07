@@ -105,6 +105,11 @@ Route6_Text_UndergroundPathSign::
     .string "doubles drill.$"
     .string "CERULEAN CITY - VERMILION CITY$"
 
+Route6_Text_UndergroundPathSignOpen::
+    .string "UNDERGROUND PATH\n"
+    .string "Now open after the ROUTE 6 drill.\l"
+    .string "CERULEAN CITY - VERMILION CITY$"
+
 Route6_Text_BrockMistyIntro::
     .string "BROCK: Hold up! Before you challenge\n"
     .string "LT. SURGE, we want to test you.\p"
