@@ -21,6 +21,7 @@
 #define CHASE_CUE_DISTANCE_CLOSE 3
 #define CHASE_CUE_DISTANCE_MEDIUM 6
 #define CHASE_CUE_DISTANCE_FAR 10
+#define CHASE_CUE_FALLBACK_STEPS_MEDIUM 36
 #define CHASE_CUE_VOLUME_NONE 256
 #define CHASE_CUE_VOLUME_LOW 232
 #define CHASE_CUE_VOLUME_MEDIUM 208
@@ -105,13 +106,15 @@ static void GetPlayerCoordsForChase(s16 *x, s16 *y)
     }
 }
 
-static u16 GetMinDistanceToActiveChaser(void)
+static u16 GetMinDistanceToActiveChaser(bool8 *hasResolvedObject)
 {
     u8 i;
     u16 minDistance = 0xFFFF;
     u8 activeChasers = ChaseStamina_GetActiveChasers();
     s16 playerX;
     s16 playerY;
+
+    *hasResolvedObject = FALSE;
 
     GetPlayerCoordsForChase(&playerX, &playerY);
     if (activeChasers > CHASE_OVERWORLD_MAX_CHASERS)
@@ -127,6 +130,8 @@ static u16 GetMinDistanceToActiveChaser(void)
         if (!TryGetObjectEventIdByLocalIdAndMap(LOCALID_CHASE_VISUAL_BASE + i, sSpawnedMapNum, sSpawnedMapGroup, &objectEventId))
             continue;
 
+        *hasResolvedObject = TRUE;
+
         dx = gObjectEvents[objectEventId].currentCoords.x - playerX;
         dy = gObjectEvents[objectEventId].currentCoords.y - playerY;
         if (dx < 0)
@@ -139,6 +144,14 @@ static u16 GetMinDistanceToActiveChaser(void)
     }
 
     return minDistance;
+}
+
+static u8 GetFallbackCueLevelForActiveChase(void)
+{
+    if (ChaseStamina_GetActiveChasers() >= 2 || ChaseStamina_GetChaseStepsRemaining() <= CHASE_CUE_FALLBACK_STEPS_MEDIUM)
+        return 2;
+
+    return 1;
 }
 
 static bool8 ShouldDisableChaseCues(void)
@@ -171,6 +184,7 @@ static void UpdateChaseCues(void)
     };
     u8 targetCueLevel;
     u16 minDistance;
+    bool8 hasResolvedChaserObject;
 
     if (ShouldDisableChaseCues())
     {
@@ -178,8 +192,13 @@ static void UpdateChaseCues(void)
         return;
     }
 
-    minDistance = GetMinDistanceToActiveChaser();
-    targetCueLevel = GetCueLevelFromDistance(minDistance);
+    minDistance = GetMinDistanceToActiveChaser(&hasResolvedChaserObject);
+    if (hasResolvedChaserObject)
+        targetCueLevel = GetCueLevelFromDistance(minDistance);
+    else if (ChaseStamina_IsChaseActive())
+        targetCueLevel = GetFallbackCueLevelForActiveChase();
+    else
+        targetCueLevel = 0;
 
     if (targetCueLevel > sCueLevel)
     {
