@@ -9,10 +9,40 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
+#include "constants/trainers.h"
 
 static bool8 HasSuperEffectiveMoveAgainstOpponents(bool8 noRng);
 static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent);
 static bool8 ShouldUseItem(void);
+
+static bool8 IsHighSkillTrainer(void)
+{
+    u8 trainerClass;
+
+    if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER))
+        return FALSE;
+
+    trainerClass = gTrainers[gTrainerBattleOpponent_A].trainerClass;
+    switch (trainerClass)
+    {
+    case TRAINER_CLASS_LEADER:
+    case TRAINER_CLASS_ELITE_FOUR:
+    case TRAINER_CLASS_CHAMPION:
+    case TRAINER_CLASS_BOSS:
+    case TRAINER_CLASS_RIVAL_LATE:
+    case TRAINER_CLASS_PKMN_PROF:
+    case TRAINER_CLASS_RS_LEADER:
+    case TRAINER_CLASS_RS_ELITE_FOUR:
+    case TRAINER_CLASS_RS_CHAMPION:
+    case TRAINER_CLASS_AQUA_LEADER:
+    case TRAINER_CLASS_MAGMA_LEADER:
+    case TRAINER_CLASS_AQUA_ADMIN:
+    case TRAINER_CLASS_MAGMA_ADMIN:
+        return TRUE;
+    default:
+        return FALSE;
+    }
+}
 
 static bool8 ShouldSwitchIfPerishSong(void)
 {
@@ -83,8 +113,10 @@ static bool8 FindMonThatAbsorbsOpponentsMove(void)
 {
     u8 battlerIn1, battlerIn2;
     u8 absorbingTypeAbility;
+    bool8 isHighSkill;
     s32 i;
 
+    isHighSkill = IsHighSkillTrainer();
     if ((HasSuperEffectiveMoveAgainstOpponents(TRUE) && Random() % 3) 
     || (gLastLandedMoves[gActiveBattler] == MOVE_NONE))
         return FALSE;
@@ -132,7 +164,8 @@ static bool8 FindMonThatAbsorbsOpponentsMove(void)
             monAbility = gSpeciesInfo[species].abilities[1];
         else
             monAbility = gSpeciesInfo[species].abilities[0];
-        if (absorbingTypeAbility == monAbility && Random() & 1)
+        // High-skill trainers are much more willing to pivot into an immunity ability.
+        if (absorbingTypeAbility == monAbility && (isHighSkill || (Random() & 1)))
         {
             // we found a mon
             *(gBattleStruct->AI_monToSwitchIntoId + (GetBattlerPosition(gActiveBattler) >> 1)) = i;
@@ -236,9 +269,15 @@ static bool8 AreStatsRaised(void)
 static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent)
 {
     u8 battlerIn1, battlerIn2;
+    bool8 isHighSkill;
+    u8 switchModulo;
     s32 i, j;
     u16 move;
     u8 moveFlags;
+
+    isHighSkill = IsHighSkillTrainer();
+    // High-skill trainers use the same matchup logic but with less RNG gating.
+    switchModulo = isHighSkill ? 1 : moduloPercent;
 
     if (gLastLandedMoves[gActiveBattler] == 0)
         return FALSE;
@@ -287,7 +326,7 @@ static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent)
                 if (move == MOVE_NONE)
                     continue;
                 moveFlags = AI_TypeCalc(move, gBattleMons[battlerIn1].species, gBattleMons[battlerIn1].ability);
-                if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE && Random() % moduloPercent == 0)
+                if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE && Random() % switchModulo == 0)
                 {
                     *(gBattleStruct->AI_monToSwitchIntoId + (GetBattlerPosition(gActiveBattler) >> 1)) = i;
                     BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
@@ -302,6 +341,7 @@ static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent)
 static bool8 ShouldSwitch(void)
 {
     u8 battlerIn1, battlerIn2;
+    bool8 isHighSkill;
     s32 i;
     s32 availableToSwitch;
 
@@ -341,6 +381,9 @@ static bool8 ShouldSwitch(void)
     }
     if (!availableToSwitch)
         return FALSE;
+
+    isHighSkill = IsHighSkillTrainer();
+
     if (ShouldSwitchIfPerishSong()
      || ShouldSwitchIfWonderGuard()
      || FindMonThatAbsorbsOpponentsMove()
@@ -349,8 +392,9 @@ static bool8 ShouldSwitch(void)
     if (HasSuperEffectiveMoveAgainstOpponents(FALSE)
      || AreStatsRaised())
         return FALSE;
-    if (FindMonWithFlagsAndSuperEffective(MOVE_RESULT_DOESNT_AFFECT_FOE, 2)
-     || FindMonWithFlagsAndSuperEffective(MOVE_RESULT_NOT_VERY_EFFECTIVE, 3))
+    // High-skill trainers are more eager to take favorable matchup switches.
+    if (FindMonWithFlagsAndSuperEffective(MOVE_RESULT_DOESNT_AFFECT_FOE, isHighSkill ? 1 : 2)
+     || FindMonWithFlagsAndSuperEffective(MOVE_RESULT_NOT_VERY_EFFECTIVE, isHighSkill ? 2 : 3))
         return TRUE;
     return FALSE;
 }
