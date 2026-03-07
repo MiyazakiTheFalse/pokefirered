@@ -80,9 +80,23 @@ static bool8 IsMapTypeChaseCompatible(u8 mapType);
 static void QueueChaseTutorialIfNeeded(void);
 static void QueueChaseFailureReminderIfNeeded(void);
 static void TryShowPendingChaseMessage(void);
+static void Task_ShowPendingChaseMessage(u8 taskId);
 static void ClearChaseTargetSnapshot(void);
 static bool8 SaveActiveWildChaseTargetSnapshot(void);
 static void BuildMonFromChaseSnapshot(struct Pokemon *mon);
+
+enum
+{
+    CHASE_PENDING_MESSAGE_NONE,
+    CHASE_PENDING_MESSAGE_TUTORIAL,
+    CHASE_PENDING_MESSAGE_REMINDER,
+};
+
+enum
+{
+    CHASE_PENDING_MSG_TASK_STATE_SHOW,
+    CHASE_PENDING_MSG_TASK_STATE_WAIT_FOR_CLOSE,
+};
 
 static u8 GetStaminaLevel(void)
 {
@@ -176,7 +190,6 @@ static void QueueChaseTutorialIfNeeded(void)
     if (FlagGet(FLAG_SYS_CHASE_TUTORIAL_SEEN))
         return;
 
-    FlagSet(FLAG_SYS_CHASE_TUTORIAL_SEEN);
     sPendingChaseTutorialMessage = TRUE;
 }
 
@@ -188,30 +201,73 @@ static void QueueChaseFailureReminderIfNeeded(void)
     if (sConsecutiveChaseFailures < CHASE_FAILURE_REMINDER_THRESHOLD)
         return;
 
-    FlagSet(FLAG_SYS_CHASE_FAILURE_REMINDER_SEEN);
     sPendingChaseReminderMessage = TRUE;
 }
 
 static void TryShowPendingChaseMessage(void)
 {
-    const u8 *message = NULL;
+    u8 taskId;
+    u8 pendingType = CHASE_PENDING_MESSAGE_NONE;
 
     if (ScriptContext_IsEnabled() || !IsFieldMessageBoxHidden())
         return;
 
-    if (sPendingChaseTutorialMessage)
-    {
-        message = gText_ChaseTutorialIntro;
-        sPendingChaseTutorialMessage = FALSE;
-    }
-    else if (sPendingChaseReminderMessage)
-    {
-        message = gText_ChaseTutorialReminder;
-        sPendingChaseReminderMessage = FALSE;
-    }
+    taskId = FindTaskIdByFunc(Task_ShowPendingChaseMessage);
+    if (taskId != TASK_NONE)
+        return;
 
-    if (message != NULL)
-        ShowFieldMessage(message);
+    if (sPendingChaseTutorialMessage)
+        pendingType = CHASE_PENDING_MESSAGE_TUTORIAL;
+    else if (sPendingChaseReminderMessage)
+        pendingType = CHASE_PENDING_MESSAGE_REMINDER;
+
+    if (pendingType == CHASE_PENDING_MESSAGE_NONE)
+        return;
+
+    taskId = CreateTask(Task_ShowPendingChaseMessage, 0x50);
+    gTasks[taskId].data[0] = CHASE_PENDING_MSG_TASK_STATE_SHOW;
+    gTasks[taskId].data[1] = pendingType;
+}
+
+static void Task_ShowPendingChaseMessage(u8 taskId)
+{
+    struct Task *task = &gTasks[taskId];
+    const u8 *message;
+
+    switch (task->data[0])
+    {
+    case CHASE_PENDING_MSG_TASK_STATE_SHOW:
+        if (task->data[1] == CHASE_PENDING_MESSAGE_TUTORIAL)
+            message = gText_ChaseTutorialIntro;
+        else if (task->data[1] == CHASE_PENDING_MESSAGE_REMINDER)
+            message = gText_ChaseTutorialReminder;
+        else
+        {
+            DestroyTask(taskId);
+            return;
+        }
+
+        if (ShowFieldMessage(message))
+            task->data[0] = CHASE_PENDING_MSG_TASK_STATE_WAIT_FOR_CLOSE;
+        break;
+    case CHASE_PENDING_MSG_TASK_STATE_WAIT_FOR_CLOSE:
+        if (!IsFieldMessageBoxHidden())
+            break;
+
+        if (task->data[1] == CHASE_PENDING_MESSAGE_TUTORIAL)
+        {
+            sPendingChaseTutorialMessage = FALSE;
+            FlagSet(FLAG_SYS_CHASE_TUTORIAL_SEEN);
+        }
+        else if (task->data[1] == CHASE_PENDING_MESSAGE_REMINDER)
+        {
+            sPendingChaseReminderMessage = FALSE;
+            FlagSet(FLAG_SYS_CHASE_FAILURE_REMINDER_SEEN);
+        }
+
+        DestroyTask(taskId);
+        break;
+    }
 }
 
 static bool8 ShouldSuppressChaseStartFeedback(void)
