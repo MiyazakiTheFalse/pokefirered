@@ -25,6 +25,7 @@ gBattleAI_ScriptsTable::
 	.4byte AI_PreferBatonPass
 	.4byte AI_DoubleBattle
 	.4byte AI_HPAware
+	.4byte AI_PredictionHeuristics
 	.4byte AI_Unknown
 	.4byte AI_Ret
 	.4byte AI_Ret
@@ -2994,6 +2995,113 @@ AI_HPAware_TargetTryToDiscourage::
 
 AI_HPAware_End::
 	end
+
+AI_PredictionHeuristics::
+	if_target_faster AI_PH_CheckMomentumSafety
+	goto AI_PH_CheckProtectPrediction
+
+AI_PH_CheckMomentumSafety::
+	if_hp_less_than AI_USER, 40, AI_PH_CheckProtectPrediction
+	count_alive_pokemon AI_USER
+	if_equal 0, AI_PH_CheckProtectPrediction
+	get_considered_move_effect
+	if_in_bytes AI_PH_SupportingEffects, AI_PH_MomentumSafePlay
+	goto AI_PH_CheckProtectPrediction
+
+AI_PH_MomentumSafePlay::
+	if_random_less_than 80, AI_PH_CheckProtectPrediction
+	score +2
+
+AI_PH_CheckProtectPrediction::
+	get_last_used_move AI_TARGET
+	if_in_hwords AI_PH_NonDamagingPredictionMoves, AI_PH_ConsiderDiscouragingLowValueDamage
+	goto AI_PH_End
+
+AI_PH_ConsiderDiscouragingLowValueDamage::
+	get_considered_move_effect
+	if_in_bytes AI_PH_DamagingEffects, AI_PH_DiscourageLowValueDamage
+	goto AI_PH_End
+
+AI_PH_DiscourageLowValueDamage::
+	if_random_less_than 80, AI_PH_End
+	score -2
+
+AI_PH_End::
+	end
+
+AI_PH_NonDamagingPredictionMoves:
+	.2byte MOVE_PROTECT
+	.2byte MOVE_DETECT
+	.2byte -1
+
+AI_PH_DamagingEffects:
+	.byte EFFECT_HIT
+	.byte EFFECT_MULTI_HIT
+	.byte EFFECT_DOUBLE_HIT
+	.byte EFFECT_RECOIL_IF_MISS
+	.byte EFFECT_ABSORB
+	.byte EFFECT_RECHARGE
+	.byte EFFECT_TRI_ATTACK
+	.byte EFFECT_HIGH_CRITICAL
+	.byte EFFECT_TWINEEDLE
+	.byte EFFECT_QUICK_ATTACK
+	.byte EFFECT_TRIPLE_KICK
+	.byte EFFECT_RECOIL
+	.byte EFFECT_FLAIL
+	.byte EFFECT_FAKE_OUT
+	.byte EFFECT_SUPERPOWER
+	.byte EFFECT_REVENGE
+	.byte EFFECT_ERUPTION
+	.byte EFFECT_OVERHEAT
+	.byte EFFECT_FOCUS_PUNCH
+	.byte EFFECT_BRICK_BREAK
+	.byte EFFECT_KNOCK_OFF
+	.byte EFFECT_BLAZE_KICK
+	.byte EFFECT_POISON_TAIL
+	.byte EFFECT_DEFENSE_DOWN_HIT
+	.byte EFFECT_BURN_HIT
+	.byte EFFECT_FREEZE_HIT
+	.byte EFFECT_PARALYZE_HIT
+	.byte EFFECT_POISON_HIT
+	.byte EFFECT_CONFUSE_HIT
+	.byte EFFECT_SKY_ATTACK
+	.byte EFFECT_RAZOR_WIND
+	.byte EFFECT_SOLAR_BEAM
+	.byte EFFECT_FUTURE_SIGHT
+	.byte EFFECT_SEMI_INVULNERABLE
+	.byte EFFECT_SNORE
+	.byte -1
+
+AI_PH_SupportingEffects:
+	.byte EFFECT_LIGHT_SCREEN
+	.byte EFFECT_REFLECT
+	.byte EFFECT_SAFEGUARD
+	.byte EFFECT_LEECH_SEED
+	.byte EFFECT_WILL_O_WISP
+	.byte EFFECT_TOXIC
+	.byte EFFECT_POISON
+	.byte EFFECT_PARALYZE
+	.byte EFFECT_SLEEP
+	.byte EFFECT_HEAL_BELL
+	.byte EFFECT_WISH
+	.byte EFFECT_HAIL
+	.byte EFFECT_RAIN_DANCE
+	.byte EFFECT_SUNNY_DAY
+	.byte EFFECT_CALM_MIND
+	.byte EFFECT_BULK_UP
+	.byte EFFECT_COSMIC_POWER
+	.byte EFFECT_DRAGON_DANCE
+	.byte EFFECT_ATTACK_UP
+	.byte EFFECT_DEFENSE_UP
+	.byte EFFECT_SPEED_UP
+	.byte EFFECT_SPECIAL_ATTACK_UP
+	.byte EFFECT_SPECIAL_DEFENSE_UP
+	.byte EFFECT_ATTACK_UP_2
+	.byte EFFECT_DEFENSE_UP_2
+	.byte EFFECT_SPEED_UP_2
+	.byte EFFECT_SPECIAL_ATTACK_UP_2
+	.byte EFFECT_SPECIAL_DEFENSE_UP_2
+	.byte -1
 
 AI_HPAware_DiscouragedEffectsWhenHighHP::
 	.byte EFFECT_EXPLOSION
