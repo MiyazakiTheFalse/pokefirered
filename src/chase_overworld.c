@@ -437,10 +437,11 @@ static bool8 TrySpawnChaserNearPlayer(struct ObjectEvent *referenceObjectEvent, 
 
     elevation = MapGridGetElevationAt(candidateX, candidateY);
     SpawnSpecialObjectEventParameterized(CHASE_OVERWORLD_GFX_ID, MOVEMENT_TYPE_FACE_DOWN, localId, candidateX + MAP_OFFSET, candidateY + MAP_OFFSET, elevation);
-    if (!TryGetObjectEventIdByLocalIdAndMap(localId, sSpawnedMapNum, sSpawnedMapGroup, objectEventId))
-        return TRUE;
 
-    return FALSE;
+    if (!TryGetObjectEventIdByLocalIdAndMap(localId, sSpawnedMapNum, sSpawnedMapGroup, objectEventId))
+        return FALSE;
+
+    return TRUE;
 }
 
 static bool8 IsOutsideRelocationRadius(s16 x, s16 y, s16 playerX, s16 playerY)
@@ -713,6 +714,13 @@ static void SpawnOrSyncChasers(void)
             sChaserAttentionCooldown[i] = 0;
             sChaserWasInProximity[i] = FALSE;
         }
+
+        if (objectEventId >= OBJECT_EVENTS_COUNT
+         && !TryGetObjectEventIdByLocalIdAndMap(localId, sSpawnedMapNum, sSpawnedMapGroup, &objectEventId))
+            continue;
+
+        if (objectEventId >= OBJECT_EVENTS_COUNT)
+            continue;
 
         if (ObjectEventIsHeldMovementActive(&gObjectEvents[objectEventId]))
         {
