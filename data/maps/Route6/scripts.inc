@@ -16,6 +16,9 @@ Route6_EventScript_Misty::
 	end
 
 Route6_EventScript_BrockMistyBattle::
+	setvar VAR_0x8004, 4
+	specialvar VAR_RESULT, GetCorpseRunFieldBlockReason
+	goto_if_ne VAR_RESULT, 0, EventScript_CorpseRun_GymBattleBlocked
 	trainerbattle_double TRAINER_LEADER_BROCK_MISTY, Route6_Text_BrockMistyIntro, Route6_Text_BrockMistyDefeat, Route6_Text_BrockMistyNotEnoughMons
 	setflag FLAG_DEFEATED_BROCK_MISTY_DUO
 	setflag FLAG_HIDE_ROUTE5_ROUTE6_UNDERPASS_GUARDS
