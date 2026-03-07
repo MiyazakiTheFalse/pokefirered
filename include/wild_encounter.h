@@ -39,6 +39,7 @@ void DisableWildEncounters(bool8 disabled);
 bool8 StandardWildEncounter(u32 currMetatileAttrs, u16 previousMetaTileBehavior);
 bool8 SweetScentWildEncounter(void);
 bool8 SweetScentWildEncounterWithCount(u8 count);
+bool8 StartForcedWildEncounterWithMon(const struct Pokemon *forcedMon, u8 count);
 bool8 DoesCurrentMapHaveFishingMons(void);
 void FishingWildEncounter(u8 rod);
 u16 GetLocalWildMon(bool8 *isWaterMon);

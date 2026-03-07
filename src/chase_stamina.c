@@ -80,6 +80,9 @@ static bool8 IsMapTypeChaseCompatible(u8 mapType);
 static void QueueChaseTutorialIfNeeded(void);
 static void QueueChaseFailureReminderIfNeeded(void);
 static void TryShowPendingChaseMessage(void);
+static void ClearChaseTargetSnapshot(void);
+static bool8 SaveActiveWildChaseTargetSnapshot(void);
+static void BuildMonFromChaseSnapshot(struct Pokemon *mon);
 
 static u8 GetStaminaLevel(void)
 {
@@ -236,10 +239,102 @@ static void EndChase(bool8 shouldQueueFeedback, u8 feedbackType)
     sActiveChasers = 0;
     sChaseStepsRemaining = 0;
     sChaseReengageStepCountdown = 0;
+    ClearChaseTargetSnapshot();
     ChaseOverworld_OnChaseEnded();
 
     if (wasActive && shouldQueueFeedback && feedbackType != CHASE_END_FEEDBACK_NONE)
         sPendingChaseEndFeedback = feedbackType;
+}
+
+static void ClearChaseTargetSnapshot(void)
+{
+    CpuFill16(0, &gSaveBlock1Ptr->chaseTargetSnapshot, sizeof(gSaveBlock1Ptr->chaseTargetSnapshot));
+}
+
+static bool8 SaveActiveWildChaseTargetSnapshot(void)
+{
+    u8 battlerId = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+    u8 monIndex;
+    struct Pokemon *enemyMon;
+
+    if (!sBattleUsesWildFirstMovePriority)
+        return FALSE;
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+        return FALSE;
+    if (gAbsentBattlerFlags & gBitTable[battlerId])
+        return FALSE;
+
+    monIndex = gBattlerPartyIndexes[battlerId];
+    enemyMon = &gEnemyParty[monIndex];
+
+    gSaveBlock1Ptr->chaseTargetSnapshot.species = GetMonData(enemyMon, MON_DATA_SPECIES);
+    gSaveBlock1Ptr->chaseTargetSnapshot.heldItem = GetMonData(enemyMon, MON_DATA_HELD_ITEM);
+    gSaveBlock1Ptr->chaseTargetSnapshot.hp = GetMonData(enemyMon, MON_DATA_HP);
+    gSaveBlock1Ptr->chaseTargetSnapshot.maxHp = GetMonData(enemyMon, MON_DATA_MAX_HP);
+    gSaveBlock1Ptr->chaseTargetSnapshot.personality = GetMonData(enemyMon, MON_DATA_PERSONALITY);
+    gSaveBlock1Ptr->chaseTargetSnapshot.status = GetMonData(enemyMon, MON_DATA_STATUS);
+    gSaveBlock1Ptr->chaseTargetSnapshot.level = GetMonData(enemyMon, MON_DATA_LEVEL);
+    gSaveBlock1Ptr->chaseTargetSnapshot.hpIV = GetMonData(enemyMon, MON_DATA_HP_IV);
+    gSaveBlock1Ptr->chaseTargetSnapshot.atkIV = GetMonData(enemyMon, MON_DATA_ATK_IV);
+    gSaveBlock1Ptr->chaseTargetSnapshot.defIV = GetMonData(enemyMon, MON_DATA_DEF_IV);
+    gSaveBlock1Ptr->chaseTargetSnapshot.speedIV = GetMonData(enemyMon, MON_DATA_SPEED_IV);
+    gSaveBlock1Ptr->chaseTargetSnapshot.spAtkIV = GetMonData(enemyMon, MON_DATA_SPATK_IV);
+    gSaveBlock1Ptr->chaseTargetSnapshot.spDefIV = GetMonData(enemyMon, MON_DATA_SPDEF_IV);
+    gSaveBlock1Ptr->chaseTargetSnapshot.ppBonuses = GetMonData(enemyMon, MON_DATA_PP_BONUSES);
+    gSaveBlock1Ptr->chaseTargetSnapshot.moves[0] = GetMonData(enemyMon, MON_DATA_MOVE1);
+    gSaveBlock1Ptr->chaseTargetSnapshot.moves[1] = GetMonData(enemyMon, MON_DATA_MOVE2);
+    gSaveBlock1Ptr->chaseTargetSnapshot.moves[2] = GetMonData(enemyMon, MON_DATA_MOVE3);
+    gSaveBlock1Ptr->chaseTargetSnapshot.moves[3] = GetMonData(enemyMon, MON_DATA_MOVE4);
+    gSaveBlock1Ptr->chaseTargetSnapshot.pp[0] = GetMonData(enemyMon, MON_DATA_PP1);
+    gSaveBlock1Ptr->chaseTargetSnapshot.pp[1] = GetMonData(enemyMon, MON_DATA_PP2);
+    gSaveBlock1Ptr->chaseTargetSnapshot.pp[2] = GetMonData(enemyMon, MON_DATA_PP3);
+    gSaveBlock1Ptr->chaseTargetSnapshot.pp[3] = GetMonData(enemyMon, MON_DATA_PP4);
+    gSaveBlock1Ptr->chaseTargetSnapshot.isValid = TRUE;
+    return TRUE;
+}
+
+static void BuildMonFromChaseSnapshot(struct Pokemon *mon)
+{
+    u16 heldItem;
+    u16 maxHp;
+    u16 hp;
+
+    CreateMon(mon,
+              gSaveBlock1Ptr->chaseTargetSnapshot.species,
+              gSaveBlock1Ptr->chaseTargetSnapshot.level,
+              0,
+              TRUE,
+              gSaveBlock1Ptr->chaseTargetSnapshot.personality,
+              FALSE,
+              0);
+
+    SetMonData(mon, MON_DATA_HP_IV, &gSaveBlock1Ptr->chaseTargetSnapshot.hpIV);
+    SetMonData(mon, MON_DATA_ATK_IV, &gSaveBlock1Ptr->chaseTargetSnapshot.atkIV);
+    SetMonData(mon, MON_DATA_DEF_IV, &gSaveBlock1Ptr->chaseTargetSnapshot.defIV);
+    SetMonData(mon, MON_DATA_SPEED_IV, &gSaveBlock1Ptr->chaseTargetSnapshot.speedIV);
+    SetMonData(mon, MON_DATA_SPATK_IV, &gSaveBlock1Ptr->chaseTargetSnapshot.spAtkIV);
+    SetMonData(mon, MON_DATA_SPDEF_IV, &gSaveBlock1Ptr->chaseTargetSnapshot.spDefIV);
+    SetMonData(mon, MON_DATA_STATUS, &gSaveBlock1Ptr->chaseTargetSnapshot.status);
+    SetMonData(mon, MON_DATA_MOVE1, &gSaveBlock1Ptr->chaseTargetSnapshot.moves[0]);
+    SetMonData(mon, MON_DATA_MOVE2, &gSaveBlock1Ptr->chaseTargetSnapshot.moves[1]);
+    SetMonData(mon, MON_DATA_MOVE3, &gSaveBlock1Ptr->chaseTargetSnapshot.moves[2]);
+    SetMonData(mon, MON_DATA_MOVE4, &gSaveBlock1Ptr->chaseTargetSnapshot.moves[3]);
+    SetMonData(mon, MON_DATA_PP1, &gSaveBlock1Ptr->chaseTargetSnapshot.pp[0]);
+    SetMonData(mon, MON_DATA_PP2, &gSaveBlock1Ptr->chaseTargetSnapshot.pp[1]);
+    SetMonData(mon, MON_DATA_PP3, &gSaveBlock1Ptr->chaseTargetSnapshot.pp[2]);
+    SetMonData(mon, MON_DATA_PP4, &gSaveBlock1Ptr->chaseTargetSnapshot.pp[3]);
+    SetMonData(mon, MON_DATA_PP_BONUSES, &gSaveBlock1Ptr->chaseTargetSnapshot.ppBonuses);
+
+    heldItem = gSaveBlock1Ptr->chaseTargetSnapshot.heldItem;
+    SetMonData(mon, MON_DATA_HELD_ITEM, &heldItem);
+
+    maxHp = GetMonData(mon, MON_DATA_MAX_HP);
+    hp = gSaveBlock1Ptr->chaseTargetSnapshot.hp;
+    if (gSaveBlock1Ptr->chaseTargetSnapshot.maxHp != 0 && gSaveBlock1Ptr->chaseTargetSnapshot.maxHp < maxHp)
+        maxHp = gSaveBlock1Ptr->chaseTargetSnapshot.maxHp;
+    if (hp > maxHp)
+        hp = maxHp;
+    SetMonData(mon, MON_DATA_HP, &hp);
 }
 
 static void StartChase(u8 initialChasers, u16 initialSteps)
@@ -467,6 +562,8 @@ void ChaseStamina_UpdateOverworldFrame(bool8 tookStep)
 
 bool8 ChaseStamina_TryStartChaseEncounter(u32 metatileAttributes)
 {
+    struct Pokemon chaseMon;
+
     if (!ChaseStamina_IsChaseActive())
         return FALSE;
 
@@ -485,7 +582,18 @@ bool8 ChaseStamina_TryStartChaseEncounter(u32 metatileAttributes)
         return FALSE;
     }
 
-    if (sActiveChasers >= 2)
+    if (gSaveBlock1Ptr->chaseTargetSnapshot.isValid)
+    {
+        u8 encounterCount = (sActiveChasers >= 2) ? 2 : 1;
+
+        BuildMonFromChaseSnapshot(&chaseMon);
+        if (!StartForcedWildEncounterWithMon(&chaseMon, encounterCount))
+        {
+            RollChaseFallbackReengageStepCountdown();
+            return FALSE;
+        }
+    }
+    else if (sActiveChasers >= 2)
     {
         u8 encounterCount = 2;
 
@@ -567,6 +675,7 @@ void ChaseStamina_OnWildBattleEnded(u8 battleOutcome, u32 battleTypeFlags)
     {
         u16 chaseLength;
 
+        SaveActiveWildChaseTargetSnapshot();
         if (sActiveChasers < CHASE_MAX_CHASERS)
             sActiveChasers++;
 
@@ -583,6 +692,7 @@ void ChaseStamina_OnWildBattleEnded(u8 battleOutcome, u32 battleTypeFlags)
     case B_OUTCOME_CAUGHT:
     case B_OUTCOME_WON:
     {
+        ClearChaseTargetSnapshot();
         if (sActiveChasers != 0)
             sActiveChasers--;
         sConsecutiveChaseFailures = 0;

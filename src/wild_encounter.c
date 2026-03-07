@@ -564,6 +564,57 @@ bool8 SweetScentWildEncounterWithCount(u8 count)
     return FALSE;
 }
 
+
+bool8 StartForcedWildEncounterWithMon(const struct Pokemon *forcedMon, u8 count)
+{
+    s16 x;
+    s16 y;
+    u16 headerId;
+    const struct WildPokemonInfo *wildMonsInfo = NULL;
+    u8 area = WILD_AREA_LAND;
+
+    if (forcedMon == NULL || count == 0 || count > 2)
+        return FALSE;
+
+    if (count >= 2 && GetMonsStateToDoubles() != PLAYER_HAS_TWO_USABLE_MONS)
+        count = 1;
+
+    if (count >= 2)
+    {
+        PlayerGetDestCoords(&x, &y);
+        headerId = GetCurrentMapWildMonHeaderId();
+        if (headerId != HEADER_NONE)
+        {
+            if (MapGridGetMetatileAttributeAt(x, y, METATILE_ATTRIBUTE_ENCOUNTER_TYPE) == TILE_ENCOUNTER_LAND)
+            {
+                wildMonsInfo = gWildMonHeaders[headerId].landMonsInfo;
+                area = WILD_AREA_LAND;
+            }
+            else if (MapGridGetMetatileAttributeAt(x, y, METATILE_ATTRIBUTE_ENCOUNTER_TYPE) == TILE_ENCOUNTER_WATER)
+            {
+                wildMonsInfo = gWildMonHeaders[headerId].waterMonsInfo;
+                area = WILD_AREA_WATER;
+            }
+        }
+
+        if (wildMonsInfo == NULL)
+            count = 1;
+    }
+
+    ZeroEnemyPartyMons();
+    gEnemyParty[0] = *forcedMon;
+
+    if (count >= 2 && !TryGenerateWildMonInSlot(wildMonsInfo, area, 0, 1, FALSE))
+        count = 1;
+
+    if (count >= 2)
+        StartDoubleWildBattle();
+    else
+        StartWildBattle();
+
+    return TRUE;
+}
+
 bool8 DoesCurrentMapHaveFishingMons(void)
 {
     u16 headerIdx = GetCurrentMapWildMonHeaderId();

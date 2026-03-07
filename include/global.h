@@ -881,6 +881,26 @@ struct SaveBlock1
     /*0x3D38*/ struct TrainerTower trainerTower[NUM_TOWER_CHALLENGE_TYPES];
     u8 staminaLevel;
     u8 staminaCurrent;
+    struct
+    {
+        u16 species;
+        u16 heldItem;
+        u16 hp;
+        u16 maxHp;
+        u16 moves[MAX_MON_MOVES];
+        u32 personality;
+        u32 status;
+        u8 level;
+        u8 hpIV;
+        u8 atkIV;
+        u8 defIV;
+        u8 speedIV;
+        u8 spAtkIV;
+        u8 spDefIV;
+        u8 pp[MAX_MON_MOVES];
+        u8 ppBonuses;
+        bool8 isValid;
+    } chaseTargetSnapshot;
 };
 
 struct MapPosition
