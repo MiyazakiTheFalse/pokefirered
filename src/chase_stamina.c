@@ -19,11 +19,13 @@
 #include "event_data.h"
 #include "field_message_box.h"
 #include "script.h"
+#include "sound.h"
 #include "overworld_hud.h"
 #include "palette.h"
 #include "constants/battle.h"
 #include "constants/flags.h"
 #include "constants/map_types.h"
+#include "constants/songs.h"
 
 #define STAMINA_LEVEL_MIN 1
 #define STAMINA_LEVEL_MAX 10

@@ -117,7 +117,7 @@ static u16 GetMinDistanceToActiveChaser(void)
         s16 dy;
         u16 distance;
 
-        if (!TryGetObjectEventIdByLocalIdAndMap(CHASE_OVERWORLD_LOCAL_ID_BASE + i, sSpawnedMapNum, sSpawnedMapGroup, &objectEventId))
+        if (!TryGetObjectEventIdByLocalIdAndMap(LOCALID_CHASE_VISUAL_BASE + i, sSpawnedMapNum, sSpawnedMapGroup, &objectEventId))
             continue;
 
         dx = gObjectEvents[objectEventId].currentCoords.x - playerX;
@@ -217,6 +217,8 @@ static void UpdateChaseCues(void)
     }
 
     SetBGMVolume_SuppressHelpSystemReduction(sCueVolumes[sCueLevel]);
+}
+
 static EWRAM_DATA u8 sChaserRelocationCooldown[CHASE_OVERWORLD_MAX_CHASERS];
 static EWRAM_DATA u8 sChaserAttentionCooldown[CHASE_OVERWORLD_MAX_CHASERS];
 static EWRAM_DATA bool8 sChaserWasInProximity[CHASE_OVERWORLD_MAX_CHASERS];
@@ -263,8 +265,6 @@ static void UpdateChaserVisibilityPriority(struct ObjectEvent *objectEvent)
     if (objectEvent->spriteId < MAX_SPRITES)
         SetObjectSubpriorityByElevation(objectEvent->previousElevation, &gSprites[objectEvent->spriteId], 2);
 }
-static EWRAM_DATA u8 sChaserStalledFrames[CHASE_STAMINA_MAX_ACTIVE_CHASERS];
-
 static bool8 IsOutsideImmediateCameraCenter(s16 playerX, s16 playerY, s16 targetX, s16 targetY)
 {
     s16 dx = targetX - playerX;
@@ -464,19 +464,6 @@ static void GetViewBounds(s16 *left, s16 *right, s16 *top, s16 *bottom)
     *bottom = gSaveBlock1Ptr->pos.y + MAP_OFFSET_H - 1;
 }
 
-static u8 GetRelocationVisibilityRank(s16 x, s16 y)
-{
-    s16 left, right, top, bottom;
-
-    GetViewBounds(&left, &right, &top, &bottom);
-    if (x < left || x > right || y < top || y > bottom)
-        return 0;
-    if (x == left || x == right || y == top || y == bottom)
-        return 1;
-
-    return 2;
-}
-
 static bool8 TryGetRelocationCoords(s16 playerX, s16 playerY, u8 chaserIndex, u8 candidateIndex, s16 *candidateX, s16 *candidateY)
 {
     s16 left, right, top, bottom;
@@ -551,7 +538,7 @@ static bool8 TryGetRelocationCoords(s16 playerX, s16 playerY, u8 chaserIndex, u8
         *candidateY = bottom;
         return TRUE;
     default:
-        return TryGetChaserSpawnCoords(playerX, playerY, chaserIndex, candidateIndex - 16, candidateX, candidateY);
+        return FALSE;
     }
 }
 
@@ -573,114 +560,102 @@ static void PlayChaserRelocationEffect(u8 objectEventId)
 static bool8 PlaceChaserNearPlayer(u8 localId, u8 objectEventId, u8 chaserIndex, s16 playerX, s16 playerY)
 {
     u8 candidateIndex;
-    bool8 moved = FALSE;
-    u8 bestVisibilityRank = 3;
 
-    for (candidateIndex = 0; candidateIndex < ARRAY_COUNT(sChaserSpawnOffsets) + 17; candidateIndex++)
+    for (candidateIndex = 0; candidateIndex < 16; candidateIndex++)
     {
         s16 candidateX;
         s16 candidateY;
-        u8 visibilityRank;
 
         if (!TryGetRelocationCoords(playerX, playerY, chaserIndex, candidateIndex, &candidateX, &candidateY))
-            break;
-        if (!IsOutsideRelocationRadius(candidateX, candidateY, playerX, playerY))
             continue;
-
-        visibilityRank = GetRelocationVisibilityRank(candidateX, candidateY);
-        if (moved && visibilityRank > bestVisibilityRank)
+        if (!IsOutsideRelocationRadius(candidateX, candidateY, playerX, playerY))
             continue;
 
         TryMoveObjectEventToMapCoords(localId, sSpawnedMapNum, sSpawnedMapGroup, candidateX, candidateY);
         if (gObjectEvents[objectEventId].currentCoords.x == candidateX
          && gObjectEvents[objectEventId].currentCoords.y == candidateY)
         {
-            moved = TRUE;
-            bestVisibilityRank = visibilityRank;
-            if (bestVisibilityRank == 0)
-                break;
-static void PlaceChaserNearPlayer(struct ObjectEvent *referenceObjectEvent, u8 localId, u8 chaserIndex, s16 playerX, s16 playerY)
-{
-    s16 candidateX;
-    s16 candidateY;
-
-    if (!TryGetChaserSpawnCoords(referenceObjectEvent, playerX, playerY, chaserIndex, TRUE, &candidateX, &candidateY))
-        return;
-
-    TryMoveObjectEventToMapCoords(localId, sSpawnedMapNum, sSpawnedMapGroup, candidateX, candidateY);
-    s16 radius;
-
-    (void)chaserIndex;
-
-    for (radius = 1; radius <= CHASE_OVERWORLD_RESPAWN_SEARCH_MAX_RADIUS; radius++)
-    {
-        s16 x;
-        s16 y;
-
-        // Deterministic clockwise perimeter scan for this radius:
-        // top edge (left->right), right edge (top->bottom),
-        // bottom edge (right->left), left edge (bottom->top).
-        for (x = playerX - radius; x <= playerX + radius; x++)
-        {
-            s16 candidateX = x;
-            s16 candidateY = playerY - radius;
-
-            if (candidateX == playerX && candidateY == playerY)
-                continue;
-
-            TryMoveObjectEventToMapCoords(localId, sSpawnedMapNum, sSpawnedMapGroup, candidateX, candidateY);
-            if (gObjectEvents[objectEventId].currentCoords.x == candidateX
-             && gObjectEvents[objectEventId].currentCoords.y == candidateY)
-                return;
-        }
-
-        for (y = playerY - radius + 1; y <= playerY + radius; y++)
-        {
-            s16 candidateX = playerX + radius;
-            s16 candidateY = y;
-
-            if (candidateX == playerX && candidateY == playerY)
-                continue;
-
-            TryMoveObjectEventToMapCoords(localId, sSpawnedMapNum, sSpawnedMapGroup, candidateX, candidateY);
-            if (gObjectEvents[objectEventId].currentCoords.x == candidateX
-             && gObjectEvents[objectEventId].currentCoords.y == candidateY)
-                return;
-        }
-
-        for (x = playerX + radius - 1; x >= playerX - radius; x--)
-        {
-            s16 candidateX = x;
-            s16 candidateY = playerY + radius;
-
-            if (candidateX == playerX && candidateY == playerY)
-                continue;
-
-            TryMoveObjectEventToMapCoords(localId, sSpawnedMapNum, sSpawnedMapGroup, candidateX, candidateY);
-            if (gObjectEvents[objectEventId].currentCoords.x == candidateX
-             && gObjectEvents[objectEventId].currentCoords.y == candidateY)
-                return;
-        }
-
-        for (y = playerY + radius - 1; y >= playerY - radius + 1; y--)
-        {
-            s16 candidateX = playerX - radius;
-            s16 candidateY = y;
-
-            if (candidateX == playerX && candidateY == playerY)
-                continue;
-
-            TryMoveObjectEventToMapCoords(localId, sSpawnedMapNum, sSpawnedMapGroup, candidateX, candidateY);
-            if (gObjectEvents[objectEventId].currentCoords.x == candidateX
-             && gObjectEvents[objectEventId].currentCoords.y == candidateY)
-                return;
+            PlayChaserRelocationEffect(objectEventId);
+            return TRUE;
         }
     }
 
-    if (moved)
     {
-        PlayChaserRelocationEffect(objectEventId);
-        return TRUE;
+        s16 radius;
+
+        for (radius = 1; radius <= CHASE_OVERWORLD_RESPAWN_SEARCH_MAX_RADIUS; radius++)
+        {
+            s16 x;
+            s16 y;
+
+            for (x = playerX - radius; x <= playerX + radius; x++)
+            {
+                s16 candidateX = x;
+                s16 candidateY = playerY - radius;
+
+                if (!IsOutsideRelocationRadius(candidateX, candidateY, playerX, playerY))
+                    continue;
+
+                TryMoveObjectEventToMapCoords(localId, sSpawnedMapNum, sSpawnedMapGroup, candidateX, candidateY);
+                if (gObjectEvents[objectEventId].currentCoords.x == candidateX
+                 && gObjectEvents[objectEventId].currentCoords.y == candidateY)
+                {
+                    PlayChaserRelocationEffect(objectEventId);
+                    return TRUE;
+                }
+            }
+
+            for (y = playerY - radius + 1; y <= playerY + radius; y++)
+            {
+                s16 candidateX = playerX + radius;
+                s16 candidateY = y;
+
+                if (!IsOutsideRelocationRadius(candidateX, candidateY, playerX, playerY))
+                    continue;
+
+                TryMoveObjectEventToMapCoords(localId, sSpawnedMapNum, sSpawnedMapGroup, candidateX, candidateY);
+                if (gObjectEvents[objectEventId].currentCoords.x == candidateX
+                 && gObjectEvents[objectEventId].currentCoords.y == candidateY)
+                {
+                    PlayChaserRelocationEffect(objectEventId);
+                    return TRUE;
+                }
+            }
+
+            for (x = playerX + radius - 1; x >= playerX - radius; x--)
+            {
+                s16 candidateX = x;
+                s16 candidateY = playerY + radius;
+
+                if (!IsOutsideRelocationRadius(candidateX, candidateY, playerX, playerY))
+                    continue;
+
+                TryMoveObjectEventToMapCoords(localId, sSpawnedMapNum, sSpawnedMapGroup, candidateX, candidateY);
+                if (gObjectEvents[objectEventId].currentCoords.x == candidateX
+                 && gObjectEvents[objectEventId].currentCoords.y == candidateY)
+                {
+                    PlayChaserRelocationEffect(objectEventId);
+                    return TRUE;
+                }
+            }
+
+            for (y = playerY + radius - 1; y >= playerY - radius + 1; y--)
+            {
+                s16 candidateX = playerX - radius;
+                s16 candidateY = y;
+
+                if (!IsOutsideRelocationRadius(candidateX, candidateY, playerX, playerY))
+                    continue;
+
+                TryMoveObjectEventToMapCoords(localId, sSpawnedMapNum, sSpawnedMapGroup, candidateX, candidateY);
+                if (gObjectEvents[objectEventId].currentCoords.x == candidateX
+                 && gObjectEvents[objectEventId].currentCoords.y == candidateY)
+                {
+                    PlayChaserRelocationEffect(objectEventId);
+                    return TRUE;
+                }
+            }
+        }
     }
 
     return FALSE;
@@ -689,26 +664,17 @@ static void PlaceChaserNearPlayer(struct ObjectEvent *referenceObjectEvent, u8 l
 static void SpawnOrSyncChasers(void)
 {
     u8 i;
+    u8 playerObjectEventId = 0;
+    bool8 playerObjectAvailable;
     u8 activeChasers = ChaseStamina_GetActiveChasers();
     s16 playerX;
     s16 playerY;
 
     GetPlayerCoordsForChase(&playerX, &playerY);
-    u8 playerObjectEventId = 0;
-    u8 activeChasers = ChaseStamina_GetActiveChasers();
-    bool8 playerObjectAvailable = FALSE;
-    s16 playerX = gSaveBlock1Ptr->pos.x;
-    s16 playerY = gSaveBlock1Ptr->pos.y;
+    playerObjectAvailable = TryGetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0, &playerObjectEventId);
 
-    if (TryGetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0, &playerObjectEventId))
-    {
-        playerObjectAvailable = TRUE;
-        playerX = gObjectEvents[playerObjectEventId].currentCoords.x;
-        playerY = gObjectEvents[playerObjectEventId].currentCoords.y;
-    }
-
-    if (activeChasers > CHASE_STAMINA_MAX_ACTIVE_CHASERS)
-        activeChasers = CHASE_STAMINA_MAX_ACTIVE_CHASERS;
+    if (activeChasers > CHASE_OVERWORLD_MAX_CHASERS)
+        activeChasers = CHASE_OVERWORLD_MAX_CHASERS;
 
     if (!sChasersSpawned)
     {
@@ -717,7 +683,7 @@ static void SpawnOrSyncChasers(void)
         sSpawnedMapNum = gSaveBlock1Ptr->location.mapNum;
     }
 
-    for (i = 0; i < CHASE_STAMINA_MAX_ACTIVE_CHASERS; i++)
+    for (i = 0; i < CHASE_OVERWORLD_MAX_CHASERS; i++)
     {
         u8 localId = LOCALID_CHASE_VISUAL_BASE + i;
         u8 objectEventId;
@@ -742,10 +708,8 @@ static void SpawnOrSyncChasers(void)
 
             if (!TrySpawnChaserNearPlayer(&gObjectEvents[playerObjectEventId], localId, i, playerX, playerY, &objectEventId))
                 continue;
-            sChaserStalledFrames[i] = 0;
 
-            if (TryQueueChaserStep(&gObjectEvents[objectEventId], playerX, playerY))
-                continue;
+            sChaserStalledFrames[i] = 0;
             sChaserAttentionCooldown[i] = 0;
             sChaserWasInProximity[i] = FALSE;
         }
@@ -772,6 +736,7 @@ static void SpawnOrSyncChasers(void)
                     sChaserStalledFrames[i] = 0;
                     sChaserRelocationCooldown[i] = CHASE_OVERWORLD_RELOCATE_COOLDOWN_FRAMES;
                 }
+
                 if (ObjectEventSetHeldMovement(chaser, MOVEMENT_ACTION_EMOTE_EXCLAMATION_MARK))
                     sChaserAttentionCooldown[i] = CHASE_OVERWORLD_ATTENTION_COOLDOWN;
                 sChaserWasInProximity[i] = TRUE;
@@ -783,7 +748,6 @@ static void SpawnOrSyncChasers(void)
 
             if (TryQueueChaserStep(chaser, playerX, playerY, activePursuit))
             {
-                PlaceChaserNearPlayer(&gObjectEvents[objectEventId], localId, i, playerX, playerY);
                 sChaserStalledFrames[i] = 0;
             }
             else
