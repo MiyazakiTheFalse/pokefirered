@@ -10,6 +10,32 @@ Test_EventScript_CoordEvent::
 	msgbox Test_Text_ThisIsACoordEvent, MSGBOX_SIGN
 	end
 
+#ifndef NDEBUG
+Test_EventScript_DebugSetRoute12BossCompletionFlag::
+	setflag FLAG_DEFEATED_ROUTE12_KOGA_SABRINA
+	end
+
+Test_EventScript_DebugClearRoute12BossCompletionFlag::
+	clearflag FLAG_DEFEATED_ROUTE12_KOGA_SABRINA
+	end
+
+Test_EventScript_DebugSetRoute12ShortcutUnlockedFlag::
+	setflag FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED
+	end
+
+Test_EventScript_DebugClearRoute12ShortcutUnlockedFlag::
+	clearflag FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED
+	end
+
+Test_EventScript_DebugSetRoute12EventActiveFlag::
+	setflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
+	end
+
+Test_EventScript_DebugClearRoute12EventActiveFlag::
+	clearflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
+	end
+#endif
+
 Test_Text_WelcomeToWorldOfPokemon::
 	.string "テストよう　メッセージです！\n"
 	.string "ポケモンの　せかいへ　ようこそ！$"
