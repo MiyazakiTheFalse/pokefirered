@@ -204,6 +204,18 @@ Route12_Text_BridgeLeadersPreBattleChallenge::
     .string "KOGA & SABRINA: Show us your resolve\n"
     .string "in a synchronized double battle!$"
 
+Route12_Text_BridgeLeadersWarningTone::
+    .string "KOGA & SABRINA: One misstep here and\n"
+    .string "the bridge claims your momentum.$"
+
+Route12_Text_BridgeLeadersRetryReengage::
+    .string "KOGA & SABRINA: Back again? Good.\n"
+    .string "Refine your rhythm and challenge us.$"
+
+Route12_Text_BridgeLeadersVictoryAcknowledgment::
+    .string "KOGA & SABRINA: You proved your discipline\n"
+    .string "at this checkpoint. Proceed.$"
+
 
 Route12_Text_BridgeLeadersShortcutUnlock::
     .string "A heavy rumble echoes from the cliff…\n"
