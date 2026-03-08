@@ -42,3 +42,7 @@ Route7_Text_UndergroundPathSignOpen::
     .string "Clearance granted after ROUTE 7\l"
     .string "inspection.\p"
     .string "CELADON CITY - LAVENDER TOWN$"
+
+Route7_Text_ShortcutBlocked::
+    .string "Shortcut's sealed until LT. SURGE and\n"
+    .string "ERIKA finish the security sweep.$"

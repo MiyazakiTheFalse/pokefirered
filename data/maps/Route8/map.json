@@ -235,6 +235,21 @@
       "trainer_sight_or_berry_tree_id": "1",
       "script": "Route8_EventScript_Jaren",
       "flag": "0"
+    },
+    {
+      "local_id": "LOCALID_ROUTE8_SHORTCUT_BLOCKER",
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_GUARD",
+      "x": 14,
+      "y": 4,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Route8_EventScript_ShortcutBlocker",
+      "flag": "FLAG_UNLOCK_ROUTE7_ROUTE8_SHORTCUT"
     }
   ],
   "warp_events": [
@@ -250,6 +265,13 @@
       "y": 10,
       "elevation": 3,
       "dest_map": "MAP_ROUTE8_WEST_ENTRANCE",
+      "dest_warp_id": "2"
+    },
+    {
+      "x": 14,
+      "y": 4,
+      "elevation": 0,
+      "dest_map": "MAP_ROUTE7",
       "dest_warp_id": "2"
     }
   ],
