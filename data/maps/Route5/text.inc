@@ -1,9 +1,7 @@
 
 Route5_Text_UnderpassGuard::
-    .string "Tunnel's still closed for safety.
-"
-    .string "Clear BROCK and MISTY's doubles
-"
+    .string "Tunnel's still closed for safety.\n"
+    .string "Clear BROCK and MISTY's doubles\n"
     .string "drill first, then this opens.$"
 
 Route5_Text_UndergroundPathSign::

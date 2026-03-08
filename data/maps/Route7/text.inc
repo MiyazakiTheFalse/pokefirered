@@ -11,7 +11,7 @@ Route7_Text_SurgeErikaDefeat::
 
 Route7_Text_SurgeErikaNotEnoughMons::
     .string "ERIKA: A doubles check requires two\n"
-    .string "healthy POK\xE9MON. Return prepared.$"
+    .string "healthy POKéMON. Return prepared.$"
 
 
 Route7_Text_SurgeErikaNotReady::
