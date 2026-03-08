@@ -226,6 +226,34 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_CutTree",
       "flag": "FLAG_TEMP_13"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_KOGA",
+      "x": 13,
+      "y": 23,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Route12_EventScript_BridgeLeaders",
+      "flag": "FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SABRINA",
+      "x": 19,
+      "y": 23,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Route12_EventScript_BridgeLeaders",
+      "flag": "FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED"
     }
   ],
   "warp_events": [
@@ -258,7 +286,17 @@
       "dest_warp_id": "2"
     }
   ],
-  "coord_events": [],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 16,
+      "y": 23,
+      "elevation": 3,
+      "var": "VAR_MAP_SCENE_ROUTE12",
+      "var_value": "0",
+      "script": "Route12_EventScript_BridgeMidpointBlock"
+    }
+  ],
   "bg_events": [
     {
       "type": "sign",

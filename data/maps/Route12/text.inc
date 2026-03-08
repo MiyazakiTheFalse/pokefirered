@@ -142,3 +142,52 @@ Route12_Text_SabrinaPostBattle::
 Route12_Text_SabrinaNotEnoughMons::
     .string "SABRINA: A paired match requires\n"
     .string "at least two POKéMON.$"
+Route12_Text_JesIntro::
+    .string "JES: If I win, I'm going to\n"
+    .string "propose to GIA.$"
+
+Route12_Text_JesDefeat::
+    .string "JES: Oh, please, why couldn't you\n"
+    .string "let us win?$"
+
+Route12_Text_JesPostBattle::
+    .string "JES: Oh, GIA, forgive me,\n"
+    .string "my love!$"
+
+Route12_Text_JesNotEnoughMons::
+    .string "JES: GIA and I, we'll be\n"
+    .string "together forever.\p"
+    .string "We won't battle unless you have\n"
+    .string "two POKéMON of your own.$"
+
+Route12_Text_GiaIntro::
+    .string "GIA: Hey, JES…\p"
+    .string "If we win, I'll marry you!$"
+
+Route12_Text_GiaDefeat::
+    .string "GIA: Oh, but why?$"
+
+Route12_Text_GiaPostBattle::
+    .string "GIA: JES, you silly!\n"
+    .string "You ruined this!$"
+
+Route12_Text_GiaNotEnoughMons::
+    .string "GIA: I can't bear to battle\n"
+    .string "without my JES!\p"
+    .string "Don't you have one more POKéMON?$"
+
+Route12_Text_BridgeLeadersIntro::
+    .string "KOGA & SABRINA: The bridge stays shut\n"
+    .string "until you prove your strength!$"
+
+Route12_Text_BridgeLeadersDefeat::
+    .string "KOGA & SABRINA: Impressive.\n"
+    .string "The shortcut is yours.$"
+
+Route12_Text_BridgeLeadersNotEnoughMons::
+    .string "KOGA & SABRINA: A double battle requires\n"
+    .string "at least two POK\x00E9MON.$"
+
+Route12_Text_BridgeLeadersStandDown::
+    .string "KOGA & SABRINA: You've already cleared\n"
+    .string "this checkpoint.$"
