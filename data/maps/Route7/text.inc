@@ -13,6 +13,12 @@ Route7_Text_SurgeErikaNotEnoughMons::
     .string "ERIKA: A doubles check requires two\n"
     .string "healthy POK\xE9MON. Return prepared.$"
 
+
+Route7_Text_SurgeErikaNotReady::
+    .string "ERIKA: Come find us after earning the\n"
+    .string "RAINBOWBADGE. The route is still\l"
+    .string "under active patrol.$"
+
 Route7_Text_ReceivedMiracleSeedFromSurgeAndErika::
     .string "You received a MIRACLE SEED\n"
     .string "from SURGE and ERIKA.$"

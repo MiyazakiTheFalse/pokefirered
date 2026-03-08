@@ -77,7 +77,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route7_EventScript_UnderpassGuard",
-      "flag": "FLAG_HIDE_ROUTE7_UNDERPASS_GUARD"
+      "flag": "FLAG_UNLOCKED_ROUTE7_TO_ROUTE8_SHORTCUT"
     },
     {
       "local_id": "LOCALID_ROUTE7_SHORTCUT_BLOCKER",

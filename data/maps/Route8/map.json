@@ -249,7 +249,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route8_EventScript_ShortcutBlocker",
-      "flag": "FLAG_UNLOCK_ROUTE7_ROUTE8_SHORTCUT"
+      "flag": "FLAG_UNLOCKED_ROUTE7_TO_ROUTE8_SHORTCUT"
     }
   ],
   "warp_events": [

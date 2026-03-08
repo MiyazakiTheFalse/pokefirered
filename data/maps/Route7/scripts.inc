@@ -4,6 +4,7 @@ Route7_MapScripts::
 Route7_EventScript_Surge::
 	lock
 	faceplayer
+	goto_if_unset FLAG_BADGE04_GET, Route7_EventScript_SurgeErikaNotReady
 	goto_if_set FLAG_DEFEATED_SURGE_ERIKA_DUO, Route7_EventScript_SurgeErikaPostBattle
 	goto Route7_EventScript_SurgeErikaBattle
 	end
@@ -11,6 +12,7 @@ Route7_EventScript_Surge::
 Route7_EventScript_Erika::
 	lock
 	faceplayer
+	goto_if_unset FLAG_BADGE04_GET, Route7_EventScript_SurgeErikaNotReady
 	goto_if_set FLAG_DEFEATED_SURGE_ERIKA_DUO, Route7_EventScript_SurgeErikaPostBattle
 	goto Route7_EventScript_SurgeErikaBattle
 	end
@@ -21,15 +23,19 @@ Route7_EventScript_SurgeErikaBattle::
 	goto_if_ne VAR_RESULT, 0, EventScript_CorpseRun_GymBattleBlocked
 	trainerbattle_double TRAINER_LEADER_SURGE_ERIKA, Route7_Text_SurgeErikaIntro, Route7_Text_SurgeErikaDefeat, Route7_Text_SurgeErikaNotEnoughMons
 	setflag FLAG_DEFEATED_SURGE_ERIKA_DUO
-	setflag FLAG_HIDE_ROUTE7_UNDERPASS_GUARD
 	setflag FLAG_UNLOCKED_ROUTE7_TO_ROUTE8_SHORTCUT
 	goto_if_set FLAG_GOT_MIRACLE_SEED_FROM_SURGE_ERIKA_DUO, Route7_EventScript_SurgeErikaPostBattle
-	goto_if_set FLAG_RECEIVED_SURGE_ERIKA_DUO_REWARD, Route7_EventScript_SurgeErikaPostBattle
 	checkitemspace ITEM_MIRACLE_SEED
 	goto_if_eq VAR_RESULT, FALSE, Route7_EventScript_SurgeErikaNoRoomForReward
 	giveitem_msg Route7_Text_ReceivedMiracleSeedFromSurgeAndErika, ITEM_MIRACLE_SEED
-	setflag FLAG_RECEIVED_SURGE_ERIKA_DUO_REWARD
+	setflag FLAG_GOT_MIRACLE_SEED_FROM_SURGE_ERIKA_DUO
 	goto Route7_EventScript_SurgeErikaPostBattle
+	end
+
+
+Route7_EventScript_SurgeErikaNotReady::
+	msgbox Route7_Text_SurgeErikaNotReady
+	release
 	end
 
 Route7_EventScript_SurgeErikaNoRoomForReward::

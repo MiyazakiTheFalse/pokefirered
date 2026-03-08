@@ -770,8 +770,6 @@
 #define FLAG_HIDE_ROUTE5_ROUTE6_UNDERPASS_GUARDS         0x2E7
 #define FLAG_DEFEATED_SURGE_ERIKA_DUO                    0x2E8
 #define FLAG_GOT_MIRACLE_SEED_FROM_SURGE_ERIKA_DUO       0x2E9
-#define FLAG_HIDE_ROUTE7_UNDERPASS_GUARD                 0x2EA
-#define FLAG_RECEIVED_SURGE_ERIKA_DUO_REWARD             0x2E9
 #define FLAG_UNLOCKED_ROUTE7_TO_ROUTE8_SHORTCUT          0x2EA
 #define FLAG_0x2EB                                       0x2EB
 #define FLAG_REVIVED_DOME                                0x2EC

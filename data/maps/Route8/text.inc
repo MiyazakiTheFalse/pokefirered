@@ -106,6 +106,14 @@ Route8_Text_JuliaPostBattle::
 
 Route8_Text_UndergroundPathSign::
     .string "UNDERGROUND PATH\n"
+    .string "Closed pending ROUTE 7 security\l"
+    .string "inspection.\p"
+    .string "CELADON CITY - LAVENDER TOWN$"
+
+Route8_Text_UndergroundPathSignOpen::
+    .string "UNDERGROUND PATH\n"
+    .string "Clearance granted after ROUTE 7\l"
+    .string "inspection.\p"
     .string "CELADON CITY - LAVENDER TOWN$"
 
 Route8_Text_EliIntro::
