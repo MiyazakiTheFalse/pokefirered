@@ -75,7 +75,13 @@ Route12_EventScript_FishingSign::
 Route12_EventScript_BridgeLeaders::
 	lock
 	faceplayer
-	msgbox Route12_Text_BridgeLeadersStandDown, MSGBOX_AUTOCLOSE
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_BridgeLeadersCleared
+	call Route12_EventScript_ShowBridgeBattleApproachLine
+	release
+	end
+
+Route12_EventScript_BridgeLeadersCleared::
+	msgbox Route12_Text_BridgeLeadersVictoryAcknowledgment, MSGBOX_AUTOCLOSE
 	release
 	end
 
@@ -94,7 +100,9 @@ Route12_EventScript_BridgeMidpointBlock::
 	applymovement LOCALID_PLAYER, Route12_Movement_PlayerBridgeMidpointCollisionUnblock
 	msgbox Route12_Text_SabrinaPsychicDisturbanceIntro, MSGBOX_AUTOCLOSE
 	msgbox Route12_Text_KogaCorruptionWarning, MSGBOX_AUTOCLOSE
+	call Route12_EventScript_ShowBridgeBattleApproachLine
 	msgbox Route12_Text_BridgeLeadersPreBattleChallenge, MSGBOX_AUTOCLOSE
+	setvar VAR_MAP_SCENE_ROUTE12, 1
 	trainerbattle_double TRAINER_TWINS_JOY_MEG, Route12_Text_BridgeLeadersIntro, Route12_Text_BridgeLeadersDefeat, Route12_Text_BridgeLeadersNotEnoughMons
 	call Route12_EventScript_CompleteBridgeMidpointEncounter
 	call Route12_EventScript_PostBattleUnlockShortcut
@@ -109,7 +117,7 @@ Route12_EventScript_BridgeMidpointBlock::
 	end
 
 Route12_EventScript_BridgeMidpointAlreadyCleared::
-	msgbox Route12_Text_BridgeLeadersStandDown, MSGBOX_AUTOCLOSE
+	msgbox Route12_Text_BridgeLeadersVictoryAcknowledgment, MSGBOX_AUTOCLOSE
 	releaseall
 	end
 
@@ -117,6 +125,15 @@ Route12_EventScript_BridgeMidpointPrereqFailed::
 	msgbox Route12_Text_BridgeLeadersStandDown, MSGBOX_AUTOCLOSE
 	releaseall
 	end
+
+Route12_EventScript_ShowBridgeBattleApproachLine::
+	goto_if_eq VAR_MAP_SCENE_ROUTE12, 0, Route12_EventScript_ShowBridgeBattleWarningTone
+	msgbox Route12_Text_BridgeLeadersRetryReengage, MSGBOX_AUTOCLOSE
+	return
+
+Route12_EventScript_ShowBridgeBattleWarningTone::
+	msgbox Route12_Text_BridgeLeadersWarningTone, MSGBOX_AUTOCLOSE
+	return
 
 Route12_EventScript_CheckBridgePrerequisites::
 	setvar VAR_RESULT, FALSE
@@ -139,7 +156,7 @@ Route12_EventScript_CompleteBridgeMidpointEncounter::
 	setflag FLAG_DEFEATED_ROUTE12_KOGA_SABRINA
 	setflag FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED
 	setflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
-	setvar VAR_MAP_SCENE_ROUTE12, 1
+	setvar VAR_MAP_SCENE_ROUTE12, 2
 	removeobject 15
 	removeobject 16
 	removeobject 19
