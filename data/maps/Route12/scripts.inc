@@ -68,13 +68,14 @@ Route12_EventScript_BridgeLeaders::
 Route12_EventScript_BridgeMidpointBlock::
 	lockall
 	goto_if_set FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED, Route12_EventScript_BridgeMidpointAlreadyCleared
+	call Route12_EventScript_CheckBridgePrerequisites
+	goto_if_eq VAR_RESULT, FALSE, Route12_EventScript_BridgeMidpointPrereqFailed
 	applymovement 15, Route12_Movement_KogaApproachBridgeMidpoint
 	applymovement 16, Route12_Movement_SabrinaApproachBridgeMidpoint
 	waitmovement 0
-	call Route12_EventScript_CheckBridgePrerequisites
-	goto_if_eq VAR_RESULT, FALSE, Route12_EventScript_BridgeMidpointPrereqFailed
 	trainerbattle_double TRAINER_TWINS_JOY_MEG, Route12_Text_BridgeLeadersIntro, Route12_Text_BridgeLeadersDefeat, Route12_Text_BridgeLeadersNotEnoughMons
 	call Route12_EventScript_PostBattleUnlockShortcut
+	setflag FLAG_DEFEATED_ROUTE12_KOGA_SABRINA
 	setflag FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED
 	setvar VAR_MAP_SCENE_ROUTE12, 1
 	releaseall
@@ -85,12 +86,17 @@ Route12_EventScript_BridgeMidpointAlreadyCleared::
 	end
 
 Route12_EventScript_BridgeMidpointPrereqFailed::
+	msgbox Route12_Text_BridgeLeadersStandDown, MSGBOX_AUTOCLOSE
 	releaseall
 	end
 
 Route12_EventScript_CheckBridgePrerequisites::
-	@ Placeholder gating stub for external progression requirements.
+	setvar VAR_RESULT, FALSE
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_CheckBridgePrerequisites_Done
+	goto_if_unset FLAG_DEFEATED_KOGA, Route12_EventScript_CheckBridgePrerequisites_Done
+	goto_if_unset FLAG_DEFEATED_SABRINA, Route12_EventScript_CheckBridgePrerequisites_Done
 	setvar VAR_RESULT, TRUE
+Route12_EventScript_CheckBridgePrerequisites_Done::
 	return
 
 Route12_EventScript_PostBattleUnlockShortcut::

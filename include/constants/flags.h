@@ -1247,8 +1247,10 @@
 #define FLAG_DEFEATED_LANCE           0x4BB
 #define FLAG_DEFEATED_CHAMP           0x4BC
 
+// Route/Event progression flags
+#define FLAG_DEFEATED_ROUTE12_KOGA_SABRINA 0x4BD
+
 // Unused?
-#define FLAG_0x4BD               0x4BD
 #define FLAG_0x4BE               0x4BE
 #define FLAG_0x4BF               0x4BF
 #define FLAG_0x4C0               0x4C0
