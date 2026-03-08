@@ -1251,7 +1251,7 @@
 #define FLAG_DEFEATED_ROUTE12_KOGA_SABRINA 0x4BD
 
 // Unused?
-#define FLAG_0x4BE               0x4BE
+#define FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS 0x4BE
 #define FLAG_0x4BF               0x4BF
 #define FLAG_0x4C0               0x4C0
 #define FLAG_0x4C1               0x4C1
