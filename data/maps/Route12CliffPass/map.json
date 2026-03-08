@@ -1,7 +1,7 @@
 {
   "id": "MAP_ROUTE12_CLIFF_PASS",
   "name": "Route12CliffPass",
-  "layout": "LAYOUT_UNDERGROUND_PATH_EAST_WEST_TUNNEL",
+  "layout": "LAYOUT_ROUTE12_CLIFF_PASS",
   "music": "MUS_MTMOON",
   "region_map_section": "MAPSEC_ROUTE_12",
   "requires_flash": false,
@@ -24,7 +24,7 @@
       "dest_warp_id": "4"
     },
     {
-      "x": 79,
+      "x": 6,
       "y": 3,
       "elevation": 0,
       "dest_map": "MAP_ROUTE15",
