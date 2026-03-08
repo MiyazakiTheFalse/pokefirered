@@ -4,6 +4,7 @@ Route12_MapScripts::
 
 Route12_OnResume::
 	call_if_set FLAG_SYS_SPECIAL_WILD_BATTLE, Route12_EventScript_TryRemoveSnorlax
+	call Route12_EventScript_RecoverBridgeMidpointState
 	call Route12_EventScript_UpdateBridgeMidpointBlockers
 	end
 
@@ -95,13 +96,10 @@ Route12_EventScript_BridgeMidpointBlock::
 	msgbox Route12_Text_KogaCorruptionWarning, MSGBOX_AUTOCLOSE
 	msgbox Route12_Text_BridgeLeadersPreBattleChallenge, MSGBOX_AUTOCLOSE
 	trainerbattle_double TRAINER_TWINS_JOY_MEG, Route12_Text_BridgeLeadersIntro, Route12_Text_BridgeLeadersDefeat, Route12_Text_BridgeLeadersNotEnoughMons
+	call Route12_EventScript_CompleteBridgeMidpointEncounter
 	call Route12_EventScript_PostBattleUnlockShortcut
 	msgbox Route12_Text_BridgeLeadersHiddenPathReveal, MSGBOX_AUTOCLOSE
 	msgbox Route12_Text_SabrinaSpiritualResonanceFollowUp, MSGBOX_AUTOCLOSE
-	setflag FLAG_DEFEATED_ROUTE12_KOGA_SABRINA
-	setflag FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED
-	setflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
-	setvar VAR_MAP_SCENE_ROUTE12, 1
 	applymovement 15, Route12_Movement_KogaExitAfterBridgeBattle
 	applymovement 16, Route12_Movement_SabrinaExitAfterBridgeBattle
 	waitmovement 0
@@ -111,6 +109,7 @@ Route12_EventScript_BridgeMidpointBlock::
 	end
 
 Route12_EventScript_BridgeMidpointAlreadyCleared::
+	msgbox Route12_Text_BridgeLeadersStandDown, MSGBOX_AUTOCLOSE
 	releaseall
 	end
 
@@ -126,6 +125,23 @@ Route12_EventScript_CheckBridgePrerequisites::
 	goto_if_unset FLAG_DEFEATED_SABRINA, Route12_EventScript_CheckBridgePrerequisites_Done
 	setvar VAR_RESULT, TRUE
 Route12_EventScript_CheckBridgePrerequisites_Done::
+	return
+
+Route12_EventScript_RecoverBridgeMidpointState::
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_RecoverBridgeMidpointState_Done
+	checktrainerflag TRAINER_TWINS_JOY_MEG
+	goto_if_eq FALSE, Route12_EventScript_RecoverBridgeMidpointState_Done
+	call Route12_EventScript_CompleteBridgeMidpointEncounter
+Route12_EventScript_RecoverBridgeMidpointState_Done::
+	return
+
+Route12_EventScript_CompleteBridgeMidpointEncounter::
+	setflag FLAG_DEFEATED_ROUTE12_KOGA_SABRINA
+	setflag FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED
+	setflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
+	setvar VAR_MAP_SCENE_ROUTE12, 1
+	removeobject 15
+	removeobject 16
 	return
 
 Route12_EventScript_PostBattleUnlockShortcut::
