@@ -152,3 +152,11 @@ Route15_Text_RonNotEnoughMons::
     .string "RON: Did you want to battle with\n"
     .string "my sister and me?\p"
     .string "You need two POKéMON, then.$"
+
+Route15_Text_HiddenPassSignFirst::
+    .string "A hidden pass has opened here!\n"
+    .string "It links to ROUTE 12 and LAVENDER.$"
+
+Route15_Text_HiddenPassSignRepeat::
+    .string "Hidden pass ahead:\n"
+    .string "ROUTE 12 / LAVENDER.$"

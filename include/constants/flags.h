@@ -1252,7 +1252,7 @@
 
 // Unused?
 #define FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS 0x4BE
-#define FLAG_0x4BF               0x4BF
+#define FLAG_ROUTE15_HIDDEN_PASS_DISCOVERED 0x4BF
 #define FLAG_0x4C0               0x4C0
 #define FLAG_0x4C1               0x4C1
 #define FLAG_0x4C2               0x4C2
