@@ -57,3 +57,52 @@ Route12_EventScript_RouteSign::
 Route12_EventScript_FishingSign::
 	msgbox Route12_Text_SportfishingArea, MSGBOX_SIGN
 	end
+
+Route12_EventScript_BridgeLeaders::
+	lock
+	faceplayer
+	msgbox Route12_Text_BridgeLeadersStandDown, MSGBOX_AUTOCLOSE
+	release
+	end
+
+Route12_EventScript_BridgeMidpointBlock::
+	lockall
+	goto_if_set FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED, Route12_EventScript_BridgeMidpointAlreadyCleared
+	applymovement 15, Route12_Movement_KogaApproachBridgeMidpoint
+	applymovement 16, Route12_Movement_SabrinaApproachBridgeMidpoint
+	waitmovement 0
+	call Route12_EventScript_CheckBridgePrerequisites
+	goto_if_eq VAR_RESULT, FALSE, Route12_EventScript_BridgeMidpointPrereqFailed
+	trainerbattle_double TRAINER_TWINS_JOY_MEG, Route12_Text_BridgeLeadersIntro, Route12_Text_BridgeLeadersDefeat, Route12_Text_BridgeLeadersNotEnoughMons
+	call Route12_EventScript_PostBattleUnlockShortcut
+	setflag FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED
+	setvar VAR_MAP_SCENE_ROUTE12, 1
+	releaseall
+	end
+
+Route12_EventScript_BridgeMidpointAlreadyCleared::
+	releaseall
+	end
+
+Route12_EventScript_BridgeMidpointPrereqFailed::
+	releaseall
+	end
+
+Route12_EventScript_CheckBridgePrerequisites::
+	@ Placeholder gating stub for external progression requirements.
+	setvar VAR_RESULT, TRUE
+	return
+
+Route12_EventScript_PostBattleUnlockShortcut::
+	@ Placeholder unlock hook for bridge shortcut state.
+	return
+
+Route12_Movement_KogaApproachBridgeMidpoint:
+	walk_right
+	walk_right
+	step_end
+
+Route12_Movement_SabrinaApproachBridgeMidpoint:
+	walk_left
+	walk_left
+	step_end

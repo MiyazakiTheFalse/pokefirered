@@ -142,3 +142,19 @@ Route12_Text_GiaNotEnoughMons::
     .string "GIA: I can't bear to battle\n"
     .string "without my JES!\p"
     .string "Don't you have one more POKéMON?$"
+
+Route12_Text_BridgeLeadersIntro::
+    .string "KOGA & SABRINA: The bridge stays shut\n"
+    .string "until you prove your strength!$"
+
+Route12_Text_BridgeLeadersDefeat::
+    .string "KOGA & SABRINA: Impressive.\n"
+    .string "The shortcut is yours.$"
+
+Route12_Text_BridgeLeadersNotEnoughMons::
+    .string "KOGA & SABRINA: A double battle requires\n"
+    .string "at least two POK\x00E9MON.$"
+
+Route12_Text_BridgeLeadersStandDown::
+    .string "KOGA & SABRINA: You've already cleared\n"
+    .string "this checkpoint.$"

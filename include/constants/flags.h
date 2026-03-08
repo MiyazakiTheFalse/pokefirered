@@ -977,7 +977,7 @@
 #define FLAG_0x3B4               0x3B4
 #define FLAG_0x3B5               0x3B5
 #define FLAG_0x3B6               0x3B6
-#define FLAG_0x3B7               0x3B7
+#define FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED 0x3B7
 #define FLAG_0x3B8               0x3B8
 #define FLAG_0x3B9               0x3B9
 #define FLAG_0x3BA               0x3BA
