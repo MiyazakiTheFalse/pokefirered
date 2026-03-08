@@ -21,7 +21,7 @@ Route6_Text_RickyPostBattleRepeat::
 
 Route6_Text_RickyNotEnoughMons::
     .string "Field drills run in pairs. Train up\n"
-    .string "until you have two fit POK\xe9MON, then\l"
+    .string "until you have two fit POKéMON, then\l"
     .string "report back.$"
 
 Route6_Text_NancyIntro::
@@ -65,7 +65,7 @@ Route6_Text_JeffDefeat::
     .string "I couldn't beat your challenge…$"
 
 Route6_Text_JeffPostBattle::
-    .string "I should bring more POK\xe9MON with\n"
+    .string "I should bring more POKéMON with\n"
     .string "me. I'll feel safer that way.$"
 
 Route6_Text_IsabelleIntro::
@@ -87,7 +87,7 @@ Route6_Text_ElijahDefeat::
     .string "You're too good!$"
 
 Route6_Text_ElijahPostBattle::
-    .string "Are my POK\xe9MON weak?\n"
+    .string "Are my POKéMON weak?\n"
     .string "Or, am I just bad?\l"
     .string "Which do you think?$"
 
@@ -120,7 +120,7 @@ Route6_Text_BrockMistyDefeat::
 
 Route6_Text_BrockMistyNotEnoughMons::
     .string "BROCK: Doubles means two active\n"
-    .string "POK\xE9MON. Come back with at least two!$"
+    .string "POKéMON. Come back with at least two!$"
 
 Route6_Text_ReceivedMysticWaterFromBrockAndMisty::
     .string "You received MYSTIC WATER\n"
