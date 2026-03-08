@@ -771,7 +771,7 @@
 #define FLAG_DEFEATED_SURGE_ERIKA_DUO                    0x2E8
 #define FLAG_GOT_MIRACLE_SEED_FROM_SURGE_ERIKA_DUO       0x2E9
 #define FLAG_HIDE_ROUTE7_UNDERPASS_GUARD                 0x2EA
-#define FLAG_0x2EB                                       0x2EB
+#define FLAG_UNLOCK_ROUTE7_ROUTE8_SHORTCUT               0x2EB
 #define FLAG_REVIVED_DOME                                0x2EC
 #define FLAG_REVIVED_HELIX                               0x2ED
 #define FLAG_REVIVED_AMBER                               0x2EE

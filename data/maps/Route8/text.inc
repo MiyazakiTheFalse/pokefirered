@@ -160,3 +160,7 @@ Route8_Text_JarenDefeat::
 Route8_Text_JarenPostBattle::
     .string "Don't think you're all special and\n"
     .string "all just because of this.$"
+
+Route8_Text_ShortcutBlocked::
+    .string "No passage yet. Command opens this\n"
+    .string "route only after the ROUTE 7 duo clear.$"

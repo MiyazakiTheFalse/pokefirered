@@ -22,6 +22,7 @@ Route7_EventScript_SurgeErikaBattle::
 	trainerbattle_double TRAINER_LEADER_SURGE_ERIKA, Route7_Text_SurgeErikaIntro, Route7_Text_SurgeErikaDefeat, Route7_Text_SurgeErikaNotEnoughMons
 	setflag FLAG_DEFEATED_SURGE_ERIKA_DUO
 	setflag FLAG_HIDE_ROUTE7_UNDERPASS_GUARD
+	setflag FLAG_UNLOCK_ROUTE7_ROUTE8_SHORTCUT
 	goto_if_set FLAG_GOT_MIRACLE_SEED_FROM_SURGE_ERIKA_DUO, Route7_EventScript_SurgeErikaPostBattle
 	checkitemspace ITEM_MIRACLE_SEED
 	goto_if_eq VAR_RESULT, FALSE, Route7_EventScript_SurgeErikaNoRoomForReward
@@ -54,4 +55,11 @@ Route7_EventScript_UndergroundPathSign::
 
 Route7_EventScript_UndergroundPathSignOpen::
 	msgbox Route7_Text_UndergroundPathSignOpen, MSGBOX_SIGN
+	end
+
+Route7_EventScript_ShortcutBlocker::
+	lock
+	faceplayer
+	msgbox Route7_Text_ShortcutBlocked
+	release
 	end
