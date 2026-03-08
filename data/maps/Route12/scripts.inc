@@ -4,10 +4,23 @@ Route12_MapScripts::
 
 Route12_OnResume::
 	call_if_set FLAG_SYS_SPECIAL_WILD_BATTLE, Route12_EventScript_TryRemoveSnorlax
+	call Route12_EventScript_UpdateBridgeMidpointBlockers
 	end
 
 Route12_EventScript_TryRemoveSnorlax::
 	removeobject VAR_LAST_TALKED
+	return
+
+Route12_EventScript_UpdateBridgeMidpointBlockers::
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_HideBridgeMidpointBlockers
+	call Route12_EventScript_CheckBridgePrerequisites
+	goto_if_eq VAR_RESULT, TRUE, Route12_EventScript_ShowBridgeMidpointBlockers
+Route12_EventScript_HideBridgeMidpointBlockers::
+	setflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
+	return
+
+Route12_EventScript_ShowBridgeMidpointBlockers::
+	clearflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
 	return
 
 Route12_EventScript_Snorlax::
@@ -67,9 +80,10 @@ Route12_EventScript_BridgeLeaders::
 
 Route12_EventScript_BridgeMidpointBlock::
 	lockall
-	goto_if_set FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED, Route12_EventScript_BridgeMidpointAlreadyCleared
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_BridgeMidpointAlreadyCleared
 	call Route12_EventScript_CheckBridgePrerequisites
 	goto_if_eq VAR_RESULT, FALSE, Route12_EventScript_BridgeMidpointPrereqFailed
+	setflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
 	applymovement LOCALID_PLAYER, Route12_Movement_PlayerBridgeMidpointCollisionBlock
 	setobjectxy 16, 16, 20
 	setobjectxy 15, 16, 26
@@ -86,6 +100,7 @@ Route12_EventScript_BridgeMidpointBlock::
 	msgbox Route12_Text_SabrinaSpiritualResonanceFollowUp, MSGBOX_AUTOCLOSE
 	setflag FLAG_DEFEATED_ROUTE12_KOGA_SABRINA
 	setflag FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED
+	setflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
 	setvar VAR_MAP_SCENE_ROUTE12, 1
 	applymovement 15, Route12_Movement_KogaExitAfterBridgeBattle
 	applymovement 16, Route12_Movement_SabrinaExitAfterBridgeBattle
