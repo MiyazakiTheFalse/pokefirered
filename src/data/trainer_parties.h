@@ -5668,6 +5668,26 @@ static const struct TrainerMonItemCustomMovesAbility sParty_LeaderBrockMisty[] =
     },
 };
 
+
+static const struct TrainerMonItemCustomMovesAbility sParty_LeaderSurgeErika[] = {
+    {
+        .iv = 20,
+        .lvl = 28,
+        .species = SPECIES_RAICHU,
+        .heldItem = ITEM_NONE,
+        .ability = 0,
+        .moves = {MOVE_SHOCK_WAVE, MOVE_QUICK_ATTACK, MOVE_THUNDER_WAVE, MOVE_DOUBLE_TEAM},
+    },
+    {
+        .iv = 20,
+        .lvl = 28,
+        .species = SPECIES_VICTREEBEL,
+        .heldItem = ITEM_MIRACLE_SEED,
+        .ability = 0,
+        .moves = {MOVE_GIGA_DRAIN, MOVE_ACID, MOVE_STUN_SPORE, MOVE_POISON_POWDER},
+    },
+};
+
 static const struct TrainerMonItemCustomMovesAbility sParty_LeaderLtSurge[] = {
     {
         .iv = 0,

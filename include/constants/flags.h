@@ -768,9 +768,9 @@
 #define FLAG_DEFEATED_BROCK_MISTY_DUO                    0x2E5
 #define FLAG_GOT_MYSTIC_WATER_FROM_BROCK_MISTY_DUO       0x2E6
 #define FLAG_HIDE_ROUTE5_ROUTE6_UNDERPASS_GUARDS         0x2E7
-#define FLAG_0x2E8                                       0x2E8
-#define FLAG_0x2E9                                       0x2E9
-#define FLAG_0x2EA                                       0x2EA
+#define FLAG_DEFEATED_SURGE_ERIKA_DUO                    0x2E8
+#define FLAG_GOT_MIRACLE_SEED_FROM_SURGE_ERIKA_DUO       0x2E9
+#define FLAG_HIDE_ROUTE7_UNDERPASS_GUARD                 0x2EA
 #define FLAG_0x2EB                                       0x2EB
 #define FLAG_REVIVED_DOME                                0x2EC
 #define FLAG_REVIVED_HELIX                               0x2ED
