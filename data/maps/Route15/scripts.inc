@@ -17,5 +17,20 @@ Route15_EventScript_HiddenPassSignRepeat::
 	end
 
 Route15_EventScript_HiddenPassSignLocked::
-	msgbox Route15_Text_RouteSign, MSGBOX_SIGN
+	msgbox Route15_Text_HiddenPassSignLocked, MSGBOX_SIGN
+	end
+
+Route15_EventScript_HiddenPassEntrance::
+	goto_if_unset FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route15_EventScript_HiddenPassEntranceLocked
+	goto_if_set FLAG_ROUTE15_HIDDEN_PASS_DISCOVERED, Route15_EventScript_HiddenPassEntranceTraverse
+	setflag FLAG_ROUTE15_HIDDEN_PASS_DISCOVERED
+	msgbox Route15_Text_HiddenPassEntranceFirst, MSGBOX_DEFAULT
+
+Route15_EventScript_HiddenPassEntranceTraverse::
+	warp MAP_ROUTE12_CLIFF_PASS, 78, 3
+	waitstate
+	end
+
+Route15_EventScript_HiddenPassEntranceLocked::
+	msgbox Route15_Text_HiddenPassEntranceLocked, MSGBOX_DEFAULT
 	end
