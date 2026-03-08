@@ -177,8 +177,8 @@ Route12_Text_GiaNotEnoughMons::
     .string "Don't you have one more POKéMON?$"
 
 Route12_Text_BridgeLeadersIntro::
-    .string "KOGA & SABRINA: The bridge stays shut\n"
-    .string "until you prove your strength!$"
+    .string "KOGA & SABRINA: The cliff pass remains\n"
+    .string "sealed unless you defeat us!$"
 
 Route12_Text_BridgeLeadersDefeat::
     .string "KOGA & SABRINA: Impressive.\n"
@@ -191,3 +191,23 @@ Route12_Text_BridgeLeadersNotEnoughMons::
 Route12_Text_BridgeLeadersStandDown::
     .string "KOGA & SABRINA: You've already cleared\n"
     .string "this checkpoint.$"
+
+Route12_Text_SabrinaPsychicDisturbanceIntro::
+    .string "SABRINA: Do you feel it? A psychic\n"
+    .string "disturbance is pulsing through here…$"
+
+Route12_Text_KogaCorruptionWarning::
+    .string "KOGA: Hah! Marsh mist is tainted by\n"
+    .string "corruption. Stay alert, intruder.$"
+
+Route12_Text_BridgeLeadersPreBattleChallenge::
+    .string "KOGA & SABRINA: Show us your resolve\n"
+    .string "in a synchronized double battle!$"
+
+Route12_Text_BridgeLeadersHiddenPathReveal::
+    .string "KOGA: The lock gives way. A hidden\n"
+    .string "path now opens through the cliff.$"
+
+Route12_Text_SabrinaSpiritualResonanceFollowUp::
+    .string "SABRINA: Your spirit resonates with\n"
+    .string "this place. The passage answers you.$"

@@ -73,11 +73,21 @@ Route12_EventScript_BridgeMidpointBlock::
 	applymovement 15, Route12_Movement_KogaApproachBridgeMidpoint
 	applymovement 16, Route12_Movement_SabrinaApproachBridgeMidpoint
 	waitmovement 0
+	msgbox Route12_Text_SabrinaPsychicDisturbanceIntro, MSGBOX_AUTOCLOSE
+	msgbox Route12_Text_KogaCorruptionWarning, MSGBOX_AUTOCLOSE
+	msgbox Route12_Text_BridgeLeadersPreBattleChallenge, MSGBOX_AUTOCLOSE
 	trainerbattle_double TRAINER_TWINS_JOY_MEG, Route12_Text_BridgeLeadersIntro, Route12_Text_BridgeLeadersDefeat, Route12_Text_BridgeLeadersNotEnoughMons
 	call Route12_EventScript_PostBattleUnlockShortcut
+	msgbox Route12_Text_BridgeLeadersHiddenPathReveal, MSGBOX_AUTOCLOSE
+	msgbox Route12_Text_SabrinaSpiritualResonanceFollowUp, MSGBOX_AUTOCLOSE
 	setflag FLAG_DEFEATED_ROUTE12_KOGA_SABRINA
 	setflag FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED
 	setvar VAR_MAP_SCENE_ROUTE12, 1
+	applymovement 15, Route12_Movement_KogaExitAfterBridgeBattle
+	applymovement 16, Route12_Movement_SabrinaExitAfterBridgeBattle
+	waitmovement 0
+	removeobject 15
+	removeobject 16
 	releaseall
 	end
 
@@ -100,7 +110,11 @@ Route12_EventScript_CheckBridgePrerequisites_Done::
 	return
 
 Route12_EventScript_PostBattleUnlockShortcut::
-	@ Placeholder unlock hook for bridge shortcut state.
+	playse SE_UNLOCK
+	waitse
+	playse SE_RS_DOOR
+	waitse
+	delay 16
 	return
 
 Route12_Movement_KogaApproachBridgeMidpoint:
@@ -109,6 +123,18 @@ Route12_Movement_KogaApproachBridgeMidpoint:
 	step_end
 
 Route12_Movement_SabrinaApproachBridgeMidpoint:
+	walk_left
+	walk_left
+	step_end
+
+Route12_Movement_KogaExitAfterBridgeBattle:
+	walk_right
+	walk_right
+	walk_right
+	step_end
+
+Route12_Movement_SabrinaExitAfterBridgeBattle:
+	walk_left
 	walk_left
 	walk_left
 	step_end
