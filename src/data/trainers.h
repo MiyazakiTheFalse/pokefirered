@@ -7412,6 +7412,27 @@ const struct Trainer gTrainers[] = {
         .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_PREDICTION_HEURISTICS,
         .party = ITEM_CUSTOM_MOVES(sParty_ChampionRematchCharmander),
     },
+
+    [TRAINER_ROUTE12_KOGA] = {
+        .trainerClass = TRAINER_CLASS_LEADER,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
+        .trainerPic = TRAINER_PIC_LEADER_KOGA,
+        .trainerName = _("KOGA"),
+        .items = {ITEM_HYPER_POTION, ITEM_FULL_HEAL},
+        .doubleBattle = TRUE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_DOUBLE_BATTLE,
+        .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_Route12Koga),
+    },
+    [TRAINER_ROUTE12_SABRINA] = {
+        .trainerClass = TRAINER_CLASS_LEADER,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_FEMALE | F_TRAINER_FEMALE,
+        .trainerPic = TRAINER_PIC_LEADER_SABRINA,
+        .trainerName = _("SABRINA"),
+        .items = {ITEM_HYPER_POTION, ITEM_FULL_HEAL},
+        .doubleBattle = TRUE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_DOUBLE_BATTLE,
+        .party = ITEM_CUSTOM_MOVES_WITH_ABILITY(sParty_Route12Sabrina),
+    },
     [TRAINER_CUE_BALL_PAXTON] = {
         .trainerClass = TRAINER_CLASS_CUE_BALL,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,

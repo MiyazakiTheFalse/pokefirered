@@ -5827,6 +5827,61 @@ static const struct TrainerMonItemCustomMovesAbility sParty_LeaderSabrina[] = {
     },
 };
 
+
+static const struct TrainerMonItemCustomMovesAbility sParty_Route12Koga[] = {
+    {
+        .iv = 50,
+        .lvl = 44,
+        .species = SPECIES_CROBAT,
+        .heldItem = ITEM_POISON_BARB,
+        .ability = 0,
+        .moves = {MOVE_SLUDGE_BOMB, MOVE_AERIAL_ACE, MOVE_CONFUSE_RAY, MOVE_DOUBLE_TEAM},
+    },
+    {
+        .iv = 50,
+        .lvl = 45,
+        .species = SPECIES_WEEZING,
+        .heldItem = ITEM_CHERI_BERRY,
+        .ability = 0,
+        .moves = {MOVE_SLUDGE_BOMB, MOVE_THUNDERBOLT, MOVE_WILL_O_WISP, MOVE_EXPLOSION},
+    },
+    {
+        .iv = 50,
+        .lvl = 46,
+        .species = SPECIES_TENTACRUEL,
+        .heldItem = ITEM_MYSTIC_WATER,
+        .ability = 1,
+        .moves = {MOVE_SURF, MOVE_ICE_BEAM, MOVE_GIGA_DRAIN, MOVE_TOXIC},
+    },
+};
+
+static const struct TrainerMonItemCustomMovesAbility sParty_Route12Sabrina[] = {
+    {
+        .iv = 50,
+        .lvl = 46,
+        .species = SPECIES_ALAKAZAM,
+        .heldItem = ITEM_TWISTED_SPOON,
+        .ability = 0,
+        .moves = {MOVE_PSYCHIC, MOVE_CALM_MIND, MOVE_RECOVER, MOVE_FIRE_PUNCH},
+    },
+    {
+        .iv = 50,
+        .lvl = 44,
+        .species = SPECIES_MR_MIME,
+        .heldItem = ITEM_LIGHT_CLAY,
+        .ability = 0,
+        .moves = {MOVE_PSYCHIC, MOVE_REFLECT, MOVE_LIGHT_SCREEN, MOVE_THUNDERBOLT},
+    },
+    {
+        .iv = 50,
+        .lvl = 45,
+        .species = SPECIES_SLOWBRO,
+        .heldItem = ITEM_LEFTOVERS,
+        .ability = 1,
+        .moves = {MOVE_SURF, MOVE_PSYCHIC, MOVE_YAWN, MOVE_PROTECT},
+    },
+};
+
 static const struct TrainerMonNoItemDefaultMoves sParty_GentlemanThomas[] = {
     {
         .iv = 0,

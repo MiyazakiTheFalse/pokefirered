@@ -902,28 +902,14 @@ Route12_EventScript_JustinRematch::
 	msgbox Route12_Text_JustinPostBattle, MSGBOX_AUTOCLOSE
 	end
 
-Route12_EventScript_Jes::
-	trainerbattle_double TRAINER_YOUNG_COUPLE_GIA_JES, Route12_Text_JesIntro, Route12_Text_JesDefeat, Route12_Text_JesNotEnoughMons
-	specialvar VAR_RESULT, ShouldTryRematchBattle
-	goto_if_eq VAR_RESULT, TRUE, Route12_EventScript_JesRematch
-	msgbox Route12_Text_JesPostBattle, MSGBOX_AUTOCLOSE
+Route12_EventScript_Koga::
+	trainerbattle_double TRAINER_ROUTE12_KOGA, Route12_Text_KogaIntro, Route12_Text_KogaDefeat, Route12_Text_KogaNotEnoughMons
+	msgbox Route12_Text_KogaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
-Route12_EventScript_JesRematch::
-	trainerbattle_rematch_double TRAINER_YOUNG_COUPLE_GIA_JES, Route12_Text_JesRematchIntro, Route12_Text_JesDefeat, Route12_Text_JesNotEnoughMons
-	msgbox Route12_Text_JesPostBattle, MSGBOX_AUTOCLOSE
-	end
-
-Route12_EventScript_Gia::
-	trainerbattle_double TRAINER_YOUNG_COUPLE_GIA_JES, Route12_Text_GiaIntro, Route12_Text_GiaDefeat, Route12_Text_GiaNotEnoughMons
-	specialvar VAR_RESULT, ShouldTryRematchBattle
-	goto_if_eq VAR_RESULT, TRUE, Route12_EventScript_GiaRematch
-	msgbox Route12_Text_GiaPostBattle, MSGBOX_AUTOCLOSE
-	end
-
-Route12_EventScript_GiaRematch::
-	trainerbattle_rematch_double TRAINER_YOUNG_COUPLE_GIA_JES, Route12_Text_GiaRematchIntro, Route12_Text_GiaDefeat, Route12_Text_GiaNotEnoughMons
-	msgbox Route12_Text_GiaPostBattle, MSGBOX_AUTOCLOSE
+Route12_EventScript_Sabrina::
+	trainerbattle_double TRAINER_ROUTE12_SABRINA, Route12_Text_SabrinaIntro, Route12_Text_SabrinaDefeat, Route12_Text_SabrinaNotEnoughMons
+	msgbox Route12_Text_SabrinaPostBattle, MSGBOX_AUTOCLOSE
 	end
 
 Route13_EventScript_Jared::

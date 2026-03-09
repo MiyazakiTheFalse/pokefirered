@@ -152,3 +152,23 @@ Route15_Text_RonNotEnoughMons::
     .string "RON: Did you want to battle with\n"
     .string "my sister and me?\p"
     .string "You need two POKéMON, then.$"
+
+Route15_Text_HiddenPassSignLocked::
+    .string "Crag warning:\n"
+    .string "PASSAGE SEALED.$"
+
+Route15_Text_HiddenPassSignFirst::
+    .string "A hidden pass has opened here!\n"
+    .string "Step onto the mark to cross.$"
+
+Route15_Text_HiddenPassSignRepeat::
+    .string "Hidden pass ahead:\n"
+    .string "ROUTE 12 / LAVENDER.$"
+
+Route15_Text_HiddenPassEntranceLocked::
+    .string "The cliff path is sealed tight.\n"
+    .string "Defeat KOGA & SABRINA on ROUTE 12.$"
+
+Route15_Text_HiddenPassEntranceFirst::
+    .string "The stone gives way!\n"
+    .string "A narrow pass leads onward.$"

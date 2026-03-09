@@ -9508,6 +9508,75 @@
           }
         },
         {
+          "map": "MAP_ROUTE12_CLIFF_PASS",
+          "base_label": "sRoute12CliffPass_FireRed",
+          "land_mons": {
+            "encounter_rate": 9,
+            "mons": [
+              {
+                "min_level": 29,
+                "max_level": 30,
+                "species": "SPECIES_GOLBAT"
+              },
+              {
+                "min_level": 29,
+                "max_level": 30,
+                "species": "SPECIES_GOLBAT"
+              },
+              {
+                "min_level": 30,
+                "max_level": 31,
+                "species": "SPECIES_HAUNTER"
+              },
+              {
+                "min_level": 30,
+                "max_level": 31,
+                "species": "SPECIES_HAUNTER"
+              },
+              {
+                "min_level": 31,
+                "max_level": 32,
+                "species": "SPECIES_WEEZING"
+              },
+              {
+                "min_level": 31,
+                "max_level": 32,
+                "species": "SPECIES_WEEZING"
+              },
+              {
+                "min_level": 32,
+                "max_level": 33,
+                "species": "SPECIES_GOLBAT"
+              },
+              {
+                "min_level": 32,
+                "max_level": 33,
+                "species": "SPECIES_HAUNTER"
+              },
+              {
+                "min_level": 33,
+                "max_level": 34,
+                "species": "SPECIES_WEEZING"
+              },
+              {
+                "min_level": 33,
+                "max_level": 34,
+                "species": "SPECIES_GOLBAT"
+              },
+              {
+                "min_level": 35,
+                "max_level": 35,
+                "species": "SPECIES_WEEZING"
+              },
+              {
+                "min_level": 35,
+                "max_level": 36,
+                "species": "SPECIES_HAUNTER"
+              }
+            ]
+          }
+        },
+        {
           "map": "MAP_ROUTE13",
           "base_label": "sRoute13_FireRed",
           "land_mons": {
@@ -22048,6 +22117,75 @@
               }
             ],
             "encounter_rate": 60
+          }
+        },
+        {
+          "map": "MAP_ROUTE12_CLIFF_PASS",
+          "base_label": "sRoute12CliffPass_LeafGreen",
+          "land_mons": {
+            "encounter_rate": 9,
+            "mons": [
+              {
+                "min_level": 29,
+                "max_level": 30,
+                "species": "SPECIES_GOLBAT"
+              },
+              {
+                "min_level": 29,
+                "max_level": 30,
+                "species": "SPECIES_GOLBAT"
+              },
+              {
+                "min_level": 30,
+                "max_level": 31,
+                "species": "SPECIES_HAUNTER"
+              },
+              {
+                "min_level": 30,
+                "max_level": 31,
+                "species": "SPECIES_HAUNTER"
+              },
+              {
+                "min_level": 31,
+                "max_level": 32,
+                "species": "SPECIES_WEEZING"
+              },
+              {
+                "min_level": 31,
+                "max_level": 32,
+                "species": "SPECIES_WEEZING"
+              },
+              {
+                "min_level": 32,
+                "max_level": 33,
+                "species": "SPECIES_GOLBAT"
+              },
+              {
+                "min_level": 32,
+                "max_level": 33,
+                "species": "SPECIES_HAUNTER"
+              },
+              {
+                "min_level": 33,
+                "max_level": 34,
+                "species": "SPECIES_WEEZING"
+              },
+              {
+                "min_level": 33,
+                "max_level": 34,
+                "species": "SPECIES_GOLBAT"
+              },
+              {
+                "min_level": 35,
+                "max_level": 35,
+                "species": "SPECIES_WEEZING"
+              },
+              {
+                "min_level": 35,
+                "max_level": 36,
+                "species": "SPECIES_HAUNTER"
+              }
+            ]
           }
         },
         {

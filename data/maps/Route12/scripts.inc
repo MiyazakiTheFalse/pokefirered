@@ -4,10 +4,34 @@ Route12_MapScripts::
 
 Route12_OnResume::
 	call_if_set FLAG_SYS_SPECIAL_WILD_BATTLE, Route12_EventScript_TryRemoveSnorlax
+	call Route12_EventScript_UpdateHiddenPassVisual
+	call Route12_EventScript_RecoverBridgeMidpointState
+	call Route12_EventScript_UpdateBridgeMidpointBlockers
 	end
+
+Route12_EventScript_UpdateHiddenPassVisual::
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_SetHiddenPassVisualOpen
+	setmetatile 19, 22, METATILE_Cave_RockBarrier_Top, 1
+	return
+
+Route12_EventScript_SetHiddenPassVisualOpen::
+	setmetatile 19, 22, METATILE_MtEmber_CaveEntrance, 0
+	return
 
 Route12_EventScript_TryRemoveSnorlax::
 	removeobject VAR_LAST_TALKED
+	return
+
+Route12_EventScript_UpdateBridgeMidpointBlockers::
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_HideBridgeMidpointBlockers
+	call Route12_EventScript_CheckBridgePrerequisites
+	goto_if_eq VAR_RESULT, TRUE, Route12_EventScript_ShowBridgeMidpointBlockers
+Route12_EventScript_HideBridgeMidpointBlockers::
+	setflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
+	return
+
+Route12_EventScript_ShowBridgeMidpointBlockers::
+	clearflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
 	return
 
 Route12_EventScript_Snorlax::
@@ -57,3 +81,150 @@ Route12_EventScript_RouteSign::
 Route12_EventScript_FishingSign::
 	msgbox Route12_Text_SportfishingArea, MSGBOX_SIGN
 	end
+
+Route12_EventScript_BridgeLeaders::
+	lock
+	faceplayer
+	msgbox Route12_Text_BridgeLeadersStandDown, MSGBOX_AUTOCLOSE
+	release
+	end
+
+Route12_EventScript_BridgeMidpointCoordTrigger::
+	lockall
+	call Route12_EventScript_TryStartBridgeMidpointEncounter
+	releaseall
+	end
+
+Route12_EventScript_BridgeMidpointBlock::
+	lockall
+	call Route12_EventScript_TryStartBridgeMidpointEncounter
+	releaseall
+	end
+
+Route12_EventScript_TryStartBridgeMidpointEncounter::
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_BridgeMidpointAlreadyCleared
+	call Route12_EventScript_CheckBridgePrerequisites
+	goto_if_eq VAR_RESULT, FALSE, Route12_EventScript_BridgeMidpointPrereqFailed
+	applymovement LOCALID_PLAYER, Route12_Movement_PlayerBridgeMidpointCollisionBlock
+	setobjectxy 16, 16, 20
+	setobjectxy 15, 16, 26
+	applymovement 16, Route12_Movement_SabrinaApproachBridgeMidpoint
+	applymovement 15, Route12_Movement_KogaApproachBridgeMidpoint
+	waitmovement 0
+	applymovement LOCALID_PLAYER, Route12_Movement_PlayerBridgeMidpointCollisionUnblock
+	msgbox Route12_Text_SabrinaPsychicDisturbanceIntro, MSGBOX_AUTOCLOSE
+	msgbox Route12_Text_KogaCorruptionWarning, MSGBOX_AUTOCLOSE
+	msgbox Route12_Text_BridgeLeadersPreBattleChallenge, MSGBOX_AUTOCLOSE
+	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT_DOUBLE, TRAINER_ROUTE12_KOGA, TRAINER_ROUTE12_SABRINA, Route12_Text_BridgeLeadersIntro, Route12_Text_BridgeLeadersDefeat, Route12_Text_BridgeLeadersNotEnoughMons, Route12_EventScript_AfterBridgeMidpointBattle
+	return
+
+Route12_EventScript_AfterBridgeMidpointBattle::
+	call Route12_EventScript_CompleteBridgeMidpointEncounter
+	call Route12_EventScript_PostBattleUnlockShortcut
+	msgbox Route12_Text_BridgeLeadersHiddenPathReveal, MSGBOX_AUTOCLOSE
+	msgbox Route12_Text_SabrinaSpiritualResonanceFollowUp, MSGBOX_AUTOCLOSE
+	applymovement 15, Route12_Movement_KogaExitAfterBridgeBattle
+	applymovement 16, Route12_Movement_SabrinaExitAfterBridgeBattle
+	waitmovement 0
+	removeobject 15
+	removeobject 16
+	return
+
+Route12_EventScript_BridgeMidpointAlreadyCleared::
+	msgbox Route12_Text_BridgeLeadersStandDown, MSGBOX_AUTOCLOSE
+	return
+
+Route12_EventScript_BridgeMidpointPrereqFailed::
+	msgbox Route12_Text_BridgeLeadersHoldLine, MSGBOX_AUTOCLOSE
+	return
+
+Route12_EventScript_CheckBridgePrerequisites::
+	setvar VAR_RESULT, FALSE
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_CheckBridgePrerequisites_Done
+	goto_if_unset FLAG_DEFEATED_KOGA, Route12_EventScript_CheckBridgePrerequisites_Done
+	goto_if_unset FLAG_DEFEATED_SABRINA, Route12_EventScript_CheckBridgePrerequisites_Done
+	setvar VAR_RESULT, TRUE
+Route12_EventScript_CheckBridgePrerequisites_Done::
+	return
+
+Route12_EventScript_RecoverBridgeMidpointState::
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_RecoverBridgeMidpointState_FromCompletedFlag
+	checktrainerflag TRAINER_ROUTE12_KOGA
+	goto_if_eq FALSE, Route12_EventScript_RecoverBridgeMidpointState_Done
+	checktrainerflag TRAINER_ROUTE12_SABRINA
+	goto_if_eq FALSE, Route12_EventScript_RecoverBridgeMidpointState_Done
+	call Route12_EventScript_CompleteBridgeMidpointEncounter
+	goto Route12_EventScript_RecoverBridgeMidpointState_Done
+
+Route12_EventScript_RecoverBridgeMidpointState_FromCompletedFlag::
+	checktrainerflag TRAINER_ROUTE12_KOGA
+	goto_if_eq FALSE, Route12_EventScript_RecoverBridgeMidpointState_ResyncCompletion
+	checktrainerflag TRAINER_ROUTE12_SABRINA
+	goto_if_eq FALSE, Route12_EventScript_RecoverBridgeMidpointState_ResyncCompletion
+	goto Route12_EventScript_RecoverBridgeMidpointState_Done
+
+Route12_EventScript_RecoverBridgeMidpointState_ResyncCompletion::
+	call Route12_EventScript_CompleteBridgeMidpointEncounter
+Route12_EventScript_RecoverBridgeMidpointState_Done::
+	return
+
+Route12_EventScript_CompleteBridgeMidpointEncounter::
+	settrainerflag TRAINER_ROUTE12_KOGA
+	settrainerflag TRAINER_ROUTE12_SABRINA
+	checktrainerflag TRAINER_ROUTE12_KOGA
+	goto_if_eq FALSE, Route12_EventScript_CompleteBridgeMidpointEncounter_Done
+	checktrainerflag TRAINER_ROUTE12_SABRINA
+	goto_if_eq FALSE, Route12_EventScript_CompleteBridgeMidpointEncounter_Done
+	setflag FLAG_DEFEATED_ROUTE12_KOGA_SABRINA
+	setflag FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED
+	setflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
+	setvar VAR_MAP_SCENE_ROUTE12, 1
+	removeobject 15
+	removeobject 16
+
+Route12_EventScript_CompleteBridgeMidpointEncounter_Done::
+	return
+
+Route12_EventScript_PostBattleUnlockShortcut::
+	playse SE_UNLOCK
+	waitse
+	msgbox Route12_Text_BridgeLeadersShortcutUnlock, MSGBOX_AUTOCLOSE
+	playse SE_RS_DOOR
+	waitse
+	delay 16
+	call Route12_EventScript_SetHiddenPassVisualOpen
+	removeobject 19
+	special DrawWholeMapView
+	return
+
+Route12_Movement_KogaApproachBridgeMidpoint:
+	walk_up
+	walk_up
+	face_up
+	step_end
+
+Route12_Movement_SabrinaApproachBridgeMidpoint:
+	walk_down
+	walk_down
+	face_down
+	step_end
+
+Route12_Movement_PlayerBridgeMidpointCollisionBlock:
+	lock_facing_direction
+	step_end
+
+Route12_Movement_PlayerBridgeMidpointCollisionUnblock:
+	unlock_facing_direction
+	step_end
+
+Route12_Movement_KogaExitAfterBridgeBattle:
+	walk_right
+	walk_right
+	walk_right
+	step_end
+
+Route12_Movement_SabrinaExitAfterBridgeBattle:
+	walk_left
+	walk_left
+	walk_left
+	step_end

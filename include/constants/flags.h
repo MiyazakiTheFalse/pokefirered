@@ -977,7 +977,7 @@
 #define FLAG_0x3B4               0x3B4
 #define FLAG_0x3B5               0x3B5
 #define FLAG_0x3B6               0x3B6
-#define FLAG_0x3B7               0x3B7
+#define FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED 0x3B7
 #define FLAG_0x3B8               0x3B8
 #define FLAG_0x3B9               0x3B9
 #define FLAG_0x3BA               0x3BA
@@ -1247,10 +1247,12 @@
 #define FLAG_DEFEATED_LANCE           0x4BB
 #define FLAG_DEFEATED_CHAMP           0x4BC
 
+// Route/Event progression flags
+#define FLAG_DEFEATED_ROUTE12_KOGA_SABRINA 0x4BD
+
 // Unused?
-#define FLAG_0x4BD               0x4BD
-#define FLAG_0x4BE               0x4BE
-#define FLAG_0x4BF               0x4BF
+#define FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS 0x4BE
+#define FLAG_ROUTE15_HIDDEN_PASS_DISCOVERED 0x4BF
 #define FLAG_0x4C0               0x4C0
 #define FLAG_0x4C1               0x4C1
 #define FLAG_0x4C2               0x4C2
