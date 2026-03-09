@@ -233,6 +233,13 @@
   ],
   "warp_events": [
     {
+      "x": 6,
+      "y": 13,
+      "elevation": 3,
+      "dest_map": "MAP_ROUTE12_CLIFF_PASS",
+      "dest_warp_id": "1"
+    },
+    {
       "x": 9,
       "y": 11,
       "elevation": 3,
@@ -245,13 +252,6 @@
       "elevation": 3,
       "dest_map": "MAP_ROUTE15_WEST_ENTRANCE_1F",
       "dest_warp_id": "2"
-    },
-    {
-      "x": 6,
-      "y": 12,
-      "elevation": 3,
-      "dest_map": "MAP_ROUTE12_CLIFF_PASS",
-      "dest_warp_id": "1"
     }
   ],
   "coord_events": [
