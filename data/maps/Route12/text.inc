@@ -186,7 +186,7 @@ Route12_Text_BridgeLeadersDefeat::
 
 Route12_Text_BridgeLeadersNotEnoughMons::
     .string "KOGA & SABRINA: A double battle requires\n"
-    .string "at least two POK\x00E9MON.$"
+    .string "at least two POKéMON.$"
 
 Route12_Text_BridgeLeadersStandDown::
     .string "KOGA & SABRINA: You've already cleared\n"
