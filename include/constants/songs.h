@@ -352,6 +352,9 @@
 #define MUS_TRAINER_TOWER         344 // MUS_T_TOWER
 #define MUS_SLOW_PALLET           345 // MUS_SLOWMASARA
 #define MUS_TEACHY_TV_MENU        346 // MUS_TVNOIZE
+#define MUS_VS_DUO_BROCK_MISTY    347 // Custom mod track
+#define MUS_VS_DUO_SURGE_ERIKA    348 // Custom mod track
+#define MUS_VS_DUO_KOGA_SABRINA   349 // Custom mod track
 
 #define MUS_NONE                    0xFFFF
 

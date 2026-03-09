@@ -346,6 +346,9 @@ gSongTable::
 	song mus_trainer_tower, 0, 0
 	song mus_slow_pallet, 0, 0
 	song mus_teachy_tv_menu, 0, 0
+	song mus_vs_duo_brock_misty, 0, 0
+	song mus_vs_duo_surge_erika, 0, 0
+	song mus_vs_duo_koga_sabrina, 0, 0
 
 dummy_song_header:
 	.byte 0, 0, 0, 0
