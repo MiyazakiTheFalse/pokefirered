@@ -11,11 +11,11 @@ Route12_OnResume::
 
 Route12_EventScript_UpdateHiddenPassVisual::
 	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_SetHiddenPassVisualOpen
-	setmetatile 19, 22, METATILE_LavenderTown_Door, 1
+	setmetatile 19, 22, METATILE_Cave_RockBarrier_Top, 1
 	return
 
 Route12_EventScript_SetHiddenPassVisualOpen::
-	setmetatile 19, 22, METATILE_General_Door, 0
+	setmetatile 19, 22, METATILE_MtEmber_CaveEntrance, 0
 	return
 
 Route12_EventScript_TryRemoveSnorlax::

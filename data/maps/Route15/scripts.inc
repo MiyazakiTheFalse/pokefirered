@@ -8,11 +8,11 @@ Route15_OnResume::
 
 Route15_EventScript_UpdateHiddenPassVisual::
 	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route15_EventScript_SetHiddenPassVisualOpen
-	setmetatile 6, 12, METATILE_FuchsiaCity_SafariZoneTreeTopMiddle_Grass, 1
+	setmetatile 6, 12, METATILE_Cave_RockBarrier_Top, 1
 	return
 
 Route15_EventScript_SetHiddenPassVisualOpen::
-	setmetatile 6, 12, METATILE_FuchsiaCity_Door, 0
+	setmetatile 6, 12, METATILE_MtEmber_CaveEntrance, 0
 	return
 
 Route15_EventScript_RouteSign::
