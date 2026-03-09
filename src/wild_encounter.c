@@ -37,7 +37,6 @@ static EWRAM_DATA struct WildEncounterData sWildEncounterData = {};
 static EWRAM_DATA bool8 sWildEncountersDisabled = FALSE;
 
 static bool8 UnlockedTanobyOrAreNotInTanoby(void);
-static bool8 UnlockedRoute12CliffPassOrAreNotInPass(void);
 static u32 GenerateUnownPersonalityByLetter(u8 letter);
 static bool8 IsWildLevelAllowedByRepel(u8 level);
 static void ApplyFluteEncounterRateMod(u32 *rate);
@@ -202,8 +201,6 @@ static u16 GetCurrentMapWildMonHeaderId(void)
 
             if (!UnlockedTanobyOrAreNotInTanoby())
                 break;
-            if (!UnlockedRoute12CliffPassOrAreNotInPass())
-                break;
             return i;
         }
     }
@@ -227,18 +224,6 @@ static bool8 UnlockedTanobyOrAreNotInTanoby(void)
     ))
         return TRUE;
     return FALSE;
-}
-
-static bool8 UnlockedRoute12CliffPassOrAreNotInPass(void)
-{
-    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(MAP_ROUTE12_CLIFF_PASS)
-     || gSaveBlock1Ptr->location.mapNum != MAP_NUM(MAP_ROUTE12_CLIFF_PASS))
-        return TRUE;
-
-    if (!FlagGet(FLAG_DEFEATED_ROUTE12_KOGA_SABRINA))
-        return FALSE;
-
-    return FlagGet(FLAG_ROUTE15_HIDDEN_PASS_DISCOVERED);
 }
 
 static void GenerateWildMon(u16 species, u8 level, u8 slot, u8 partyIndex, bool8 resetParty)
