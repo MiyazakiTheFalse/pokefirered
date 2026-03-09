@@ -9511,7 +9511,7 @@
           "map": "MAP_ROUTE12_CLIFF_PASS",
           "base_label": "sRoute12CliffPass_FireRed",
           "land_mons": {
-            "encounter_rate": 9,
+            "encounter_rate": 12,
             "mons": [
               {
                 "min_level": 27,
@@ -22123,7 +22123,7 @@
           "map": "MAP_ROUTE12_CLIFF_PASS",
           "base_label": "sRoute12CliffPass_LeafGreen",
           "land_mons": {
-            "encounter_rate": 9,
+            "encounter_rate": 12,
             "mons": [
               {
                 "min_level": 27,
