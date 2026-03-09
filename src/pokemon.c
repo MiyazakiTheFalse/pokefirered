@@ -5864,7 +5864,26 @@ static u16 GetBattleBGM(void)
         return MUS_RS_VS_TRAINER;
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
-        switch (gTrainers[gTrainerBattleOpponent_A].trainerClass)
+        u16 trainerA = gTrainerBattleOpponent_A;
+        u16 trainerB = gTrainerBattleOpponent_B;
+
+        if (trainerA == TRAINER_LEADER_BROCK_MISTY
+         || (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS
+          && ((trainerA == TRAINER_LEADER_BROCK && trainerB == TRAINER_LEADER_MISTY)
+           || (trainerA == TRAINER_LEADER_MISTY && trainerB == TRAINER_LEADER_BROCK))))
+            return MUS_VS_DUO_BROCK_MISTY;
+
+        if ((gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
+         && ((trainerA == TRAINER_LEADER_LT_SURGE && trainerB == TRAINER_LEADER_ERIKA)
+          || (trainerA == TRAINER_LEADER_ERIKA && trainerB == TRAINER_LEADER_LT_SURGE)))
+            return MUS_VS_DUO_SURGE_ERIKA;
+
+        if ((gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
+         && ((trainerA == TRAINER_LEADER_KOGA && trainerB == TRAINER_LEADER_SABRINA)
+          || (trainerA == TRAINER_LEADER_SABRINA && trainerB == TRAINER_LEADER_KOGA)))
+            return MUS_VS_DUO_KOGA_SABRINA;
+
+        switch (gTrainers[trainerA].trainerClass)
         {
         case TRAINER_CLASS_CHAMPION:
             return MUS_VS_CHAMPION;
