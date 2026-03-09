@@ -4,9 +4,19 @@ Route12_MapScripts::
 
 Route12_OnResume::
 	call_if_set FLAG_SYS_SPECIAL_WILD_BATTLE, Route12_EventScript_TryRemoveSnorlax
+	call Route12_EventScript_UpdateHiddenPassVisual
 	call Route12_EventScript_RecoverBridgeMidpointState
 	call Route12_EventScript_UpdateBridgeMidpointBlockers
 	end
+
+Route12_EventScript_UpdateHiddenPassVisual::
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_SetHiddenPassVisualOpen
+	setmetatile 19, 22, METATILE_General_ThinTreeTop_Grass, 1
+	return
+
+Route12_EventScript_SetHiddenPassVisualOpen::
+	setmetatile 19, 22, METATILE_General_Plain_Grass, 0
+	return
 
 Route12_EventScript_TryRemoveSnorlax::
 	removeobject VAR_LAST_TALKED
@@ -163,6 +173,8 @@ Route12_EventScript_PostBattleUnlockShortcut::
 	playse SE_RS_DOOR
 	waitse
 	delay 16
+	call Route12_EventScript_SetHiddenPassVisualOpen
+	special DrawWholeMapView
 	removeobject 19
 	return
 

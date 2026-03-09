@@ -1,5 +1,19 @@
 Route15_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, Route15_OnResume
 	.byte 0
+
+Route15_OnResume::
+	call Route15_EventScript_UpdateHiddenPassVisual
+	end
+
+Route15_EventScript_UpdateHiddenPassVisual::
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route15_EventScript_SetHiddenPassVisualOpen
+	setmetatile 6, 12, METATILE_General_ThinTreeTop_Grass, 1
+	return
+
+Route15_EventScript_SetHiddenPassVisualOpen::
+	setmetatile 6, 12, METATILE_General_Plain_Grass, 0
+	return
 
 Route15_EventScript_RouteSign::
 	msgbox Route15_Text_RouteSign, MSGBOX_SIGN
@@ -27,6 +41,8 @@ Route15_EventScript_HiddenPassEntrance::
 	msgbox Route15_Text_HiddenPassEntranceFirst, MSGBOX_DEFAULT
 
 Route15_EventScript_HiddenPassEntranceTraverse::
+	call Route15_EventScript_SetHiddenPassVisualOpen
+	special DrawWholeMapView
 	warp MAP_ROUTE12_CLIFF_PASS, 78, 3
 	waitstate
 	end
