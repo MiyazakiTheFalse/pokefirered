@@ -37,7 +37,6 @@ static EWRAM_DATA struct WildEncounterData sWildEncounterData = {};
 static EWRAM_DATA bool8 sWildEncountersDisabled = FALSE;
 
 static bool8 UnlockedTanobyOrAreNotInTanoby(void);
-static bool8 UseRoute12CliffPassWildTable(u16 headerIdx);
 static u32 GenerateUnownPersonalityByLetter(u8 letter);
 static bool8 IsWildLevelAllowedByRepel(u8 level);
 static void ApplyFluteEncounterRateMod(u32 *rate);
@@ -200,9 +199,6 @@ static u16 GetCurrentMapWildMonHeaderId(void)
                 i += alteringCaveId;
             }
 
-            if (UseRoute12CliffPassWildTable(i))
-                return i + 1;
-
             if (!UnlockedTanobyOrAreNotInTanoby())
                 break;
             return i;
@@ -210,22 +206,6 @@ static u16 GetCurrentMapWildMonHeaderId(void)
     }
 
     return HEADER_NONE;
-}
-
-static bool8 UseRoute12CliffPassWildTable(u16 headerIdx)
-{
-    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(MAP_ROUTE12)
-     || gSaveBlock1Ptr->location.mapNum != MAP_NUM(MAP_ROUTE12))
-        return FALSE;
-
-    if (!FlagGet(FLAG_ROUTE15_HIDDEN_PASS_DISCOVERED))
-        return FALSE;
-
-    if (gWildMonHeaders[headerIdx + 1].mapGroup != MAP_GROUP(MAP_ROUTE12)
-     || gWildMonHeaders[headerIdx + 1].mapNum != MAP_NUM(MAP_ROUTE12))
-        return FALSE;
-
-    return TRUE;
 }
 
 static bool8 UnlockedTanobyOrAreNotInTanoby(void)
