@@ -1,6 +1,52 @@
 Route15_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, Route15_OnResume
 	.byte 0
+
+Route15_OnResume::
+	call Route15_EventScript_UpdateHiddenPassVisual
+	end
+
+Route15_EventScript_UpdateHiddenPassVisual::
+	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route15_EventScript_SetHiddenPassVisualOpen
+	setmetatile 6, 12, METATILE_Cave_RockBarrier_Top, 1
+	return
+
+Route15_EventScript_SetHiddenPassVisualOpen::
+	setmetatile 6, 12, METATILE_MtEmber_CaveEntrance, 0
+	return
 
 Route15_EventScript_RouteSign::
 	msgbox Route15_Text_RouteSign, MSGBOX_SIGN
+	end
+
+Route15_EventScript_HiddenPassSign::
+	goto_if_unset FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route15_EventScript_HiddenPassSignLocked
+	goto_if_set FLAG_ROUTE15_HIDDEN_PASS_DISCOVERED, Route15_EventScript_HiddenPassSignRepeat
+	setflag FLAG_ROUTE15_HIDDEN_PASS_DISCOVERED
+	msgbox Route15_Text_HiddenPassSignFirst, MSGBOX_SIGN
+	end
+
+Route15_EventScript_HiddenPassSignRepeat::
+	msgbox Route15_Text_HiddenPassSignRepeat, MSGBOX_SIGN
+	end
+
+Route15_EventScript_HiddenPassSignLocked::
+	msgbox Route15_Text_HiddenPassSignLocked, MSGBOX_SIGN
+	end
+
+Route15_EventScript_HiddenPassEntrance::
+	goto_if_unset FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route15_EventScript_HiddenPassEntranceLocked
+	goto_if_set FLAG_ROUTE15_HIDDEN_PASS_DISCOVERED, Route15_EventScript_HiddenPassEntranceTraverse
+	setflag FLAG_ROUTE15_HIDDEN_PASS_DISCOVERED
+	msgbox Route15_Text_HiddenPassEntranceFirst, MSGBOX_DEFAULT
+
+Route15_EventScript_HiddenPassEntranceTraverse::
+	call Route15_EventScript_SetHiddenPassVisualOpen
+	special DrawWholeMapView
+	warp MAP_ROUTE12_CLIFF_PASS, 6, 3
+	waitstate
+	end
+
+Route15_EventScript_HiddenPassEntranceLocked::
+	msgbox Route15_Text_HiddenPassEntranceLocked, MSGBOX_DEFAULT
 	end

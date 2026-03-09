@@ -1015,6 +1015,18 @@
       "blockdata_filepath": "data/layouts/Route12/map.bin"
     },
     {
+      "id": "LAYOUT_ROUTE12_CLIFF_PASS",
+      "name": "Route12CliffPass_Layout",
+      "width": 7,
+      "height": 7,
+      "border_width": 2,
+      "border_height": 2,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_NavelRock",
+      "border_filepath": "data/layouts/NavelRock_SummitPath_5F/border.bin",
+      "blockdata_filepath": "data/layouts/NavelRock_SummitPath_5F/map.bin"
+    },
+    {
       "id": "LAYOUT_ROUTE13",
       "name": "Route13_Layout",
       "width": 72,

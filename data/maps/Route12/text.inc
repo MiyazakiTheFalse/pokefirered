@@ -109,6 +109,39 @@ Route12_Text_RouteSign::
 Route12_Text_SportfishingArea::
     .string "SPORTFISHING AREA$"
 
+Route12_Text_KogaIntro::
+    .string "KOGA: Hah! You tracked me here?\p"
+    .string "Then witness ninja venom in a\n"
+    .string "linked battle!$"
+
+Route12_Text_KogaDefeat::
+    .string "KOGA: Tch! Your teamwork pierced\n"
+    .string "my smokescreen!$"
+
+Route12_Text_KogaPostBattle::
+    .string "KOGA: You and your partner fight\n"
+    .string "with discipline. Impressive.$"
+
+Route12_Text_KogaNotEnoughMons::
+    .string "KOGA: A linked battle demands\n"
+    .string "two POKéMON at minimum.$"
+
+Route12_Text_SabrinaIntro::
+    .string "SABRINA: I foresaw your arrival.\p"
+    .string "KOGA and I will test your mind\n"
+    .string "and tactics together.$"
+
+Route12_Text_SabrinaDefeat::
+    .string "SABRINA: Your focus exceeded even\n"
+    .string "my prediction…$"
+
+Route12_Text_SabrinaPostBattle::
+    .string "SABRINA: Psychic timing and ninja\n"
+    .string "timing did not suffice.$"
+
+Route12_Text_SabrinaNotEnoughMons::
+    .string "SABRINA: A paired match requires\n"
+    .string "at least two POKéMON.$"
 Route12_Text_JesIntro::
     .string "JES: If I win, I'm going to\n"
     .string "propose to GIA.$"
@@ -142,3 +175,48 @@ Route12_Text_GiaNotEnoughMons::
     .string "GIA: I can't bear to battle\n"
     .string "without my JES!\p"
     .string "Don't you have one more POKéMON?$"
+
+Route12_Text_BridgeLeadersIntro::
+    .string "KOGA & SABRINA: The cliff pass remains\n"
+    .string "sealed unless you defeat us!$"
+
+Route12_Text_BridgeLeadersDefeat::
+    .string "KOGA & SABRINA: Impressive.\n"
+    .string "The shortcut is yours.$"
+
+Route12_Text_BridgeLeadersNotEnoughMons::
+    .string "KOGA & SABRINA: A double battle requires\n"
+    .string "at least two POKéMON.$"
+
+Route12_Text_BridgeLeadersStandDown::
+    .string "KOGA & SABRINA: You've already cleared\n"
+    .string "this checkpoint. Move along.$"
+
+Route12_Text_BridgeLeadersHoldLine::
+    .string "KOGA & SABRINA: Hold. Earn both badges\n"
+    .string "before testing this checkpoint.$"
+
+Route12_Text_SabrinaPsychicDisturbanceIntro::
+    .string "SABRINA: Do you feel it? A psychic\n"
+    .string "disturbance is pulsing through here…$"
+
+Route12_Text_KogaCorruptionWarning::
+    .string "KOGA: Hah! Marsh mist is tainted by\n"
+    .string "corruption. Stay alert, intruder.$"
+
+Route12_Text_BridgeLeadersPreBattleChallenge::
+    .string "KOGA & SABRINA: Show us your resolve\n"
+    .string "in a synchronized double battle!$"
+
+
+Route12_Text_BridgeLeadersShortcutUnlock::
+    .string "A heavy rumble echoes from the cliff…\n"
+    .string "Something shifted near the shortcut!$"
+
+Route12_Text_BridgeLeadersHiddenPathReveal::
+    .string "KOGA: The lock gives way. A hidden\n"
+    .string "path now opens through the cliff.$"
+
+Route12_Text_SabrinaSpiritualResonanceFollowUp::
+    .string "SABRINA: Your spirit resonates with\n"
+    .string "this place. The passage answers you.$"

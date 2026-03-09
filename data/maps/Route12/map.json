@@ -187,7 +187,7 @@
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_BEAUTY",
+      "graphics_id": "OBJ_EVENT_GFX_SABRINA",
       "x": 19,
       "y": 64,
       "elevation": 3,
@@ -196,12 +196,12 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "Route12_EventScript_Gia",
+      "script": "Route12_EventScript_Sabrina",
       "flag": "0"
     },
     {
       "type": "object",
-      "graphics_id": "OBJ_EVENT_GFX_MAN",
+      "graphics_id": "OBJ_EVENT_GFX_KOGA",
       "x": 19,
       "y": 63,
       "elevation": 3,
@@ -210,7 +210,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "Route12_EventScript_Jes",
+      "script": "Route12_EventScript_Koga",
       "flag": "0"
     },
     {
@@ -226,6 +226,76 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "EventScript_CutTree",
       "flag": "FLAG_TEMP_13"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_KOGA",
+      "x": 13,
+      "y": 23,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Route12_EventScript_BridgeLeaders",
+      "flag": "FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_SABRINA",
+      "x": 19,
+      "y": 23,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Route12_EventScript_BridgeLeaders",
+      "flag": "FLAG_ROUTE12_BRIDGE_SHORTCUT_CLEARED"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_CUT_TREE",
+      "x": 16,
+      "y": 22,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Route12_EventScript_BridgeMidpointBlock",
+      "flag": "FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_CUT_TREE",
+      "x": 16,
+      "y": 24,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Route12_EventScript_BridgeMidpointBlock",
+      "flag": "FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS"
+    },
+    {
+      "type": "object",
+      "graphics_id": "OBJ_EVENT_GFX_CUT_TREE",
+      "x": 19,
+      "y": 22,
+      "elevation": 3,
+      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "Route12_EventScript_BridgeMidpointBlock",
+      "flag": "FLAG_DEFEATED_ROUTE12_KOGA_SABRINA"
     }
   ],
   "warp_events": [
@@ -256,9 +326,26 @@
       "elevation": 3,
       "dest_map": "MAP_ROUTE12_NORTH_ENTRANCE_1F",
       "dest_warp_id": "2"
+    },
+    {
+      "x": 19,
+      "y": 22,
+      "elevation": 3,
+      "dest_map": "MAP_ROUTE12_CLIFF_PASS",
+      "dest_warp_id": "0"
     }
   ],
-  "coord_events": [],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 16,
+      "y": 23,
+      "elevation": 3,
+      "var": "VAR_MAP_SCENE_ROUTE12",
+      "var_value": "0",
+      "script": "Route12_EventScript_BridgeMidpointCoordTrigger"
+    }
+  ],
   "bg_events": [
     {
       "type": "sign",
