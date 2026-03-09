@@ -43,7 +43,7 @@ Route15_EventScript_HiddenPassEntrance::
 Route15_EventScript_HiddenPassEntranceTraverse::
 	call Route15_EventScript_SetHiddenPassVisualOpen
 	special DrawWholeMapView
-	warp MAP_ROUTE12_CLIFF_PASS, 78, 3
+	warp MAP_ROUTE12_CLIFF_PASS, 6, 3
 	waitstate
 	end
 
