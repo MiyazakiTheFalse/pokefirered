@@ -190,7 +190,11 @@ Route12_Text_BridgeLeadersNotEnoughMons::
 
 Route12_Text_BridgeLeadersStandDown::
     .string "KOGA & SABRINA: You've already cleared\n"
-    .string "this checkpoint.$"
+    .string "this checkpoint. Move along.$"
+
+Route12_Text_BridgeLeadersHoldLine::
+    .string "KOGA & SABRINA: Hold. Earn both badges\n"
+    .string "before testing this checkpoint.$"
 
 Route12_Text_SabrinaPsychicDisturbanceIntro::
     .string "SABRINA: Do you feel it? A psychic\n"

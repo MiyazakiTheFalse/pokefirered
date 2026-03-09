@@ -105,7 +105,6 @@ Route12_EventScript_TryStartBridgeMidpointEncounter::
 	goto_if_set FLAG_DEFEATED_ROUTE12_KOGA_SABRINA, Route12_EventScript_BridgeMidpointAlreadyCleared
 	call Route12_EventScript_CheckBridgePrerequisites
 	goto_if_eq VAR_RESULT, FALSE, Route12_EventScript_BridgeMidpointPrereqFailed
-	setflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
 	applymovement LOCALID_PLAYER, Route12_Movement_PlayerBridgeMidpointCollisionBlock
 	setobjectxy 16, 16, 20
 	setobjectxy 15, 16, 26
@@ -136,7 +135,7 @@ Route12_EventScript_BridgeMidpointAlreadyCleared::
 	return
 
 Route12_EventScript_BridgeMidpointPrereqFailed::
-	msgbox Route12_Text_BridgeLeadersStandDown, MSGBOX_AUTOCLOSE
+	msgbox Route12_Text_BridgeLeadersHoldLine, MSGBOX_AUTOCLOSE
 	return
 
 Route12_EventScript_CheckBridgePrerequisites::
@@ -194,8 +193,8 @@ Route12_EventScript_PostBattleUnlockShortcut::
 	waitse
 	delay 16
 	call Route12_EventScript_SetHiddenPassVisualOpen
-	special DrawWholeMapView
 	removeobject 19
+	special DrawWholeMapView
 	return
 
 Route12_Movement_KogaApproachBridgeMidpoint:
