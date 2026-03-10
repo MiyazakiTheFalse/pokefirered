@@ -31,6 +31,7 @@
 #include "mystery_gift.h"
 #include "naming_screen.h"
 #include "party_menu.h"
+#include "pokemon.h"
 #include "dynamic_placeholder_text_util.h"
 #include "new_menu_helpers.h"
 #include "constants/songs.h"
@@ -40,6 +41,7 @@
 #include "constants/moves.h"
 #include "constants/menu.h"
 #include "constants/event_objects.h"
+#include "constants/species.h"
 #include "constants/metatile_labels.h"
 #include "corpse_run.h"
 
@@ -50,6 +52,89 @@ static EWRAM_DATA struct ListMenuItem * sListMenuItems = NULL;
 static EWRAM_DATA u16 sListMenuLastScrollPosition = 0;
 static EWRAM_DATA u8 sPCBoxToSendMon = 0;
 static EWRAM_DATA u8 sBrailleTextCursorSpriteID = 0;
+
+struct GiovanniMemoryModeFlagSnapshot
+{
+    bool8 hideMiscKantoRockets;
+    bool8 defeatedLeaderGiovanni;
+    bool8 gotTm26FromGiovanni;
+    bool8 hideViridianGiovanni;
+    bool8 hideHideoutGiovanni;
+    bool8 hideCeruleanRocket;
+    bool8 hideSaffronRockets;
+};
+
+struct GiovanniMemoryModeSnapshot
+{
+    bool8 valid;
+    u8 playerPartyCount;
+    struct Pokemon playerParty[PARTY_SIZE];
+    u32 money;
+    u16 coins;
+    struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
+    struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
+    struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
+    struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
+    struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
+    struct WarpData location;
+    struct WarpData continueGameWarp;
+    struct WarpData dynamicWarp;
+    struct WarpData lastHealLocation;
+    struct WarpData escapeWarp;
+    struct Coords16 pos;
+    struct GiovanniMemoryModeFlagSnapshot flags;
+};
+
+static EWRAM_DATA struct GiovanniMemoryModeSnapshot sGiovanniMemoryModeSnapshot = {0};
+
+static void SnapshotGiovanniRocketProgressFlags(struct GiovanniMemoryModeFlagSnapshot *flags)
+{
+    flags->hideMiscKantoRockets = FlagGet(FLAG_HIDE_MISC_KANTO_ROCKETS);
+    flags->defeatedLeaderGiovanni = FlagGet(FLAG_DEFEATED_LEADER_GIOVANNI);
+    flags->gotTm26FromGiovanni = FlagGet(FLAG_GOT_TM26_FROM_GIOVANNI);
+    flags->hideViridianGiovanni = FlagGet(FLAG_HIDE_VIRIDIAN_GIOVANNI);
+    flags->hideHideoutGiovanni = FlagGet(FLAG_HIDE_HIDEOUT_GIOVANNI);
+    flags->hideCeruleanRocket = FlagGet(FLAG_HIDE_CERULEAN_ROCKET);
+    flags->hideSaffronRockets = FlagGet(FLAG_HIDE_SAFFRON_ROCKETS);
+}
+
+static void RestoreGiovanniRocketProgressFlags(const struct GiovanniMemoryModeFlagSnapshot *flags)
+{
+    if (flags->hideMiscKantoRockets)
+        FlagSet(FLAG_HIDE_MISC_KANTO_ROCKETS);
+    else
+        FlagClear(FLAG_HIDE_MISC_KANTO_ROCKETS);
+
+    if (flags->defeatedLeaderGiovanni)
+        FlagSet(FLAG_DEFEATED_LEADER_GIOVANNI);
+    else
+        FlagClear(FLAG_DEFEATED_LEADER_GIOVANNI);
+
+    if (flags->gotTm26FromGiovanni)
+        FlagSet(FLAG_GOT_TM26_FROM_GIOVANNI);
+    else
+        FlagClear(FLAG_GOT_TM26_FROM_GIOVANNI);
+
+    if (flags->hideViridianGiovanni)
+        FlagSet(FLAG_HIDE_VIRIDIAN_GIOVANNI);
+    else
+        FlagClear(FLAG_HIDE_VIRIDIAN_GIOVANNI);
+
+    if (flags->hideHideoutGiovanni)
+        FlagSet(FLAG_HIDE_HIDEOUT_GIOVANNI);
+    else
+        FlagClear(FLAG_HIDE_HIDEOUT_GIOVANNI);
+
+    if (flags->hideCeruleanRocket)
+        FlagSet(FLAG_HIDE_CERULEAN_ROCKET);
+    else
+        FlagClear(FLAG_HIDE_CERULEAN_ROCKET);
+
+    if (flags->hideSaffronRockets)
+        FlagSet(FLAG_HIDE_SAFFRON_ROCKETS);
+    else
+        FlagClear(FLAG_HIDE_SAFFRON_ROCKETS);
+}
 
 COMMON_DATA struct ListMenuTemplate sFieldSpecialsListMenuTemplate = {0};
 COMMON_DATA u16 sFieldSpecialsListMenuScrollBuffer = 0;
@@ -2591,4 +2676,111 @@ static void Task_WingFlapSound(u8 taskId)
     }
     if (data[0] == gSpecialVar_0x8004 - 1)
         DestroyTask(taskId);
+}
+
+
+u16 StartGiovanniMemoryMode(void)
+{
+    u8 i;
+
+    if (FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
+        return FALSE;
+
+    sGiovanniMemoryModeSnapshot.valid = TRUE;
+    sGiovanniMemoryModeSnapshot.playerPartyCount = gPlayerPartyCount;
+    memcpy(sGiovanniMemoryModeSnapshot.playerParty, gPlayerParty, sizeof(gPlayerParty));
+    sGiovanniMemoryModeSnapshot.money = gSaveBlock1Ptr->money;
+    sGiovanniMemoryModeSnapshot.coins = gSaveBlock1Ptr->coins;
+    memcpy(sGiovanniMemoryModeSnapshot.bagPocket_Items, gSaveBlock1Ptr->bagPocket_Items, sizeof(gSaveBlock1Ptr->bagPocket_Items));
+    memcpy(sGiovanniMemoryModeSnapshot.bagPocket_KeyItems, gSaveBlock1Ptr->bagPocket_KeyItems, sizeof(gSaveBlock1Ptr->bagPocket_KeyItems));
+    memcpy(sGiovanniMemoryModeSnapshot.bagPocket_PokeBalls, gSaveBlock1Ptr->bagPocket_PokeBalls, sizeof(gSaveBlock1Ptr->bagPocket_PokeBalls));
+    memcpy(sGiovanniMemoryModeSnapshot.bagPocket_TMHM, gSaveBlock1Ptr->bagPocket_TMHM, sizeof(gSaveBlock1Ptr->bagPocket_TMHM));
+    memcpy(sGiovanniMemoryModeSnapshot.bagPocket_Berries, gSaveBlock1Ptr->bagPocket_Berries, sizeof(gSaveBlock1Ptr->bagPocket_Berries));
+    sGiovanniMemoryModeSnapshot.location = gSaveBlock1Ptr->location;
+    sGiovanniMemoryModeSnapshot.continueGameWarp = gSaveBlock1Ptr->continueGameWarp;
+    sGiovanniMemoryModeSnapshot.dynamicWarp = gSaveBlock1Ptr->dynamicWarp;
+    sGiovanniMemoryModeSnapshot.lastHealLocation = gSaveBlock1Ptr->lastHealLocation;
+    sGiovanniMemoryModeSnapshot.escapeWarp = gSaveBlock1Ptr->escapeWarp;
+    sGiovanniMemoryModeSnapshot.pos = gSaveBlock1Ptr->pos;
+    SnapshotGiovanniRocketProgressFlags(&sGiovanniMemoryModeSnapshot.flags);
+
+    FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE);
+    FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED);
+    FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER1_STARTED);
+    FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
+    FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
+
+    gPlayerPartyCount = 1;
+    ZeroPlayerPartyMons();
+    CreateMon(&gPlayerParty[0], SPECIES_NIDOKING, 50, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
+
+    gSaveBlock1Ptr->money = 0;
+    gSaveBlock1Ptr->coins = 0;
+    memset(gSaveBlock1Ptr->bagPocket_Items, 0, sizeof(gSaveBlock1Ptr->bagPocket_Items));
+    memset(gSaveBlock1Ptr->bagPocket_KeyItems, 0, sizeof(gSaveBlock1Ptr->bagPocket_KeyItems));
+    memset(gSaveBlock1Ptr->bagPocket_PokeBalls, 0, sizeof(gSaveBlock1Ptr->bagPocket_PokeBalls));
+    memset(gSaveBlock1Ptr->bagPocket_TMHM, 0, sizeof(gSaveBlock1Ptr->bagPocket_TMHM));
+    memset(gSaveBlock1Ptr->bagPocket_Berries, 0, sizeof(gSaveBlock1Ptr->bagPocket_Berries));
+
+    for (i = 0; i < PARTY_SIZE; i++)
+        CalculateMonStats(&gPlayerParty[i]);
+
+    return TRUE;
+}
+
+u16 SetGiovanniMemoryModeChapter3Complete(void)
+{
+    FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
+    FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
+    return TRUE;
+}
+
+u16 AbortGiovanniMemoryMode(void)
+{
+    FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
+    return TRUE;
+}
+
+u16 RestoreGiovanniMemoryModeSnapshot(void)
+{
+    if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
+        return FALSE;
+
+    if (FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED))
+        return TRUE;
+
+    if (!sGiovanniMemoryModeSnapshot.valid)
+        return FALSE;
+
+    gPlayerPartyCount = sGiovanniMemoryModeSnapshot.playerPartyCount;
+    memcpy(gPlayerParty, sGiovanniMemoryModeSnapshot.playerParty, sizeof(gPlayerParty));
+    gSaveBlock1Ptr->money = sGiovanniMemoryModeSnapshot.money;
+    gSaveBlock1Ptr->coins = sGiovanniMemoryModeSnapshot.coins;
+    memcpy(gSaveBlock1Ptr->bagPocket_Items, sGiovanniMemoryModeSnapshot.bagPocket_Items, sizeof(gSaveBlock1Ptr->bagPocket_Items));
+    memcpy(gSaveBlock1Ptr->bagPocket_KeyItems, sGiovanniMemoryModeSnapshot.bagPocket_KeyItems, sizeof(gSaveBlock1Ptr->bagPocket_KeyItems));
+    memcpy(gSaveBlock1Ptr->bagPocket_PokeBalls, sGiovanniMemoryModeSnapshot.bagPocket_PokeBalls, sizeof(gSaveBlock1Ptr->bagPocket_PokeBalls));
+    memcpy(gSaveBlock1Ptr->bagPocket_TMHM, sGiovanniMemoryModeSnapshot.bagPocket_TMHM, sizeof(gSaveBlock1Ptr->bagPocket_TMHM));
+    memcpy(gSaveBlock1Ptr->bagPocket_Berries, sGiovanniMemoryModeSnapshot.bagPocket_Berries, sizeof(gSaveBlock1Ptr->bagPocket_Berries));
+    gSaveBlock1Ptr->location = sGiovanniMemoryModeSnapshot.location;
+    gSaveBlock1Ptr->continueGameWarp = sGiovanniMemoryModeSnapshot.continueGameWarp;
+    gSaveBlock1Ptr->dynamicWarp = sGiovanniMemoryModeSnapshot.dynamicWarp;
+    gSaveBlock1Ptr->lastHealLocation = sGiovanniMemoryModeSnapshot.lastHealLocation;
+    gSaveBlock1Ptr->escapeWarp = sGiovanniMemoryModeSnapshot.escapeWarp;
+    gSaveBlock1Ptr->pos = sGiovanniMemoryModeSnapshot.pos;
+    RestoreGiovanniRocketProgressFlags(&sGiovanniMemoryModeSnapshot.flags);
+
+    FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED);
+    FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE);
+    sGiovanniMemoryModeSnapshot.valid = FALSE;
+    return TRUE;
+}
+
+u16 IsGiovanniMemoryModeReadyForBattle(void)
+{
+    if (FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE)
+     && FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED)
+     && !FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
+        return TRUE;
+
+    return FALSE;
 }

@@ -459,4 +459,9 @@ gSpecials::
 	def_special UpdateLoreleiDollCollection
 	def_special LoopWingFlapSound
 	def_special CreateEnemyEventMon
+	def_special StartGiovanniMemoryMode
+	def_special SetGiovanniMemoryModeChapter3Complete
+	def_special AbortGiovanniMemoryMode
+	def_special RestoreGiovanniMemoryModeSnapshot
+	def_special IsGiovanniMemoryModeReadyForBattle
 gSpecialsEnd::

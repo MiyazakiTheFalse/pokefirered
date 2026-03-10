@@ -1,11 +1,27 @@
 ViridianCity_Gym_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, ViridianCity_Gym_OnTransition
 	.byte 0
+
+ViridianCity_Gym_OnTransition::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, ViridianCity_Gym_EventScript_RestoreGiovanniMemoryModeOnTransition
+	end
+
+ViridianCity_Gym_EventScript_RestoreGiovanniMemoryModeOnTransition::
+	special RestoreGiovanniMemoryModeSnapshot
+	end
 
 ViridianCity_Gym_EventScript_Giovanni::
 	famechecker FAMECHECKER_GIOVANNI, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	setvar VAR_0x8004, 4
 	specialvar VAR_RESULT, GetCorpseRunFieldBlockReason
 	goto_if_ne VAR_RESULT, 0, EventScript_CorpseRun_GymBattleBlocked
+	specialvar VAR_RESULT, StartGiovanniMemoryMode
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode
+	special SetGiovanniMemoryModeChapter3Complete
+	specialvar VAR_RESULT, RestoreGiovanniMemoryModeSnapshot
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode
+	specialvar VAR_RESULT, IsGiovanniMemoryModeReadyForBattle
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode
 	trainerbattle_single TRAINER_LEADER_GIOVANNI, ViridianCity_Gym_Text_GiovanniIntro, ViridianCity_Gym_Text_GiovanniDefeat, ViridianCity_Gym_EventScript_DefeatedGiovanni, NO_MUSIC
 	goto_if_unset FLAG_GOT_TM26_FROM_GIOVANNI, ViridianCity_Gym_EventScript_GiveTM26
 	msgbox ViridianCity_Gym_Text_GiovanniPostBattle
@@ -13,6 +29,12 @@ ViridianCity_Gym_EventScript_Giovanni::
 	fadescreen FADE_TO_BLACK
 	removeobject LOCALID_VIRIDIAN_GIOVANNI
 	fadescreen FADE_FROM_BLACK
+	release
+	end
+
+ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode::
+	special AbortGiovanniMemoryMode
+	special RestoreGiovanniMemoryModeSnapshot
 	release
 	end
 

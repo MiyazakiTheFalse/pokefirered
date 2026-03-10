@@ -1528,6 +1528,13 @@
 #define FLAG_0x8FE                                                  (SYS_FLAGS + 0xFE)
 #define FLAG_0x8FF                                                  (SYS_FLAGS + 0xFF)
 
+// Viridian Gym Giovanni memory mode runtime flags.
+#define FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE                        FLAG_0x8F8
+#define FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED                      FLAG_0x8F9
+#define FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER1_STARTED              FLAG_0x8FA
+#define FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE             FLAG_0x8FB
+#define FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED                       FLAG_0x8FC
+
 #define FLAGS_COUNT (FLAG_0x8FF + 1)
 
 // Special Flags (Stored in EWRAM (sSpecialFlags, not in the SaveBlock)

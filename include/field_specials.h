@@ -39,5 +39,10 @@ void QuestLog_CheckDepartingIndoorsMap(void);
 void QuestLog_TryRecordDepartedLocation(void);
 u8 GetCorpseRunFieldBlockReason(void);
 u16 GetCorpseRunFieldBlockTextId(void);
+u16 StartGiovanniMemoryMode(void);
+u16 SetGiovanniMemoryModeChapter3Complete(void);
+u16 AbortGiovanniMemoryMode(void);
+u16 RestoreGiovanniMemoryModeSnapshot(void);
+u16 IsGiovanniMemoryModeReadyForBattle(void);
 
 #endif // GUARD_FIELD_SPECIALS_H
