@@ -41,6 +41,7 @@
 #include "constants/moves.h"
 #include "constants/menu.h"
 #include "constants/event_objects.h"
+#include "constants/vars.h"
 #include "constants/species.h"
 #include "constants/metatile_labels.h"
 #include "corpse_run.h"
@@ -92,6 +93,17 @@ struct GiovanniMemoryModeSnapshot
 };
 
 static EWRAM_DATA struct GiovanniMemoryModeSnapshot sGiovanniMemoryModeSnapshot = {0};
+
+static u8 GetGiovanniMemoryModeChapterId(void)
+{
+    if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
+        return 0;
+    if (!FlagGet(FLAG_GIO_MEM_CH1_COMPLETE))
+        return 1;
+    if (!FlagGet(FLAG_GIO_MEM_CH2_COMPLETE))
+        return 2;
+    return 3;
+}
 
 static void SnapshotGiovanniRocketProgressFlags(struct GiovanniMemoryModeFlagSnapshot *flags)
 {
@@ -2780,6 +2792,8 @@ u16 StartGiovanniMemoryMode(void)
     SnapshotGiovanniRocketProgressFlags(&sGiovanniMemoryModeSnapshot.flags);
 
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE);
+    VarSet(VAR_MODE_GIOVANNI_MEMORY, TRUE);
+    VarSet(VAR_CHAPTER_ID, 1);
     FlagSet(FLAG_GIO_MEM_SEQUENCE_VIEWED);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED);
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER1_STARTED);
@@ -2822,6 +2836,7 @@ u16 SetGiovanniMemoryModeChapter3Complete(void)
     FlagSet(FLAG_GIO_MEM_CH3_STARTED);
     FlagSet(FLAG_GIO_MEM_CH3_COMPLETE);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
+    VarSet(VAR_CHAPTER_ID, 3);
     return TRUE;
 }
 
@@ -2829,6 +2844,8 @@ u16 AbortGiovanniMemoryMode(void)
 {
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK);
+    VarSet(VAR_MODE_GIOVANNI_MEMORY, FALSE);
+    VarSet(VAR_CHAPTER_ID, 0);
     return TRUE;
 }
 
@@ -2836,6 +2853,9 @@ u16 RestoreGiovanniMemoryModeSnapshot(void)
 {
     if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
         return FALSE;
+
+    VarSet(VAR_MODE_GIOVANNI_MEMORY, TRUE);
+    VarSet(VAR_CHAPTER_ID, GetGiovanniMemoryModeChapterId());
 
     if (FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED))
         return TRUE;
@@ -2884,6 +2904,9 @@ bool8 HandleGiovanniMemoryModeWhiteout(void)
     if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
         return FALSE;
 
+    VarSet(VAR_MODE_GIOVANNI_MEMORY, TRUE);
+    VarSet(VAR_CHAPTER_ID, GetGiovanniMemoryModeChapterId());
+
     if (!FlagGet(FLAG_GIO_MEM_CH1_COMPLETE))
     {
         SetWarpDestination(MAP_GROUP(MAP_ROCKET_HIDEOUT_B4F), MAP_NUM(MAP_ROCKET_HIDEOUT_B4F), WARP_ID_NONE, 19, 6);
@@ -2913,6 +2936,9 @@ bool8 HandleGiovanniMemoryModeBootstrapOnLoad(void)
 {
     if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
         return FALSE;
+
+    VarSet(VAR_MODE_GIOVANNI_MEMORY, TRUE);
+    VarSet(VAR_CHAPTER_ID, GetGiovanniMemoryModeChapterId());
 
     if (!FlagGet(FLAG_GIO_MEM_CH1_COMPLETE))
     {
@@ -2978,6 +3004,8 @@ u16 ReconcileGiovanniMemoryModeOutcome(void)
     FlagClear(FLAG_GIO_MEM_HIDE_CELADON_ROCKETS);
     FlagClear(FLAG_GIO_MEM_HIDE_SAFFRON_ROCKETS);
     FlagClear(FLAG_GIO_MEM_HIDE_SAFFRON_CIVILIANS);
+    VarSet(VAR_MODE_GIOVANNI_MEMORY, FALSE);
+    VarSet(VAR_CHAPTER_ID, 0);
 
     return TRUE;
 }
