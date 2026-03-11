@@ -289,6 +289,14 @@ void CorpseRunInitialization(void)
 
 static void DoWhiteOut(void)
 {
+    if (HandleGiovanniMemoryModeWhiteout())
+    {
+        HealPlayerParty();
+        Overworld_ResetStateAfterWhitingOut();
+        WarpIntoMap();
+        return;
+    }
+
     CorpseRunInitialization();
 }
 
@@ -1838,6 +1846,7 @@ void CB2_ContinueSavedGame(void)
     LoadSaveblockObjEventScripts();
     UnfreezeObjectEvents();
     Overworld_ResetStateOnContinue();
+    HandleGiovanniMemoryModeBootstrapOnLoad();
     InitMapFromSavedGame();
     PlayTimeCounter_Start();
     ScriptContext_Init();
@@ -2477,6 +2486,7 @@ void CB2_EnterFieldFromQuestLog(void)
     LoadSaveblockObjEventScripts();
     UnfreezeObjectEvents();
     Overworld_ResetStateOnContinue();
+    HandleGiovanniMemoryModeBootstrapOnLoad();
     InitMapFromSavedGame();
     PlayTimeCounter_Start();
     ScriptContext_Init();

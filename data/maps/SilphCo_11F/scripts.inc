@@ -4,7 +4,6 @@ SilphCo_11F_MapScripts::
 	.byte 0
 
 SilphCo_11F_OnTransition::
-	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, SilphCo_11F_EventScript_MemorySpaceMarker
 	end
 
 SilphCo_11F_EventScript_MemorySpaceMarker::

@@ -20,6 +20,7 @@
 #include "text_window.h"
 #include "field_fadetransition.h"
 #include "field_player_avatar.h"
+#include "field_message_box.h"
 #include "new_menu_helpers.h"
 #include "event_object_movement.h"
 #include "event_object_lock.h"
@@ -566,6 +567,15 @@ static bool8 StartMenuLinkPlayerCallback(void)
 
 static bool8 StartCB_Save1(void)
 {
+    if (FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
+    {
+        StringExpandPlaceholders(gStringVar4, gText_GiovanniMemorySaveBlocked);
+        ShowFieldMessage(gStringVar4);
+        DrawStartMenuInOneGo();
+        sStartMenuCallback = StartCB_HandleInput;
+        return FALSE;
+    }
+
     BackupHelpContext();
     SetHelpContext(HELPCONTEXT_SAVE);
     StartMenu_PrepareForSave();

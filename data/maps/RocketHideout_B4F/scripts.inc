@@ -6,7 +6,6 @@ RocketHideout_B4F_MapScripts::
 	.byte 0
 
 RocketHideout_B4F_OnTransition::
-	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, RocketHideout_B4F_EventScript_MemorySpaceMarker
 	end
 
 RocketHideout_B4F_EventScript_MemorySpaceMarker::
