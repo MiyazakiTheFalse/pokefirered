@@ -14,6 +14,30 @@ CeladonCity_GameCorner_EventScript_MemoryOverlayOnLoad::
 	setflag FLAG_OPENED_ROCKET_HIDEOUT
 	return
 
+CeladonCity_GameCorner_EventScript_MemoryDesyncReturnToHub::
+	warp MAP_ROCKET_HIDEOUT_B4F, 19, 6
+	waitstate
+	end
+
+CeladonCity_GameCorner_EventScript_MemoryExitGuard::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, CeladonCity_GameCorner_EventScript_MemoryDesyncReturnToHub
+	goto_if_ne VAR_CHAPTER_ID, 1, CeladonCity_GameCorner_EventScript_MemoryDesyncReturnToHub
+	lockall
+	msgbox CeladonCity_GameCorner_Text_MemoryExitBlocked
+	warp MAP_ROCKET_HIDEOUT_B4F, 19, 6
+	waitstate
+	releaseall
+	end
+
+CeladonCity_GameCorner_EventScript_MemoryExitGuard_Mismatch::
+	lockall
+	msgbox CeladonCity_GameCorner_Text_MemoryChapterMismatch
+	warp MAP_ROCKET_HIDEOUT_B4F, 19, 6
+	waitstate
+	releaseall
+	end
+
 CeladonCity_GameCorner_EventScript_HideRocketHideout::
 	setmetatile 15, 2, METATILE_GameCorner_Floor_ShadeFull, 0
 	setmetatile 16, 2, METATILE_GameCorner_Floor_ShadeFull, 0
