@@ -2,7 +2,16 @@
 
 RocketHideout_B4F_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, RocketHideout_B4F_OnLoad
+	map_script MAP_SCRIPT_ON_TRANSITION, RocketHideout_B4F_OnTransition
 	.byte 0
+
+RocketHideout_B4F_OnTransition::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, RocketHideout_B4F_EventScript_MemorySpaceMarker
+	end
+
+RocketHideout_B4F_EventScript_MemorySpaceMarker::
+	msgbox RocketHideout_B4F_Text_MemorySpaceMarker, MSGBOX_AUTOCLOSE
+	end
 
 RocketHideout_B4F_OnLoad::
 	setvar NUM_DOOR_GRUNTS_DEFEATED, 0
@@ -41,6 +50,7 @@ RocketHideout_B4F_EventScript_SetMemoryCeladonOutcome::
 	setflag FLAG_GIO_MEM_CH1_COMPLETE
 	setflag FLAG_GIO_MEM_CH2_STARTED
 	setflag FLAG_GIO_MEM_HIDE_CELADON_ROCKETS
+	setdynamicwarp MAP_SILPH_CO_11F, 5, 14
 	return
 
 RocketHideout_B4F_EventScript_SilphScope::
@@ -126,3 +136,12 @@ RocketHideout_B4F_EventScript_RemoveBarrier::
 	setmetatile 17, 14, METATILE_SilphCo_HideoutFloor_ShadeFull, 0
 	setmetatile 18, 14, METATILE_SilphCo_HideoutFloor, 0
 	return
+
+RocketHideout_B4F_EventScript_MemoryExitGuard::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	lockall
+	msgbox RocketHideout_B4F_Text_MemoryExitBlocked
+	warp MAP_ROCKET_HIDEOUT_B4F, 19, 6
+	waitstate
+	releaseall
+	end

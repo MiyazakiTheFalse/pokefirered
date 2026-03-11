@@ -164,3 +164,12 @@ ViridianCity_Gym_Text_GymStatuePlayerWon::
     .string "LEADER: GIOVANNI\p"
     .string "WINNING TRAINERS:\n"
     .string "{RIVAL}, {PLAYER}$"
+
+
+ViridianCity_Gym_Text_MemorySpaceMarker::
+    .string "[MEMORY] Viridian Gym shimmers with\n"
+    .string "GIOVANNI's recollection.$"
+
+ViridianCity_Gym_Text_MemoryExitBlocked::
+    .string "[MEMORY] The gym doors open to nothing.\n"
+    .string "Finish this memory first.$"

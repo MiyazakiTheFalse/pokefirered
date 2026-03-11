@@ -88,3 +88,12 @@ SilphCo_11F_Text_FloorSign::
     .string "SILPH CO. HEAD OFFICE\n"
     .string "11F$"
 
+
+
+SilphCo_11F_Text_MemorySpaceMarker::
+    .string "[MEMORY] Silph aftermath projection\n"
+    .string "loaded. Resolve the final confrontation.$"
+
+SilphCo_11F_Text_MemoryExitBlocked::
+    .string "[MEMORY] The projection destabilizes\n"
+    .string "outside mission bounds.$"
