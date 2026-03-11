@@ -29,9 +29,17 @@ RocketHideout_B4F_EventScript_MemorySpaceMarker::
 RocketHideout_B4F_EventScript_MemoryMedicTerminal::
 	lockall
 	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, RocketHideout_B4F_EventScript_MemoryMedicTerminalOffline
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, RocketHideout_B4F_EventScript_MemoryMedicTerminalOffline
+	goto_if_ne VAR_CHAPTER_ID, 1, RocketHideout_B4F_EventScript_MemoryMedicTerminalMismatch
+	goto_if_set FLAG_GIO_MEM_CH1_COMPLETE, RocketHideout_B4F_EventScript_MemoryMedicTerminalMismatch
 	msgbox RocketHideout_B4F_Text_MemoryMedicTerminalIntro
 	special HealPlayerParty
 	msgbox RocketHideout_B4F_Text_MemoryMedicTerminalDone
+	releaseall
+	end
+
+RocketHideout_B4F_EventScript_MemoryMedicTerminalMismatch::
+	msgbox RocketHideout_B4F_Text_MemoryMedicTerminalMismatch
 	releaseall
 	end
 

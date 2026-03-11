@@ -187,6 +187,10 @@ ViridianCity_Gym_Text_MemoryMedicKitDone::
     .string "[MEMORY] Recovery complete. Standard\n"
     .string "CENTERS remain inaccessible in this echo.$"
 
+ViridianCity_Gym_Text_MemoryMedicKitMismatch::
+    .string "[MEMORY] This cache unlocks only for the\n"
+    .string "active Giovanni chapter path.$"
+
 ViridianCity_Gym_Text_MemoryMedicKitOffline::
     .string "The cache is sealed. It only unlocks in\n"
     .string "GIOVANNI's memory reconstruction.$"

@@ -503,7 +503,11 @@ void ShowFieldMessageStringVar4(void)
 
 u8 GetCorpseRunFieldBlockReason(void)
 {
-    if (!CorpseRun_IsActive())
+    bool8 corpseRunBlocked = CorpseRun_IsActive();
+    bool8 giovanniMemoryFacilityBlocked = FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE)
+        && VarGet(VAR_MODE_GIOVANNI_MEMORY) == TRUE;
+
+    if (!corpseRunBlocked && !giovanniMemoryFacilityBlocked)
         return CORPSE_RUN_FIELD_BLOCK_NONE;
 
     switch (gSpecialVar_0x8004)
@@ -511,9 +515,10 @@ u8 GetCorpseRunFieldBlockReason(void)
     case CORPSE_RUN_FIELD_BLOCK_MART:
     case CORPSE_RUN_FIELD_BLOCK_HEAL:
     case CORPSE_RUN_FIELD_BLOCK_PC:
+        return gSpecialVar_0x8004;
     case CORPSE_RUN_FIELD_BLOCK_GYM_BATTLE:
     case CORPSE_RUN_FIELD_BLOCK_DAYCARE_TUTOR:
-        return gSpecialVar_0x8004;
+        return corpseRunBlocked ? gSpecialVar_0x8004 : CORPSE_RUN_FIELD_BLOCK_NONE;
     default:
         return CORPSE_RUN_FIELD_BLOCK_NONE;
     }

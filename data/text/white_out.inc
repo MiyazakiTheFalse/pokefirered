@@ -63,22 +63,25 @@ Text_WhitedOutCorpseRunRepeat::
 	.string "{PLAYER} whited out!$"
 
 Text_CorpseRun_BlockMart::
-		.string "You can't shop while your SOULS are\n"
-		.string "scattered. Retrieve them first.\p"
-		.string "In GIOVANNI memory chapters, use ROCKET\n"
-		.string "recovery points instead of MARTS.$"
+		.string "Civilian MART terminals are unavailable\n"
+		.string "right now.\p"
+		.string "If your SOULS are scattered, recover them.\n"
+		.string "In GIOVANNI memory chapters, use ROCKET\l"
+		.string "chapter resupply points instead.$"
 
 
 Text_CorpseRun_BlockHeal::
-		.string "The healing machine won't respond\n"
-		.string "until you reclaim your SOULS.\p"
-		.string "In GIOVANNI memory chapters, standard\n"
-		.string "CENTERS are locked out by the projection.$"
+		.string "Civilian healing facilities are blocked\n"
+		.string "for this state.\p"
+		.string "Recover your SOULS if needed. During\n"
+		.string "GIOVANNI memory chapters, use ROCKET\l"
+		.string "chapter recovery points.$"
 
 
 Text_CorpseRun_BlockPC::
-	.string "The PC connection is unstable while\n"
-	.string "your SOULS are scattered.$"
+	.string "Civilian PC access is sealed for now.\p"
+	.string "If your SOULS are scattered, recover them\n"
+	.string "first. Memory chapters use ROCKET links.$"
 
 Text_CorpseRun_BlockGymBattle::
 	.string "A GYM battle cannot begin while\n"

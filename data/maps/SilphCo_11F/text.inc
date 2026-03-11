@@ -111,6 +111,10 @@ SilphCo_11F_Text_MemoryFieldAideDone::
     .string "[MEMORY] Team condition restored. Use this\n"
     .string "point before confronting GIOVANNI.$"
 
+SilphCo_11F_Text_MemoryFieldAideMismatch::
+    .string "[MEMORY] Resupply is restricted to the\n"
+    .string "active chapter objective.$"
+
 SilphCo_11F_Text_MemoryFieldAideOffline::
     .string "This aide is a projection. It only\n"
     .string "exists during GIOVANNI memory chapters.$"

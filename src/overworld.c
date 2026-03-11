@@ -1681,6 +1681,8 @@ void CB2_WhiteOut(void)
 
     if (++gMain.state >= 120)
     {
+        bool8 giovanniMemoryWhiteout = FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE);
+
         FieldClearVBlankHBlankCallbacks();
         StopMapMusic();
         ResetSafariZoneFlag_();
@@ -1688,7 +1690,7 @@ void CB2_WhiteOut(void)
         SetInitialPlayerAvatarStateWithDirection(DIR_NORTH);
         ScriptContext_Init();
         UnlockPlayerFieldControls();
-        gFieldCallback = IsCorpseRunFeatureEnabled()
+        gFieldCallback = (IsCorpseRunFeatureEnabled() || giovanniMemoryWhiteout)
             ? FieldCB_WarpExitFadeFromBlack
             : FieldCB_RushInjuredPokemonToCenter;
         val = 0;

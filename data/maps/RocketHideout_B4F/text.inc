@@ -75,6 +75,10 @@ RocketHideout_B4F_Text_MemoryMedicTerminalDone::
     .string "[MEMORY] Team restored. This terminal is\n"
     .string "the chapter-safe fallback point.$"
 
+RocketHideout_B4F_Text_MemoryMedicTerminalMismatch::
+    .string "[MEMORY] This terminal only stabilizes\n"
+    .string "chapter 1 operations.$"
+
 RocketHideout_B4F_Text_MemoryMedicTerminalOffline::
     .string "The terminal is dead. It only responds\n"
     .string "inside GIOVANNI's memory fragment.$"

@@ -30,9 +30,18 @@ SilphCo_11F_EventScript_MemorySpaceMarker::
 SilphCo_11F_EventScript_MemoryFieldAide::
 	lockall
 	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, SilphCo_11F_EventScript_MemoryFieldAideOffline
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, SilphCo_11F_EventScript_MemoryFieldAideOffline
+	goto_if_ne VAR_CHAPTER_ID, 2, SilphCo_11F_EventScript_MemoryFieldAideMismatch
+	goto_if_unset FLAG_GIO_MEM_CH1_COMPLETE, SilphCo_11F_EventScript_MemoryFieldAideMismatch
+	goto_if_set FLAG_GIO_MEM_CH2_COMPLETE, SilphCo_11F_EventScript_MemoryFieldAideMismatch
 	msgbox SilphCo_11F_Text_MemoryFieldAideIntro
 	special HealPlayerParty
 	msgbox SilphCo_11F_Text_MemoryFieldAideDone
+	releaseall
+	end
+
+SilphCo_11F_EventScript_MemoryFieldAideMismatch::
+	msgbox SilphCo_11F_Text_MemoryFieldAideMismatch
 	releaseall
 	end
 
