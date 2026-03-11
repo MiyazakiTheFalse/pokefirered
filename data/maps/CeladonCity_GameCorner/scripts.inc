@@ -3,8 +3,16 @@ CeladonCity_GameCorner_MapScripts::
 	.byte 0
 
 CeladonCity_GameCorner_OnLoad::
+	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
+	call_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, CeladonCity_GameCorner_EventScript_MemoryOverlayOnLoad
 	call_if_unset FLAG_OPENED_ROCKET_HIDEOUT, CeladonCity_GameCorner_EventScript_HideRocketHideout
 	end
+
+CeladonCity_GameCorner_EventScript_MemoryOverlayOnLoad::
+	clearflag FLAG_HIDE_GAME_CORNER_ROCKET
+	setflag FLAG_OPENED_ROCKET_HIDEOUT
+	return
 
 CeladonCity_GameCorner_EventScript_HideRocketHideout::
 	setmetatile 15, 2, METATILE_GameCorner_Floor_ShadeFull, 0
@@ -392,6 +400,7 @@ CeladonCity_GameCorner_EventScript_SlotMachineNoCoinCase::
 	end
 
 CeladonCity_GameCorner_EventScript_Poster::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
 	lockall
 	msgbox CeladonCity_GameCorner_Text_SwitchBehindPosterPushIt
 	call_if_unset FLAG_OPENED_ROCKET_HIDEOUT, CeladonCity_GameCorner_EventScript_OpenRocketHideout

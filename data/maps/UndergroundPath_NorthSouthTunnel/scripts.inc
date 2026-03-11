@@ -3,5 +3,7 @@ UndergroundPath_NorthSouthTunnel_MapScripts::
 	.byte 0
 
 UndergroundPath_NorthSouthTunnel_OnTransition::
+	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	setworldmapflag FLAG_WORLD_MAP_UNDERGROUND_PATH_NORTH_SOUTH_TUNNEL
 	end

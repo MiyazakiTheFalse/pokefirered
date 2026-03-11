@@ -94,6 +94,98 @@ struct GiovanniMemoryModeSnapshot
 
 static EWRAM_DATA struct GiovanniMemoryModeSnapshot sGiovanniMemoryModeSnapshot = {0};
 
+struct GiovanniMapOverlay
+{
+    u16 map;
+    u8 chapterId;
+    u8 allowedWarpMask;
+    u16 safeReturnMap;
+    u8 safeReturnX;
+    u8 safeReturnY;
+};
+
+static const struct GiovanniMapOverlay sGiovanniMapOverlays[] =
+{
+    {
+        .map = MAP_VIRIDIAN_CITY,
+        .chapterId = 3,
+        .allowedWarpMask = 0xFF,
+        .safeReturnMap = MAP_VIRIDIAN_CITY_GYM,
+        .safeReturnX = 17,
+        .safeReturnY = 21,
+    },
+    {
+        .map = MAP_CELADON_CITY_GAME_CORNER,
+        .chapterId = 1,
+        .allowedWarpMask = 0x0F,
+        .safeReturnMap = MAP_ROCKET_HIDEOUT_B4F,
+        .safeReturnX = 19,
+        .safeReturnY = 6,
+    },
+    {
+        .map = MAP_UNDERGROUND_PATH_NORTH_SOUTH_TUNNEL,
+        .chapterId = 2,
+        .allowedWarpMask = 0x03,
+        .safeReturnMap = MAP_SILPH_CO_11F,
+        .safeReturnX = 6,
+        .safeReturnY = 14,
+    },
+    {
+        .map = MAP_SILPH_CO_11F,
+        .chapterId = 2,
+        .allowedWarpMask = 0x07,
+        .safeReturnMap = MAP_SILPH_CO_11F,
+        .safeReturnX = 6,
+        .safeReturnY = 14,
+    },
+    {
+        .map = MAP_VIRIDIAN_CITY_GYM,
+        .chapterId = 3,
+        .allowedWarpMask = 0x07,
+        .safeReturnMap = MAP_VIRIDIAN_CITY_GYM,
+        .safeReturnX = 17,
+        .safeReturnY = 21,
+    },
+};
+
+static const struct GiovanniMapOverlay *GetGiovanniOverlayForMap(u16 map)
+{
+    u8 i;
+
+    for (i = 0; i < ARRAY_COUNT(sGiovanniMapOverlays); i++)
+    {
+        if (sGiovanniMapOverlays[i].map == map)
+            return &sGiovanniMapOverlays[i];
+    }
+
+    return NULL;
+}
+
+static void WarpPlayerToGiovanniOverlaySafeReturn(const struct GiovanniMapOverlay *overlay)
+{
+    SetWarpDestination(MAP_GROUP(overlay->safeReturnMap), MAP_NUM(overlay->safeReturnMap), WARP_ID_NONE, overlay->safeReturnX, overlay->safeReturnY);
+    WarpIntoMap();
+    SetMainCallback2(CB2_LoadMap);
+}
+
+static void ApplyGiovanniOverlayForCurrentMap(u16 map)
+{
+    if (map == MAP_VIRIDIAN_CITY)
+    {
+        VarSet(VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 2);
+        VarSet(VAR_MAP_SCENE_VIRIDIAN_CITY_GYM_DOOR, 1);
+    }
+    else if (map == MAP_SILPH_CO_11F)
+    {
+        FlagClear(FLAG_HIDE_SILPH_ROCKETS);
+        VarSet(VAR_MAP_SCENE_SILPH_CO_11F, 0);
+    }
+    else if (map == MAP_VIRIDIAN_CITY_GYM)
+    {
+        FlagClear(FLAG_HIDE_VIRIDIAN_GIOVANNI);
+    }
+}
+
 static u8 GetGiovanniMemoryModeChapterId(void)
 {
     if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
@@ -3028,4 +3120,38 @@ u16 ValidateGiovanniMemoryModeRocketFlags(void)
         return TRUE;
 
     return FALSE;
+}
+
+u16 ValidateGiovanniInteractionOverlayForCurrentMap(void)
+{
+    const struct GiovanniMapOverlay *overlay;
+    u16 map = (gSaveBlock1Ptr->location.mapGroup << 8) | gSaveBlock1Ptr->location.mapNum;
+    u8 chapterId = GetGiovanniMemoryModeChapterId();
+
+    overlay = GetGiovanniOverlayForMap(map);
+    if (overlay == NULL)
+        return TRUE;
+
+    if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
+        return TRUE;
+
+    VarSet(VAR_MODE_GIOVANNI_MEMORY, TRUE);
+    VarSet(VAR_CHAPTER_ID, chapterId);
+
+    if (chapterId != overlay->chapterId)
+    {
+        WarpPlayerToGiovanniOverlaySafeReturn(overlay);
+        return FALSE;
+    }
+
+    if (gSaveBlock1Ptr->location.warpId != WARP_ID_NONE
+     && (gSaveBlock1Ptr->location.warpId >= 8
+      || (overlay->allowedWarpMask & (1 << gSaveBlock1Ptr->location.warpId)) == 0))
+    {
+        WarpPlayerToGiovanniOverlaySafeReturn(overlay);
+        return FALSE;
+    }
+
+    ApplyGiovanniOverlayForCurrentMap(map);
+    return TRUE;
 }

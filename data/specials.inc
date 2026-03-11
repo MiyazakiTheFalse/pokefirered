@@ -467,4 +467,5 @@ gSpecials::
 	def_special IsGiovanniMemoryModeReadyForBattle
 	def_special ReconcileGiovanniMemoryModeOutcome
 	def_special ValidateGiovanniMemoryModeRocketFlags
+	def_special ValidateGiovanniInteractionOverlayForCurrentMap
 gSpecialsEnd::

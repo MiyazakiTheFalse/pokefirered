@@ -4,6 +4,8 @@ SilphCo_11F_MapScripts::
 	.byte 0
 
 SilphCo_11F_OnTransition::
+	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, SilphCo_11F_EventScript_SkipMemoryRoutingCheck
 	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, SilphCo_11F_EventScript_MemoryDesyncReturnToHub
 	goto_if_ne VAR_CHAPTER_ID, 2, SilphCo_11F_EventScript_MemoryDesyncReturnToHub
@@ -66,12 +68,14 @@ SilphCo_11F_EventScript_Secretary::
 	end
 
 SilphCo_11F_EventScript_GiovanniTriggerLeft::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
 	lockall
 	setvar VAR_TEMP_1, 0
 	goto SilphCo_11F_EventScript_BattleGiovanni
 	end
 
 SilphCo_11F_EventScript_GiovanniTriggerRight::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
 	lockall
 	setvar VAR_TEMP_1, 1
 	goto SilphCo_11F_EventScript_BattleGiovanni

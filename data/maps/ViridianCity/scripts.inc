@@ -3,6 +3,8 @@ ViridianCity_MapScripts::
 	.byte 0
 
 ViridianCity_OnTransition::
+	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	setworldmapflag FLAG_WORLD_MAP_VIRIDIAN_CITY
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 0, ViridianCity_EventScript_SetOldManBlockingRoad
 	call_if_eq VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 1, ViridianCity_EventScript_SetOldManStandingByRoad
@@ -37,6 +39,7 @@ ViridianCity_EventScript_TryUnlockGym::
 	return
 
 ViridianCity_EventScript_GymDoorLocked::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
 	lockall
 	textcolor NPC_TEXT_COLOR_NEUTRAL
 	applymovement LOCALID_PLAYER, Common_Movement_WalkInPlaceFasterUp
@@ -186,6 +189,7 @@ ViridianCity_EventScript_DreamEaterTutor::
 	end
 
 ViridianCity_EventScript_RoadBlocked::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
 	lockall
 	textcolor NPC_TEXT_COLOR_MALE
 	msgbox ViridianCity_Text_ThisIsPrivateProperty
@@ -200,6 +204,7 @@ ViridianCity_Movement_WalkDown::
 	step_end
 
 ViridianCity_EventScript_TutorialTriggerLeft::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
 	lockall
 	textcolor NPC_TEXT_COLOR_MALE
 	applymovement LOCALID_TUTORIAL_MAN, Common_Movement_WalkInPlaceFasterLeft
@@ -211,6 +216,7 @@ ViridianCity_EventScript_TutorialTriggerLeft::
 	end
 
 ViridianCity_EventScript_TutorialTriggerRight::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
 	lockall
 	textcolor NPC_TEXT_COLOR_MALE
 	applymovement LOCALID_TUTORIAL_MAN, Common_Movement_WalkInPlaceFasterRight
