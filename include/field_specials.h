@@ -49,6 +49,7 @@ u16 ClearGiovanniMemoryModeCaptureLock(void);
 u16 ReconcileGiovanniMemoryModeOutcome(void);
 u16 ValidateGiovanniMemoryModeRocketFlags(void);
 u16 ValidateGiovanniInteractionOverlayForCurrentMap(void);
+u16 SyncGiovanniMemoryModeNpcState(void);
 bool8 HandleGiovanniMemoryModeWhiteout(void);
 bool8 HandleGiovanniMemoryModeBootstrapOnLoad(void);
 

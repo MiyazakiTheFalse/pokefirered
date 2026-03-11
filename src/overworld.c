@@ -1721,6 +1721,7 @@ static void CB2_LoadMap2(void)
         if (!SoulsHud_IsSuppressed())
             SoulsHud_Show();
     }
+    SyncGiovanniMemoryModeNpcState();
     if (QuestLog_ShouldEndSceneOnMapChange() == TRUE)
     {
         QuestLog_AdvancePlayhead_();
@@ -1770,6 +1771,7 @@ static void CB2_ReturnToFieldLocal(void)
     {
         if (IsCorpseRunFeatureEnabled() && !SoulsHud_IsSuppressed())
             SoulsHud_Show();
+        SyncGiovanniMemoryModeNpcState();
         SetFieldVBlankCallback();
         SetMainCallback2(CB2_Overworld);
     }

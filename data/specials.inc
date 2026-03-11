@@ -468,4 +468,5 @@ gSpecials::
 	def_special ReconcileGiovanniMemoryModeOutcome
 	def_special ValidateGiovanniMemoryModeRocketFlags
 	def_special ValidateGiovanniInteractionOverlayForCurrentMap
+	def_special SyncGiovanniMemoryModeNpcState
 gSpecialsEnd::

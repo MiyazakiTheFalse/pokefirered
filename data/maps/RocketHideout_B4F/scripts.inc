@@ -78,6 +78,7 @@ RocketHideout_B4F_EventScript_SetMemoryCeladonOutcome::
 	setflag FLAG_GIO_MEM_CH2_STARTED
 	setvar VAR_GIO_CHAPTER, 2
 	setflag FLAG_GIO_MEM_HIDE_CELADON_ROCKETS
+	special SyncGiovanniMemoryModeNpcState
 	setdynamicwarp MAP_SILPH_CO_11F, 5, 14
 	return
 

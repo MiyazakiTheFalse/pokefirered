@@ -101,6 +101,7 @@ ViridianCity_Gym_EventScript_GiovanniMemoryPostBattle::
 	fadescreen FADE_FROM_BLACK
 	special ValidateGiovanniMemoryModeRocketFlags
 	special ReconcileGiovanniMemoryModeOutcome
+	special SyncGiovanniMemoryModeNpcState
 	release
 	end
 
@@ -109,6 +110,7 @@ ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode::
 	special ClearGiovanniMemoryModeCaptureLock
 	special RestoreGiovanniMemoryModeSnapshot
 	special ReconcileGiovanniMemoryModeOutcome
+	special SyncGiovanniMemoryModeNpcState
 	release
 	end
 
