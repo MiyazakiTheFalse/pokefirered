@@ -150,3 +150,12 @@ CeladonCity_GameCorner_Text_SomeonesKeys::
     .string "Someone's keys!\n"
     .string "They'll be back.$"
 
+
+
+CeladonCity_GameCorner_Text_MemoryExitBlocked::
+    .string "This exit is sealed in this memory.\n"
+    .string "Regroup at the command point.$"
+
+CeladonCity_GameCorner_Text_MemoryChapterMismatch::
+    .string "That route belongs to a different\n"
+    .string "chapter of the operation.$"

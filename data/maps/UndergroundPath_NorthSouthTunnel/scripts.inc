@@ -7,3 +7,27 @@ UndergroundPath_NorthSouthTunnel_OnTransition::
 	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	setworldmapflag FLAG_WORLD_MAP_UNDERGROUND_PATH_NORTH_SOUTH_TUNNEL
 	end
+
+UndergroundPath_NorthSouthTunnel_EventScript_MemoryDesyncReturnToHub::
+	warp MAP_SILPH_CO_11F, 6, 14
+	waitstate
+	end
+
+UndergroundPath_NorthSouthTunnel_EventScript_MemoryExitGuard::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, UndergroundPath_NorthSouthTunnel_EventScript_MemoryDesyncReturnToHub
+	goto_if_ne VAR_CHAPTER_ID, 2, UndergroundPath_NorthSouthTunnel_EventScript_MemoryDesyncReturnToHub
+	lockall
+	msgbox UndergroundPath_NorthSouthTunnel_Text_MemoryExitBlocked
+	warp MAP_SILPH_CO_11F, 6, 14
+	waitstate
+	releaseall
+	end
+
+UndergroundPath_NorthSouthTunnel_EventScript_MemoryExitGuard_Mismatch::
+	lockall
+	msgbox UndergroundPath_NorthSouthTunnel_Text_MemoryChapterMismatch
+	warp MAP_SILPH_CO_11F, 6, 14
+	waitstate
+	releaseall
+	end
