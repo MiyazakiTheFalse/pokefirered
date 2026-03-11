@@ -1,6 +1,29 @@
 DiglettsCave_NorthEntrance_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, DiglettsCave_NorthEntrance_OnTransition
 	.byte 0
 
+DiglettsCave_NorthEntrance_OnTransition::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, DiglettsCave_NorthEntrance_EventScript_MemoryObjectiveBegin
+	end
+
+DiglettsCave_NorthEntrance_EventScript_MemoryObjectiveBegin::
+	setflag FLAG_GIO_MEM_CH1_STARTED
+	end
+
 DiglettsCave_NorthEntrance_EventScript_Hiker::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, DiglettsCave_NorthEntrance_EventScript_HikerMemory
 	msgbox DiglettsCave_NorthEntrance_RockTunnelPitchBlack, MSGBOX_NPC
+	end
+
+DiglettsCave_NorthEntrance_EventScript_HikerMemory::
+	msgbox DiglettsCave_NorthEntrance_Text_MemoryLogisticsBriefing, MSGBOX_NPC
+	end
+
+DiglettsCave_NorthEntrance_EventScript_MemoryExitGuard::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	lockall
+	msgbox DiglettsCave_NorthEntrance_Text_MemoryExitBlocked
+	warp MAP_DIGLETTS_CAVE_B1F, 3, 4
+	waitstate
+	releaseall
 	end

@@ -52,3 +52,12 @@ RocketHideout_B4F_Text_Grunt1PostBattle::
     .string "Oh, no!\n"
     .string "I dropped the LIFT KEY!$"
 
+
+
+RocketHideout_B4F_Text_MemorySpaceMarker::
+    .string "[MEMORY] Celadon Hideout (Echo)\n"
+    .string "stabilized. Objective: break resistance.$"
+
+RocketHideout_B4F_Text_MemoryExitBlocked::
+    .string "[MEMORY] Unrelated exits are sealed in\n"
+    .string "this chapter fragment.$"

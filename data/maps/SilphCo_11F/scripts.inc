@@ -1,6 +1,15 @@
 SilphCo_11F_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, SilphCo_11F_OnLoad
+	map_script MAP_SCRIPT_ON_TRANSITION, SilphCo_11F_OnTransition
 	.byte 0
+
+SilphCo_11F_OnTransition::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, SilphCo_11F_EventScript_MemorySpaceMarker
+	end
+
+SilphCo_11F_EventScript_MemorySpaceMarker::
+	msgbox SilphCo_11F_Text_MemorySpaceMarker, MSGBOX_AUTOCLOSE
+	end
 
 SilphCo_11F_OnLoad::
 	call_if_unset FLAG_SILPH_11F_DOOR, EventScript_Close11FDoor
@@ -85,6 +94,7 @@ SilphCo_11F_EventScript_SetMemorySaffronOutcome::
 	setflag FLAG_GIO_MEM_CH3_STARTED
 	setflag FLAG_GIO_MEM_HIDE_SAFFRON_ROCKETS
 	clearflag FLAG_GIO_MEM_HIDE_SAFFRON_CIVILIANS
+	setflag FLAG_GIO_MEM_CH3_COMPLETE
 	releaseall
 	end
 
@@ -139,4 +149,13 @@ SilphCo_11F_EventScript_Grunt1::
 SilphCo_11F_EventScript_Grunt2::
 	trainerbattle_single TRAINER_TEAM_ROCKET_GRUNT_41, SilphCo_11F_Text_Grunt2Intro, SilphCo_11F_Text_Grunt2Defeat
 	msgbox SilphCo_11F_Text_Grunt2PostBattle, MSGBOX_AUTOCLOSE
+	end
+
+SilphCo_11F_EventScript_MemoryExitGuard::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	lockall
+	msgbox SilphCo_11F_Text_MemoryExitBlocked
+	warp MAP_SILPH_CO_11F, 6, 14
+	waitstate
+	releaseall
 	end

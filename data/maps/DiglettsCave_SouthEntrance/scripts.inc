@@ -1,6 +1,29 @@
 DiglettsCave_SouthEntrance_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, DiglettsCave_SouthEntrance_OnTransition
 	.byte 0
 
+DiglettsCave_SouthEntrance_OnTransition::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, DiglettsCave_SouthEntrance_EventScript_MemoryObjectiveMid
+	end
+
+DiglettsCave_SouthEntrance_EventScript_MemoryObjectiveMid::
+	setflag FLAG_GIO_MEM_CH2_STARTED
+	end
+
 DiglettsCave_SouthEntrance_EventScript_OldMan::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, DiglettsCave_SouthEntrance_EventScript_OldManMemory
 	msgbox DiglettsCave_SouthEntrance_Text_DiglettDugThisTunnel, MSGBOX_NPC
+	end
+
+DiglettsCave_SouthEntrance_EventScript_OldManMemory::
+	msgbox DiglettsCave_SouthEntrance_Text_MemoryRetreatTunnel, MSGBOX_NPC
+	end
+
+DiglettsCave_SouthEntrance_EventScript_MemoryExitGuard::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	lockall
+	msgbox DiglettsCave_SouthEntrance_Text_MemoryExitBlocked
+	warp MAP_DIGLETTS_CAVE_B1F, 82, 70
+	waitstate
+	releaseall
 	end

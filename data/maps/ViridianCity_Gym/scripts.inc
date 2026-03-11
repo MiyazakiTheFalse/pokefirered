@@ -12,6 +12,7 @@ ViridianCity_Gym_EventScript_RestoreGiovanniMemoryModeOnTransition::
 	end
 
 ViridianCity_Gym_EventScript_Giovanni::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, ViridianCity_Gym_EventScript_MemorySpaceMarker
 	famechecker FAMECHECKER_GIOVANNI, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	setvar VAR_0x8004, 4
 	specialvar VAR_RESULT, GetCorpseRunFieldBlockReason
@@ -34,6 +35,19 @@ ViridianCity_Gym_EventScript_Giovanni::
 	release
 	end
 
+
+ViridianCity_Gym_EventScript_MemorySpaceMarker::
+	msgbox ViridianCity_Gym_Text_MemorySpaceMarker, MSGBOX_AUTOCLOSE
+	return
+
+ViridianCity_Gym_EventScript_MemoryExitGuard::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	lockall
+	msgbox ViridianCity_Gym_Text_MemoryExitBlocked
+	warp MAP_VIRIDIAN_CITY_GYM, 17, 21
+	waitstate
+	releaseall
+	end
 
 ViridianCity_Gym_EventScript_GiovanniMemoryPostBattle::
 	msgbox ViridianCity_Gym_Text_GiovanniPostBattle
