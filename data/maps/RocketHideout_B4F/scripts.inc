@@ -30,11 +30,18 @@ RocketHideout_B4F_EventScript_Giovanni::
 	removeobject LOCALID_HIDEOUT_GIOVANNI
 	addobject LOCALID_SILPH_SCOPE
 	clearflag FLAG_HIDE_SILPH_SCOPE
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, RocketHideout_B4F_EventScript_SetMemoryCeladonOutcome
 	setflag FLAG_HIDE_CELADON_ROCKETS
 	famechecker FAMECHECKER_GIOVANNI, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	fadescreen FADE_FROM_BLACK
 	release
 	end
+
+RocketHideout_B4F_EventScript_SetMemoryCeladonOutcome::
+	setflag FLAG_GIO_MEM_CH1_COMPLETE
+	setflag FLAG_GIO_MEM_CH2_STARTED
+	setflag FLAG_GIO_MEM_HIDE_CELADON_ROCKETS
+	return
 
 RocketHideout_B4F_EventScript_SilphScope::
 	lock

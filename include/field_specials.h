@@ -46,5 +46,7 @@ u16 RestoreGiovanniMemoryModeSnapshot(void);
 u16 IsGiovanniMemoryModeReadyForBattle(void);
 bool8 IsGiovanniMemoryModeCaptureLocked(void);
 u16 ClearGiovanniMemoryModeCaptureLock(void);
+u16 ReconcileGiovanniMemoryModeOutcome(void);
+u16 ValidateGiovanniMemoryModeRocketFlags(void);
 
 #endif // GUARD_FIELD_SPECIALS_H

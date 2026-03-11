@@ -74,8 +74,17 @@ SilphCo_11F_EventScript_BattleGiovanni::
 	removeobject LOCALID_SILPH_CO_11F_GRUNT2
 	fadescreen FADE_FROM_BLACK
 	setvar VAR_MAP_SCENE_SILPH_CO_11F, 1
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, SilphCo_11F_EventScript_SetMemorySaffronOutcome
 	setflag FLAG_HIDE_SAFFRON_ROCKETS
 	clearflag FLAG_HIDE_SAFFRON_CIVILIANS
+	releaseall
+	end
+
+SilphCo_11F_EventScript_SetMemorySaffronOutcome::
+	setflag FLAG_GIO_MEM_CH2_COMPLETE
+	setflag FLAG_GIO_MEM_CH3_STARTED
+	setflag FLAG_GIO_MEM_HIDE_SAFFRON_ROCKETS
+	clearflag FLAG_GIO_MEM_HIDE_SAFFRON_CIVILIANS
 	releaseall
 	end
 

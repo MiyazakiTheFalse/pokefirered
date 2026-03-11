@@ -24,6 +24,7 @@ ViridianCity_Gym_EventScript_Giovanni::
 	specialvar VAR_RESULT, IsGiovanniMemoryModeReadyForBattle
 	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode
 	trainerbattle_single TRAINER_LEADER_GIOVANNI, ViridianCity_Gym_Text_GiovanniIntro, ViridianCity_Gym_Text_GiovanniDefeat, ViridianCity_Gym_EventScript_DefeatedGiovanni, NO_MUSIC
+	goto_if_set FLAG_GIO_MEM_CH3_COMPLETE, ViridianCity_Gym_EventScript_GiovanniMemoryPostBattle
 	goto_if_unset FLAG_GOT_TM26_FROM_GIOVANNI, ViridianCity_Gym_EventScript_GiveTM26
 	msgbox ViridianCity_Gym_Text_GiovanniPostBattle
 	closemessage
@@ -33,14 +34,28 @@ ViridianCity_Gym_EventScript_Giovanni::
 	release
 	end
 
+
+ViridianCity_Gym_EventScript_GiovanniMemoryPostBattle::
+	msgbox ViridianCity_Gym_Text_GiovanniPostBattle
+	closemessage
+	fadescreen FADE_TO_BLACK
+	removeobject LOCALID_VIRIDIAN_GIOVANNI
+	fadescreen FADE_FROM_BLACK
+	special ValidateGiovanniMemoryModeRocketFlags
+	special ReconcileGiovanniMemoryModeOutcome
+	release
+	end
+
 ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode::
 	special AbortGiovanniMemoryMode
 	special ClearGiovanniMemoryModeCaptureLock
 	special RestoreGiovanniMemoryModeSnapshot
+	special ReconcileGiovanniMemoryModeOutcome
 	release
 	end
 
 ViridianCity_Gym_EventScript_DefeatedGiovanni::
+	goto_if_set FLAG_GIO_MEM_CH3_COMPLETE, ViridianCity_Gym_EventScript_DefeatedGiovanniMemory
 	famechecker FAMECHECKER_GIOVANNI, 3
 	setflag FLAG_HIDE_MISC_KANTO_ROCKETS
 	setflag FLAG_DEFEATED_LEADER_GIOVANNI
@@ -49,6 +64,9 @@ ViridianCity_Gym_EventScript_DefeatedGiovanni::
 	set_gym_trainers 8
 	goto ViridianCity_Gym_EventScript_GiveTM26
 	end
+
+ViridianCity_Gym_EventScript_DefeatedGiovanniMemory::
+	return
 
 ViridianCity_Gym_EventScript_GiveTM26::
 	msgbox ViridianCity_Gym_Text_ExplainEarthBadgeTakeThis

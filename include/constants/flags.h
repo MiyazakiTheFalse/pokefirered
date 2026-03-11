@@ -1529,12 +1529,24 @@
 #define FLAG_0x8FF                                                  (SYS_FLAGS + 0xFF)
 
 // Viridian Gym Giovanni memory mode runtime flags.
+#define FLAG_GIO_MEM_SEQUENCE_VIEWED                                 FLAG_0x8EE
+#define FLAG_GIO_MEM_CH1_STARTED                                     FLAG_0x8EF
+#define FLAG_GIO_MEM_CH1_COMPLETE                                    FLAG_0x8F0
+#define FLAG_GIO_MEM_CH2_STARTED                                     FLAG_0x8F1
+#define FLAG_GIO_MEM_CH2_COMPLETE                                    FLAG_0x8F2
+#define FLAG_GIO_MEM_CH3_STARTED                                     FLAG_0x8F3
+#define FLAG_GIO_MEM_CH3_COMPLETE                                    FLAG_0x8F4
+#define FLAG_GIO_MEM_HIDE_CELADON_ROCKETS                            FLAG_0x8F5
+#define FLAG_GIO_MEM_HIDE_SAFFRON_ROCKETS                            FLAG_0x8F6
+#define FLAG_GIO_MEM_HIDE_SAFFRON_CIVILIANS                          FLAG_0x8F7
 #define FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE                        FLAG_0x8F8
 #define FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED                      FLAG_0x8F9
 #define FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER1_STARTED              FLAG_0x8FA
 #define FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE             FLAG_0x8FB
 #define FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED                       FLAG_0x8FC
 #define FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK                  FLAG_0x8FD
+#define FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATED                     FLAG_0x8FE
+#define FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATION_FAILED             FLAG_0x8FF
 
 #define FLAGS_COUNT (FLAG_0x8FF + 1)
 

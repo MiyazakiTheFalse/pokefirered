@@ -62,6 +62,12 @@ struct GiovanniMemoryModeFlagSnapshot
     bool8 hideHideoutGiovanni;
     bool8 hideCeruleanRocket;
     bool8 hideSaffronRockets;
+    bool8 hideCeladonRockets;
+    bool8 hideSaffronCivilians;
+    bool8 hideTowerRocket1;
+    bool8 hideTowerRocket2;
+    bool8 hideTowerRocket3;
+    bool8 rescuedMrFuji;
 };
 
 struct GiovanniMemoryModeSnapshot
@@ -96,6 +102,12 @@ static void SnapshotGiovanniRocketProgressFlags(struct GiovanniMemoryModeFlagSna
     flags->hideHideoutGiovanni = FlagGet(FLAG_HIDE_HIDEOUT_GIOVANNI);
     flags->hideCeruleanRocket = FlagGet(FLAG_HIDE_CERULEAN_ROCKET);
     flags->hideSaffronRockets = FlagGet(FLAG_HIDE_SAFFRON_ROCKETS);
+    flags->hideCeladonRockets = FlagGet(FLAG_HIDE_CELADON_ROCKETS);
+    flags->hideSaffronCivilians = FlagGet(FLAG_HIDE_SAFFRON_CIVILIANS);
+    flags->hideTowerRocket1 = FlagGet(FLAG_HIDE_TOWER_ROCKET_1);
+    flags->hideTowerRocket2 = FlagGet(FLAG_HIDE_TOWER_ROCKET_2);
+    flags->hideTowerRocket3 = FlagGet(FLAG_HIDE_TOWER_ROCKET_3);
+    flags->rescuedMrFuji = FlagGet(FLAG_RESCUED_MR_FUJI);
 }
 
 static void RestoreGiovanniRocketProgressFlags(const struct GiovanniMemoryModeFlagSnapshot *flags)
@@ -134,6 +146,36 @@ static void RestoreGiovanniRocketProgressFlags(const struct GiovanniMemoryModeFl
         FlagSet(FLAG_HIDE_SAFFRON_ROCKETS);
     else
         FlagClear(FLAG_HIDE_SAFFRON_ROCKETS);
+
+    if (flags->hideCeladonRockets)
+        FlagSet(FLAG_HIDE_CELADON_ROCKETS);
+    else
+        FlagClear(FLAG_HIDE_CELADON_ROCKETS);
+
+    if (flags->hideSaffronCivilians)
+        FlagSet(FLAG_HIDE_SAFFRON_CIVILIANS);
+    else
+        FlagClear(FLAG_HIDE_SAFFRON_CIVILIANS);
+
+    if (flags->hideTowerRocket1)
+        FlagSet(FLAG_HIDE_TOWER_ROCKET_1);
+    else
+        FlagClear(FLAG_HIDE_TOWER_ROCKET_1);
+
+    if (flags->hideTowerRocket2)
+        FlagSet(FLAG_HIDE_TOWER_ROCKET_2);
+    else
+        FlagClear(FLAG_HIDE_TOWER_ROCKET_2);
+
+    if (flags->hideTowerRocket3)
+        FlagSet(FLAG_HIDE_TOWER_ROCKET_3);
+    else
+        FlagClear(FLAG_HIDE_TOWER_ROCKET_3);
+
+    if (flags->rescuedMrFuji)
+        FlagSet(FLAG_RESCUED_MR_FUJI);
+    else
+        FlagClear(FLAG_RESCUED_MR_FUJI);
 }
 
 COMMON_DATA struct ListMenuTemplate sFieldSpecialsListMenuTemplate = {0};
@@ -2679,6 +2721,39 @@ static void Task_WingFlapSound(u8 taskId)
 }
 
 
+static bool8 GiovanniRocketProgressFlagsMatchSnapshot(const struct GiovanniMemoryModeFlagSnapshot *flags)
+{
+    if (flags->hideMiscKantoRockets != FlagGet(FLAG_HIDE_MISC_KANTO_ROCKETS))
+        return FALSE;
+    if (flags->defeatedLeaderGiovanni != FlagGet(FLAG_DEFEATED_LEADER_GIOVANNI))
+        return FALSE;
+    if (flags->gotTm26FromGiovanni != FlagGet(FLAG_GOT_TM26_FROM_GIOVANNI))
+        return FALSE;
+    if (flags->hideViridianGiovanni != FlagGet(FLAG_HIDE_VIRIDIAN_GIOVANNI))
+        return FALSE;
+    if (flags->hideHideoutGiovanni != FlagGet(FLAG_HIDE_HIDEOUT_GIOVANNI))
+        return FALSE;
+    if (flags->hideCeruleanRocket != FlagGet(FLAG_HIDE_CERULEAN_ROCKET))
+        return FALSE;
+    if (flags->hideSaffronRockets != FlagGet(FLAG_HIDE_SAFFRON_ROCKETS))
+        return FALSE;
+    if (flags->hideCeladonRockets != FlagGet(FLAG_HIDE_CELADON_ROCKETS))
+        return FALSE;
+    if (flags->hideSaffronCivilians != FlagGet(FLAG_HIDE_SAFFRON_CIVILIANS))
+        return FALSE;
+    if (flags->hideTowerRocket1 != FlagGet(FLAG_HIDE_TOWER_ROCKET_1))
+        return FALSE;
+    if (flags->hideTowerRocket2 != FlagGet(FLAG_HIDE_TOWER_ROCKET_2))
+        return FALSE;
+    if (flags->hideTowerRocket3 != FlagGet(FLAG_HIDE_TOWER_ROCKET_3))
+        return FALSE;
+    if (flags->rescuedMrFuji != FlagGet(FLAG_RESCUED_MR_FUJI))
+        return FALSE;
+
+    return TRUE;
+}
+
+
 u16 StartGiovanniMemoryMode(void)
 {
     u8 i;
@@ -2705,11 +2780,23 @@ u16 StartGiovanniMemoryMode(void)
     SnapshotGiovanniRocketProgressFlags(&sGiovanniMemoryModeSnapshot.flags);
 
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE);
+    FlagSet(FLAG_GIO_MEM_SEQUENCE_VIEWED);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED);
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER1_STARTED);
+    FlagSet(FLAG_GIO_MEM_CH1_STARTED);
+    FlagClear(FLAG_GIO_MEM_CH1_COMPLETE);
+    FlagClear(FLAG_GIO_MEM_CH2_STARTED);
+    FlagClear(FLAG_GIO_MEM_CH2_COMPLETE);
+    FlagClear(FLAG_GIO_MEM_CH3_STARTED);
+    FlagClear(FLAG_GIO_MEM_CH3_COMPLETE);
+    FlagClear(FLAG_GIO_MEM_HIDE_CELADON_ROCKETS);
+    FlagClear(FLAG_GIO_MEM_HIDE_SAFFRON_ROCKETS);
+    FlagSet(FLAG_GIO_MEM_HIDE_SAFFRON_CIVILIANS);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK);
+    FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATED);
+    FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATION_FAILED);
 
     gPlayerPartyCount = 1;
     ZeroPlayerPartyMons();
@@ -2732,6 +2819,8 @@ u16 StartGiovanniMemoryMode(void)
 u16 SetGiovanniMemoryModeChapter3Complete(void)
 {
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
+    FlagSet(FLAG_GIO_MEM_CH3_STARTED);
+    FlagSet(FLAG_GIO_MEM_CH3_COMPLETE);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
     return TRUE;
 }
@@ -2769,6 +2858,18 @@ u16 RestoreGiovanniMemoryModeSnapshot(void)
     gSaveBlock1Ptr->lastHealLocation = sGiovanniMemoryModeSnapshot.lastHealLocation;
     gSaveBlock1Ptr->escapeWarp = sGiovanniMemoryModeSnapshot.escapeWarp;
     gSaveBlock1Ptr->pos = sGiovanniMemoryModeSnapshot.pos;
+
+    if (GiovanniRocketProgressFlagsMatchSnapshot(&sGiovanniMemoryModeSnapshot.flags))
+    {
+        FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATED);
+        FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATION_FAILED);
+    }
+    else
+    {
+        FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATION_FAILED);
+        FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATED);
+    }
+
     RestoreGiovanniRocketProgressFlags(&sGiovanniMemoryModeSnapshot.flags);
 
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED);
@@ -2797,4 +2898,31 @@ u16 ClearGiovanniMemoryModeCaptureLock(void)
 {
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK);
     return TRUE;
+}
+
+u16 ReconcileGiovanniMemoryModeOutcome(void)
+{
+    FlagSet(FLAG_GIO_MEM_SEQUENCE_VIEWED);
+    FlagClear(FLAG_GIO_MEM_CH1_STARTED);
+    FlagClear(FLAG_GIO_MEM_CH1_COMPLETE);
+    FlagClear(FLAG_GIO_MEM_CH2_STARTED);
+    FlagClear(FLAG_GIO_MEM_CH2_COMPLETE);
+    FlagClear(FLAG_GIO_MEM_CH3_STARTED);
+    FlagClear(FLAG_GIO_MEM_CH3_COMPLETE);
+    FlagClear(FLAG_GIO_MEM_HIDE_CELADON_ROCKETS);
+    FlagClear(FLAG_GIO_MEM_HIDE_SAFFRON_ROCKETS);
+    FlagClear(FLAG_GIO_MEM_HIDE_SAFFRON_CIVILIANS);
+
+    return TRUE;
+}
+
+u16 ValidateGiovanniMemoryModeRocketFlags(void)
+{
+    if (FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATION_FAILED))
+        return FALSE;
+
+    if (FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATED))
+        return TRUE;
+
+    return FALSE;
 }

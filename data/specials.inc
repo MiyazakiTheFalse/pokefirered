@@ -465,4 +465,6 @@ gSpecials::
 	def_special RestoreGiovanniMemoryModeSnapshot
 	def_special ClearGiovanniMemoryModeCaptureLock
 	def_special IsGiovanniMemoryModeReadyForBattle
+	def_special ReconcileGiovanniMemoryModeOutcome
+	def_special ValidateGiovanniMemoryModeRocketFlags
 gSpecialsEnd::
