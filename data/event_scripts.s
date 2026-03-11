@@ -87,6 +87,8 @@ gStdScripts::
 	.4byte Std_ReceivedItem         @ STD_RECEIVED_ITEM
 gStdScriptsEnd::
 
+	.include "data/scripts/giovanni_shared_warps.inc"
+
 	.include "data/maps/BattleColosseum_2P/scripts.inc"
 	.include "data/maps/TradeCenter/scripts.inc"
 	.include "data/maps/RecordCorner/scripts.inc"

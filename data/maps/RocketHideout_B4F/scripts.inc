@@ -175,9 +175,10 @@ RocketHideout_B4F_EventScript_RemoveBarrier::
 	return
 
 RocketHideout_B4F_EventScript_MemoryExitGuard::
-	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
-	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub
-	goto_if_ne VAR_CHAPTER_ID, 1, RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub
+	setvar VAR_0x8004, 1
+	call EventScript_GiovanniSharedWarp_ResolvePrecedence
+	goto_if_eq VAR_RESULT, GIO_SHARED_WARP_RESULT_NORMAL_ROUTE, EventScript_Nothing
+	goto_if_eq VAR_RESULT, GIO_SHARED_WARP_RESULT_LOCKED_FALLBACK, RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub
 	lockall
 	msgbox RocketHideout_B4F_Text_MemoryExitBlocked
 	warp MAP_ROCKET_HIDEOUT_B4F, 19, 6
