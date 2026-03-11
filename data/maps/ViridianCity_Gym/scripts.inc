@@ -33,9 +33,18 @@ ViridianCity_Gym_EventScript_RestoreGiovanniMemoryModeOnTransition::
 ViridianCity_Gym_EventScript_MemoryMedicKit::
 	lockall
 	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, ViridianCity_Gym_EventScript_MemoryMedicKitOffline
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, ViridianCity_Gym_EventScript_MemoryMedicKitOffline
+	goto_if_ne VAR_CHAPTER_ID, 3, ViridianCity_Gym_EventScript_MemoryMedicKitMismatch
+	goto_if_unset FLAG_GIO_MEM_CH1_COMPLETE, ViridianCity_Gym_EventScript_MemoryMedicKitMismatch
+	goto_if_unset FLAG_GIO_MEM_CH2_COMPLETE, ViridianCity_Gym_EventScript_MemoryMedicKitMismatch
 	msgbox ViridianCity_Gym_Text_MemoryMedicKitIntro
 	special HealPlayerParty
 	msgbox ViridianCity_Gym_Text_MemoryMedicKitDone
+	releaseall
+	end
+
+ViridianCity_Gym_EventScript_MemoryMedicKitMismatch::
+	msgbox ViridianCity_Gym_Text_MemoryMedicKitMismatch
 	releaseall
 	end
 
