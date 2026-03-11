@@ -3,7 +3,23 @@ ViridianCity_Gym_MapScripts::
 	.byte 0
 
 ViridianCity_Gym_OnTransition::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, ViridianCity_Gym_EventScript_MemoryRoutingCheck
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, ViridianCity_Gym_EventScript_SkipMemoryRoutingCheck
+	goto ViridianCity_Gym_EventScript_MemoryDesyncReturnToHub
+
+ViridianCity_Gym_EventScript_MemoryRoutingCheck::
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, ViridianCity_Gym_EventScript_MemoryDesyncReturnToHub
+	goto_if_ne VAR_CHAPTER_ID, 3, ViridianCity_Gym_EventScript_MemoryDesyncReturnToHub
+	goto_if_unset FLAG_GIO_MEM_CH1_COMPLETE, ViridianCity_Gym_EventScript_MemoryDesyncReturnToHub
+	goto_if_unset FLAG_GIO_MEM_CH2_COMPLETE, ViridianCity_Gym_EventScript_MemoryDesyncReturnToHub
 	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, ViridianCity_Gym_EventScript_RestoreGiovanniMemoryModeOnTransition
+
+ViridianCity_Gym_EventScript_SkipMemoryRoutingCheck::
+	end
+
+ViridianCity_Gym_EventScript_MemoryDesyncReturnToHub::
+	warp MAP_VIRIDIAN_CITY_GYM, 17, 21
+	waitstate
 	end
 
 ViridianCity_Gym_EventScript_RestoreGiovanniMemoryModeOnTransition::
@@ -43,6 +59,8 @@ ViridianCity_Gym_EventScript_MemorySpaceMarker::
 
 ViridianCity_Gym_EventScript_MemoryExitGuard::
 	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, ViridianCity_Gym_EventScript_MemoryDesyncReturnToHub
+	goto_if_ne VAR_CHAPTER_ID, 3, ViridianCity_Gym_EventScript_MemoryDesyncReturnToHub
 	lockall
 	msgbox ViridianCity_Gym_Text_MemoryExitBlocked
 	warp MAP_VIRIDIAN_CITY_GYM, 17, 21
