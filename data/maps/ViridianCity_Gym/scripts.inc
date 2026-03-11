@@ -13,6 +13,7 @@ ViridianCity_Gym_EventScript_RestoreGiovanniMemoryModeOnTransition::
 
 ViridianCity_Gym_EventScript_Giovanni::
 	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, ViridianCity_Gym_EventScript_MemorySpaceMarker
+	lockall
 	famechecker FAMECHECKER_GIOVANNI, FCPICKSTATE_COLORED, UpdatePickStateFromSpecialVar8005
 	setvar VAR_0x8004, 4
 	specialvar VAR_RESULT, GetCorpseRunFieldBlockReason
