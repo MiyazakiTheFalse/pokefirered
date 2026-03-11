@@ -107,9 +107,22 @@ struct GiovanniMapOverlay
     u16 map;
     u8 chapterId;
     u8 allowedWarpMask;
+    u16 enabledTriggerMask;
+    u8 npcSetId;
+    u8 guaranteedProgressWarpId;
     u16 safeReturnMap;
     u8 safeReturnX;
     u8 safeReturnY;
+    u8 recoveryFallbackX;
+    u8 recoveryFallbackY;
+};
+
+enum
+{
+    GIOVANNI_NPC_SET_NONE,
+    GIOVANNI_NPC_SET_CELADON_GAME_CORNER,
+    GIOVANNI_NPC_SET_SILPH_CO,
+    GIOVANNI_NPC_SET_VIRIDIAN_GYM,
 };
 
 static const struct GiovanniMapOverlay sGiovanniMapOverlays[] =
@@ -117,42 +130,67 @@ static const struct GiovanniMapOverlay sGiovanniMapOverlays[] =
     {
         .map = MAP_VIRIDIAN_CITY,
         .chapterId = 3,
-        .allowedWarpMask = 0xFF,
+        .allowedWarpMask = (1 << 2),
+        .enabledTriggerMask = 0,
+        .npcSetId = GIOVANNI_NPC_SET_NONE,
+        .guaranteedProgressWarpId = 2,
         .safeReturnMap = MAP_VIRIDIAN_CITY_GYM,
         .safeReturnX = 17,
         .safeReturnY = 21,
+        .recoveryFallbackX = 17,
+        .recoveryFallbackY = 21,
     },
     {
         .map = MAP_CELADON_CITY_GAME_CORNER,
         .chapterId = 1,
-        .allowedWarpMask = 0x0F,
+        .allowedWarpMask = (1 << 3),
+        .enabledTriggerMask = (1 << 0) | (1 << 1) | (1 << 2),
+        .npcSetId = GIOVANNI_NPC_SET_CELADON_GAME_CORNER,
+        .guaranteedProgressWarpId = 3,
         .safeReturnMap = MAP_ROCKET_HIDEOUT_B4F,
         .safeReturnX = 19,
         .safeReturnY = 6,
+        .recoveryFallbackX = 19,
+        .recoveryFallbackY = 6,
     },
     {
         .map = MAP_UNDERGROUND_PATH_NORTH_SOUTH_TUNNEL,
         .chapterId = 2,
-        .allowedWarpMask = 0x03,
+        .allowedWarpMask = (1 << 0) | (1 << 1),
+        .enabledTriggerMask = (1 << 0) | (1 << 1),
+        .npcSetId = GIOVANNI_NPC_SET_NONE,
+        .guaranteedProgressWarpId = 0,
         .safeReturnMap = MAP_SILPH_CO_11F,
         .safeReturnX = 6,
         .safeReturnY = 14,
+        .recoveryFallbackX = 6,
+        .recoveryFallbackY = 14,
     },
     {
         .map = MAP_SILPH_CO_11F,
         .chapterId = 2,
         .allowedWarpMask = 0x07,
+        .enabledTriggerMask = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 4),
+        .npcSetId = GIOVANNI_NPC_SET_SILPH_CO,
+        .guaranteedProgressWarpId = 1,
         .safeReturnMap = MAP_SILPH_CO_11F,
         .safeReturnX = 6,
         .safeReturnY = 14,
+        .recoveryFallbackX = 6,
+        .recoveryFallbackY = 14,
     },
     {
         .map = MAP_VIRIDIAN_CITY_GYM,
         .chapterId = 3,
         .allowedWarpMask = 0x07,
+        .enabledTriggerMask = (1 << 0) | (1 << 1) | (1 << 2),
+        .npcSetId = GIOVANNI_NPC_SET_VIRIDIAN_GYM,
+        .guaranteedProgressWarpId = 1,
         .safeReturnMap = MAP_VIRIDIAN_CITY_GYM,
         .safeReturnX = 17,
         .safeReturnY = 21,
+        .recoveryFallbackX = 17,
+        .recoveryFallbackY = 21,
     },
 };
 
@@ -176,11 +214,14 @@ static void WarpPlayerToGiovanniOverlaySafeReturn(const struct GiovanniMapOverla
     SetMainCallback2(CB2_LoadMap);
 }
 
-static void ApplyGiovanniOverlayForCurrentMap(u16 map)
+static void ApplyGiovanniOverlayForCurrentMap(const struct GiovanniMapOverlay *overlay)
 {
+    u16 map = overlay->map;
+
     if (map == MAP_VIRIDIAN_CITY)
     {
-        VarSet(VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 2);
+        if ((overlay->enabledTriggerMask & 1) == 0)
+            VarSet(VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 2);
         VarSet(VAR_MAP_SCENE_VIRIDIAN_CITY_GYM_DOOR, 1);
     }
     else if (map == MAP_SILPH_CO_11F)
@@ -192,6 +233,35 @@ static void ApplyGiovanniOverlayForCurrentMap(u16 map)
     {
         FlagClear(FLAG_HIDE_VIRIDIAN_GIOVANNI);
     }
+}
+
+static void ApplyGiovanniOverlayNpcSet(const struct GiovanniMapOverlay *overlay)
+{
+    switch (overlay->npcSetId)
+    {
+    case GIOVANNI_NPC_SET_CELADON_GAME_CORNER:
+        FlagClear(FLAG_HIDE_GAME_CORNER_ROCKET);
+        FlagSet(FLAG_OPENED_ROCKET_HIDEOUT);
+        break;
+    case GIOVANNI_NPC_SET_SILPH_CO:
+        FlagClear(FLAG_HIDE_SILPH_ROCKETS);
+        FlagClear(FLAG_HIDE_SAFFRON_ROCKETS);
+        break;
+    case GIOVANNI_NPC_SET_VIRIDIAN_GYM:
+        FlagClear(FLAG_HIDE_VIRIDIAN_GIOVANNI);
+        break;
+    case GIOVANNI_NPC_SET_NONE:
+    default:
+        break;
+    }
+}
+
+static bool8 IsOverlayWarpAllowed(const struct GiovanniMapOverlay *overlay, u8 warpId)
+{
+    if (warpId >= 8)
+        return FALSE;
+
+    return (overlay->allowedWarpMask & (1 << warpId)) != 0;
 }
 
 
@@ -3256,14 +3326,23 @@ u16 ValidateGiovanniInteractionOverlayForCurrentMap(void)
         return FALSE;
     }
 
+    if (overlay->allowedWarpMask == 0
+     || (overlay->allowedWarpMask & (1 << overlay->guaranteedProgressWarpId)) == 0)
+    {
+        SetWarpDestination(MAP_GROUP(overlay->safeReturnMap), MAP_NUM(overlay->safeReturnMap), WARP_ID_NONE, overlay->recoveryFallbackX, overlay->recoveryFallbackY);
+        WarpIntoMap();
+        SetMainCallback2(CB2_LoadMap);
+        return FALSE;
+    }
+
     if (gSaveBlock1Ptr->location.warpId != WARP_ID_NONE
-     && (gSaveBlock1Ptr->location.warpId >= 8
-      || (overlay->allowedWarpMask & (1 << gSaveBlock1Ptr->location.warpId)) == 0))
+     && !IsOverlayWarpAllowed(overlay, gSaveBlock1Ptr->location.warpId))
     {
         WarpPlayerToGiovanniOverlaySafeReturn(overlay);
         return FALSE;
     }
 
-    ApplyGiovanniOverlayForCurrentMap(map);
+    ApplyGiovanniOverlayForCurrentMap(overlay);
+    ApplyGiovanniOverlayNpcSet(overlay);
     return TRUE;
 }
