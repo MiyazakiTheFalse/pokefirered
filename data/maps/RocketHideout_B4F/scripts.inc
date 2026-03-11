@@ -6,6 +6,20 @@ RocketHideout_B4F_MapScripts::
 	.byte 0
 
 RocketHideout_B4F_OnTransition::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, RocketHideout_B4F_EventScript_SkipMemoryRoutingCheck
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub
+	goto_if_ne VAR_CHAPTER_ID, 1, RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub
+	goto_if_set FLAG_GIO_MEM_CH1_COMPLETE, RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub
+	goto_if_set FLAG_GIO_MEM_CH2_COMPLETE, RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub
+	goto_if_set FLAG_GIO_MEM_CH3_COMPLETE, RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub
+	end
+
+RocketHideout_B4F_EventScript_SkipMemoryRoutingCheck::
+	end
+
+RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub::
+	warp MAP_ROCKET_HIDEOUT_B4F, 19, 6
+	waitstate
 	end
 
 RocketHideout_B4F_EventScript_MemorySpaceMarker::
@@ -139,10 +153,8 @@ RocketHideout_B4F_EventScript_RemoveBarrier::
 
 RocketHideout_B4F_EventScript_MemoryExitGuard::
 	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
-	goto_if_eq VAR_GIO_CHAPTER, 1, RocketHideout_B4F_EventScript_MemoryExitGuard_Block
-	goto RocketHideout_B4F_EventScript_MemoryExitGuard_Mismatch
-
-RocketHideout_B4F_EventScript_MemoryExitGuard_Block::
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub
+	goto_if_ne VAR_CHAPTER_ID, 1, RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub
 	lockall
 	msgbox RocketHideout_B4F_Text_MemoryExitBlocked
 	warp MAP_ROCKET_HIDEOUT_B4F, 19, 6

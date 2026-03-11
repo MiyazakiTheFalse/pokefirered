@@ -3,7 +3,21 @@ DiglettsCave_NorthEntrance_MapScripts::
 	.byte 0
 
 DiglettsCave_NorthEntrance_OnTransition::
+	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, DiglettsCave_NorthEntrance_EventScript_MemoryRoutingCheck
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, DiglettsCave_NorthEntrance_EventScript_MemoryRoutingSkip
+	goto DiglettsCave_NorthEntrance_EventScript_MemoryDesyncReturnToHub
+
+DiglettsCave_NorthEntrance_EventScript_MemoryRoutingCheck::
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, DiglettsCave_NorthEntrance_EventScript_MemoryDesyncReturnToHub
+	goto_if_ne VAR_CHAPTER_ID, 1, DiglettsCave_NorthEntrance_EventScript_MemoryDesyncReturnToHub
 	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, DiglettsCave_NorthEntrance_EventScript_MemoryObjectiveBegin
+
+DiglettsCave_NorthEntrance_EventScript_MemoryRoutingSkip::
+	end
+
+DiglettsCave_NorthEntrance_EventScript_MemoryDesyncReturnToHub::
+	warp MAP_ROCKET_HIDEOUT_B4F, 19, 6
+	waitstate
 	end
 
 DiglettsCave_NorthEntrance_EventScript_MemoryObjectiveBegin::
@@ -22,10 +36,8 @@ DiglettsCave_NorthEntrance_EventScript_HikerMemory::
 
 DiglettsCave_NorthEntrance_EventScript_MemoryExitGuard::
 	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
-	goto_if_eq VAR_GIO_CHAPTER, 1, DiglettsCave_NorthEntrance_EventScript_MemoryExitGuard_Block
-	goto DiglettsCave_NorthEntrance_EventScript_MemoryExitGuard_Mismatch
-
-DiglettsCave_NorthEntrance_EventScript_MemoryExitGuard_Block::
+	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, DiglettsCave_NorthEntrance_EventScript_MemoryDesyncReturnToHub
+	goto_if_ne VAR_CHAPTER_ID, 1, DiglettsCave_NorthEntrance_EventScript_MemoryDesyncReturnToHub
 	lockall
 	msgbox DiglettsCave_NorthEntrance_Text_MemoryExitBlocked
 	warp MAP_DIGLETTS_CAVE_B1F, 3, 4
