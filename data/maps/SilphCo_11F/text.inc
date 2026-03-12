@@ -92,7 +92,8 @@ SilphCo_11F_Text_FloorSign::
 
 SilphCo_11F_Text_MemorySpaceMarker::
     .string "[MEMORY] Silph aftermath projection\n"
-    .string "loaded. Resolve the final confrontation.$"
+    .string "loaded. Celadon shops report supply squeezes\n"
+    .string "and price spikes after routed shipments.$"
 
 SilphCo_11F_Text_MemoryExitBlocked::
     .string "[MEMORY] The projection destabilizes\n"

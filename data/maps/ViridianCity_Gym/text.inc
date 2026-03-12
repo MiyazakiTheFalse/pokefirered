@@ -18,6 +18,9 @@ ViridianCity_Gym_Text_GiovanniDefeat::
 ViridianCity_Gym_Text_GiovanniPostBattle::
     .string "I have no excuse for this loss.\n"
     .string "My men will not forgive it.\p"
+    .string "Reports kept arriving: dock crews forced\n"
+    .string "out, Celadon shelves squeezed, families\n"
+    .string "driven by rushed evacuations.\p"
     .string "From this day on, TEAM ROCKET\n"
     .string "is dissolved.\p"
     .string "I will leave and train in silence\n"
@@ -168,7 +171,8 @@ ViridianCity_Gym_Text_GymStatuePlayerWon::
 
 ViridianCity_Gym_Text_MemorySpaceMarker::
     .string "[MEMORY] Viridian Gym shimmers with\n"
-    .string "GIOVANNI's recollection.$"
+    .string "GIOVANNI's recollection. Evac logs show\n"
+    .string "whole blocks strained by rushed clearances.$"
 
 ViridianCity_Gym_Text_MemoryExitBlocked::
     .string "[MEMORY] The gym doors open to nothing.\n"

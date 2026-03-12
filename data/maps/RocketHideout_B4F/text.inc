@@ -56,7 +56,8 @@ RocketHideout_B4F_Text_Grunt1PostBattle::
 
 RocketHideout_B4F_Text_MemorySpaceMarker::
     .string "[MEMORY] Celadon Hideout (Echo)\n"
-    .string "stabilized. Objective: break resistance.$"
+    .string "stabilized. Dock crews report local hires\n"
+    .string "were pushed out for ROCKET freight quotas.$"
 
 RocketHideout_B4F_Text_MemoryExitBlocked::
     .string "[MEMORY] Unrelated exits are sealed in\n"
