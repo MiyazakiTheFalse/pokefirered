@@ -184,6 +184,42 @@ enum GiovanniNarrativeBeatId
     GIO_BEAT_COUNT,
 };
 
+enum GiovanniObjectiveType
+{
+    GIO_OBJECTIVE_CORE,
+    GIO_OBJECTIVE_EXTENDED,
+};
+
+enum GiovanniChapterObjectiveId
+{
+    GIO_CH1_OBJ_SECURE_ROUTE,
+    GIO_CH1_OBJ_DEPLOY_AGENT,
+    GIO_CH1_OBJ_DESTROY_DATA,
+    GIO_CH1_OBJ_EXTRACT_STAFF,
+    GIO_CH2_OBJ_SECURE_ROUTE,
+    GIO_CH2_OBJ_DEPLOY_AGENT,
+    GIO_CH2_OBJ_DESTROY_DATA,
+    GIO_CH2_OBJ_EXTRACT_STAFF,
+    GIO_CH3_OBJ_SECURE_ROUTE,
+    GIO_CH3_OBJ_DEPLOY_AGENT,
+    GIO_CH3_OBJ_DESTROY_DATA,
+    GIO_CH3_OBJ_EXTRACT_STAFF,
+    GIO_CH_OBJ_COUNT,
+};
+
+struct GiovanniChapterRuntimeTarget
+{
+    u8 chapterId;
+    u8 mandatoryCoreMinutes;
+};
+
+struct GiovanniChapterObjective
+{
+    u8 chapterId;
+    u8 objectiveType;
+    u16 commandId;
+};
+
 enum GiovanniBeatFallback
 {
     GIO_BEAT_FALLBACK_ABORT,
@@ -209,6 +245,33 @@ enum RocketOpsTriggerType
     ROCKETOPS_TRIGGER_SURVEILLANCE_NODE,
     ROCKETOPS_TRIGGER_ARCHIVE_NODE,
     ROCKETOPS_TRIGGER_EXTRACTION_NODE,
+};
+
+#define GIO_EXT_CH1_UNLOCK_MASK (1 << 0)
+#define GIO_EXT_CH2_UNLOCK_MASK (1 << 1)
+#define GIO_EXT_CH3_UNLOCK_MASK (1 << 2)
+
+static const struct GiovanniChapterRuntimeTarget sGiovanniChapterRuntimeTargets[] =
+{
+    {1, 12},
+    {2, 14},
+    {3, 10},
+};
+
+static const struct GiovanniChapterObjective sGiovanniChapterObjectives[GIO_CH_OBJ_COUNT] =
+{
+    {1, GIO_OBJECTIVE_CORE, ROCKETOPS_COMMAND_SECURE_ROUTE},
+    {1, GIO_OBJECTIVE_EXTENDED, ROCKETOPS_COMMAND_DEPLOY_AGENT},
+    {1, GIO_OBJECTIVE_EXTENDED, ROCKETOPS_COMMAND_DESTROY_DATA},
+    {1, GIO_OBJECTIVE_CORE, ROCKETOPS_COMMAND_EXTRACT_STAFF},
+    {2, GIO_OBJECTIVE_CORE, ROCKETOPS_COMMAND_SECURE_ROUTE},
+    {2, GIO_OBJECTIVE_EXTENDED, ROCKETOPS_COMMAND_DEPLOY_AGENT},
+    {2, GIO_OBJECTIVE_EXTENDED, ROCKETOPS_COMMAND_DESTROY_DATA},
+    {2, GIO_OBJECTIVE_CORE, ROCKETOPS_COMMAND_EXTRACT_STAFF},
+    {3, GIO_OBJECTIVE_CORE, ROCKETOPS_COMMAND_SECURE_ROUTE},
+    {3, GIO_OBJECTIVE_EXTENDED, ROCKETOPS_COMMAND_DEPLOY_AGENT},
+    {3, GIO_OBJECTIVE_EXTENDED, ROCKETOPS_COMMAND_DESTROY_DATA},
+    {3, GIO_OBJECTIVE_CORE, ROCKETOPS_COMMAND_EXTRACT_STAFF},
 };
 
 struct GiovanniBeatFlagGate
@@ -3316,6 +3379,43 @@ static void Task_WingFlapSound(u8 taskId)
 }
 
 
+static bool8 IsGiovanniCoreChapterChainComplete(void)
+{
+    return FlagGet(FLAG_GIO_MEM_CH1_COMPLETE) && FlagGet(FLAG_GIO_MEM_CH2_COMPLETE);
+}
+
+static bool8 IsGiovanniExtendedContentUnlockedForChapter(u16 chapterId)
+{
+    u16 unlockMask = VarGet(VAR_GIO_MEM_EXT_UNLOCK_MASK);
+
+    switch (chapterId)
+    {
+    case 1:
+        return (unlockMask & GIO_EXT_CH1_UNLOCK_MASK) != 0;
+    case 2:
+        return (unlockMask & GIO_EXT_CH2_UNLOCK_MASK) != 0;
+    case 3:
+        return (unlockMask & GIO_EXT_CH3_UNLOCK_MASK) != 0;
+    default:
+        return FALSE;
+    }
+}
+
+static u8 GetGiovanniMandatoryCoreRuntimeTargetMinutes(u8 chapterId)
+{
+    u8 i;
+
+    for (i = 0; i < ARRAY_COUNT(sGiovanniChapterRuntimeTargets); i++)
+    {
+        if (sGiovanniChapterRuntimeTargets[i].chapterId == chapterId)
+            return sGiovanniChapterRuntimeTargets[i].mandatoryCoreMinutes;
+    }
+
+    return 0;
+}
+
+
+
 
 static void ResetRocketOpsState(void)
 {
@@ -3323,6 +3423,7 @@ static void ResetRocketOpsState(void)
     VarSet(VAR_ROCKETOPS_ALERT, 0);
     VarSet(VAR_ROCKETOPS_PROGRESS, 0);
     VarSet(VAR_ROCKETOPS_AGENT_TARGET, 0);
+    VarSet(VAR_GIO_MEM_EXT_UNLOCK_MASK, 0);
     FlagClear(FLAG_ROCKETOPS_TERMINAL_UNLOCKED);
     FlagClear(FLAG_ROCKETOPS_COMMAND_COOLDOWN);
     FlagClear(FLAG_ROCKETOPS_ROUTE_SECURED);
@@ -3471,6 +3572,7 @@ u16 StartGiovanniMemoryMode(void)
     SetDynamicWarpWithCoords(0, MAP_GROUP(MAP_ROCKET_HIDEOUT_B4F), MAP_NUM(MAP_ROCKET_HIDEOUT_B4F), WARP_ID_NONE, 19, 6);
     ResetRocketOpsState();
     VarSet(VAR_ROCKETOPS_CHAPTER, 1);
+    VarSet(VAR_ROCKETOPS_PROGRESS, GetGiovanniMandatoryCoreRuntimeTargetMinutes(1));
 
     if (!LoadGiovanniMemoryPartyTemplate(1))
         return FALSE;
@@ -3492,6 +3594,7 @@ u16 StartGiovanniMemoryMode(void)
 u16 SetGiovanniMemoryModeChapter3Complete(void)
 {
     VarSet(VAR_GIO_CHAPTER, 3);
+    VarSet(VAR_ROCKETOPS_PROGRESS, GetGiovanniMandatoryCoreRuntimeTargetMinutes(3));
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
     FlagSet(FLAG_GIO_MEM_CH3_STARTED);
     FlagSet(FLAG_GIO_MEM_CH3_COMPLETE);
@@ -3663,6 +3766,9 @@ bool8 HandleGiovanniMemoryModeBootstrapOnLoad(void)
 
 u16 IsGiovanniMemoryModeReadyForBattle(void)
 {
+    if (!IsGiovanniCoreChapterChainComplete())
+        return FALSE;
+
     if (!IsGiovanniNarrativeBeatReady(GIO_BEAT_CH3_ENTRY))
         return FALSE;
 
@@ -3749,6 +3855,14 @@ u16 Special_RocketOps_ValidateCommandContext(void)
         return FALSE;
     if (commandId >= ROCKETOPS_COMMAND_COUNT)
         return FALSE;
+
+    if (chapterId > 0 && !IsGiovanniExtendedContentUnlockedForChapter(chapterId))
+    {
+        const struct GiovanniChapterObjective *objective = &sGiovanniChapterObjectives[((chapterId - 1) * ROCKETOPS_COMMAND_COUNT) + commandId];
+
+        if (objective->objectiveType == GIO_OBJECTIVE_EXTENDED)
+            return FALSE;
+    }
 
     return IsRocketOpsTriggerTypeValidForCommand(commandId, triggerType);
 }

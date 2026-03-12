@@ -103,6 +103,7 @@ ViridianCity_Gym_EventScript_GiovanniStartBattle::
 ViridianCity_Gym_EventScript_MemorySpaceMarker::
 	goto_if_ne VAR_CHAPTER_ID, 3, ViridianCity_Gym_EventScript_MemorySpaceMarkerMismatch
 	goto_if_set FLAG_GIO_MEM_CH3_COMPLETE, ViridianCity_Gym_EventScript_MemorySpaceMarkerComplete
+	setvar VAR_GIO_MEM_EXT_UNLOCK_MASK, 7
 	msgbox ViridianCity_Gym_Text_MemoryChapterIntro, MSGBOX_AUTOCLOSE
 	return
 

@@ -27,6 +27,7 @@ RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub::
 RocketHideout_B4F_EventScript_MemorySpaceMarker::
 	goto_if_ne VAR_CHAPTER_ID, 1, RocketHideout_B4F_EventScript_MemoryChapterMismatchMarker
 	goto_if_set FLAG_GIO_MEM_CH1_COMPLETE, RocketHideout_B4F_EventScript_MemorySpaceMarkerComplete
+	setvar VAR_GIO_MEM_EXT_UNLOCK_MASK, 1
 	msgbox RocketHideout_B4F_Text_MemoryChapterIntro, MSGBOX_AUTOCLOSE
 	end
 
@@ -98,6 +99,7 @@ RocketHideout_B4F_EventScript_SetMemoryCeladonOutcome::
 	setflag FLAG_GIO_MEM_CH1_COMPLETE
 	setflag FLAG_GIO_MEM_CH2_STARTED
 	setvar VAR_GIO_CHAPTER, 2
+	setvar VAR_ROCKETOPS_PROGRESS, 14
 	setflag FLAG_GIO_MEM_HIDE_CELADON_ROCKETS
 	special SetGiovanniMemoryModePartyForCurrentChapter
 	special SyncGiovanniMemoryModeNpcState

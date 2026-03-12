@@ -25,6 +25,7 @@ SilphCo_11F_EventScript_MemoryDesyncReturnToHub::
 SilphCo_11F_EventScript_MemorySpaceMarker::
 	goto_if_ne VAR_CHAPTER_ID, 2, SilphCo_11F_EventScript_MemoryChapterMismatchMarker
 	goto_if_set FLAG_GIO_MEM_CH2_COMPLETE, SilphCo_11F_EventScript_MemorySpaceMarkerComplete
+	setvar VAR_GIO_MEM_EXT_UNLOCK_MASK, 3
 	msgbox SilphCo_11F_Text_MemoryChapterIntro, MSGBOX_AUTOCLOSE
 	end
 
@@ -143,6 +144,7 @@ SilphCo_11F_EventScript_SetMemorySaffronOutcome::
 	setflag FLAG_GIO_MEM_CH2_COMPLETE
 	setflag FLAG_GIO_MEM_CH3_STARTED
 	setvar VAR_GIO_CHAPTER, 3
+	setvar VAR_ROCKETOPS_PROGRESS, 10
 	setflag FLAG_GIO_MEM_HIDE_SAFFRON_ROCKETS
 	clearflag FLAG_GIO_MEM_HIDE_SAFFRON_CIVILIANS
 	special SetGiovanniMemoryModePartyForCurrentChapter
