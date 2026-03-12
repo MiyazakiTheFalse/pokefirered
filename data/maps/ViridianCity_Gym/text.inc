@@ -198,3 +198,11 @@ ViridianCity_Gym_Text_MemoryMedicKitMismatch::
 ViridianCity_Gym_Text_MemoryMedicKitOffline::
     .string "The cache is sealed. It only unlocks in\n"
     .string "GIOVANNI's memory reconstruction.$"
+
+ViridianCity_Gym_Text_GiovanniMemoryClosingMonologueFull::
+    .string "[MEMORY] The chamber settles into the\n"
+    .string "present. RED's frame is restored.$"
+
+ViridianCity_Gym_Text_GiovanniMemoryClosingMonologueFallback::
+    .string "[MEMORY] Residual echoes are fading.\n"
+    .string "Hold position while the chamber stabilizes.$"
