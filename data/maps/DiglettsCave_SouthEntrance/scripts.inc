@@ -3,6 +3,8 @@ DiglettsCave_SouthEntrance_MapScripts::
 	.byte 0
 
 DiglettsCave_SouthEntrance_OnTransition::
+	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, DiglettsCave_SouthEntrance_EventScript_MemoryRoutingCheck
 	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, DiglettsCave_SouthEntrance_EventScript_MemoryRoutingSkip
 	goto DiglettsCave_SouthEntrance_EventScript_MemoryDesyncReturnToHub

@@ -3,6 +3,9 @@ SilphCo_Elevator_MapScripts::
 
 SilphCo_Elevator_EventScript_FloorSelect::
 	lockall
+	setvar VAR_0x8004, 2
+	call EventScript_GiovanniSharedWarp_ResolvePrecedence
+	goto_if_eq VAR_RESULT, GIO_SHARED_WARP_RESULT_CHAPTER_ROUTE, SilphCo_Elevator_EventScript_MemoryRouteTo11F
 	setvar VAR_0x8004, 1
 	call_if_unset FLAG_TEMP_2, EventScript_GetElevatorFloor
 	copyvar VAR_0x8005, VAR_ELEVATOR_FLOOR
@@ -141,3 +144,8 @@ SilphCo_Elevator_EventScript_MoveElevator::
 	waitstate
 	setflag FLAG_TEMP_2
 	return
+
+SilphCo_Elevator_EventScript_MemoryRouteTo11F::
+	setdynamicwarp MAP_SILPH_CO_11F, 255, 13, 3
+	releaseall
+	end

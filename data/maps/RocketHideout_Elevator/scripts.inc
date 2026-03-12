@@ -3,6 +3,9 @@ RocketHideout_Elevator_MapScripts::
 
 RocketHideout_Elevator_EventScript_FloorSelect::
 	lockall
+	setvar VAR_0x8004, 1
+	call EventScript_GiovanniSharedWarp_ResolvePrecedence
+	goto_if_eq VAR_RESULT, GIO_SHARED_WARP_RESULT_CHAPTER_ROUTE, RocketHideout_Elevator_EventScript_MemoryRouteToB4F
 	goto_if_unset FLAG_CAN_USE_ROCKET_HIDEOUT_LIFT, RocketHideout_Elevator_EventScript_NeedKey
 	setvar VAR_0x8004, 2
 	call_if_unset FLAG_TEMP_2, EventScript_GetElevatorFloor
@@ -82,6 +85,11 @@ RocketHideout_Elevator_EventScript_MoveElevator::
 	waitstate
 	setflag FLAG_TEMP_2
 	return
+
+RocketHideout_Elevator_EventScript_MemoryRouteToB4F::
+	setdynamicwarp MAP_ROCKET_HIDEOUT_B4F, 255, 20, 23
+	releaseall
+	end
 
 RocketHideout_Elevator_EventScript_NeedKey::
 	msgbox RocketHideout_Elevator_Text_AppearsToNeedAKey
