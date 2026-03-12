@@ -184,6 +184,10 @@ ViridianCity_Gym_Text_MemoryChapterOutro::
     .string "[MEMORY:C3] Chapter objective complete.\n"
     .string "The reconstruction will hand control\n"
     .string "back to the present frame.$"
+ViridianCity_Gym_Text_RocketOps_MilestoneLogged_C3::
+    .string "[ROCKETOPS:C3] Milestone logged. Final\n"
+    .string "chapter chain archived before collapse.$"
+
 
 ViridianCity_Gym_Text_MemoryExitBlocked::
     .string "[MEMORY] The gym doors open to nothing.\n"

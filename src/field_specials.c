@@ -3323,12 +3323,19 @@ static void ResetRocketOpsState(void)
     VarSet(VAR_ROCKETOPS_ALERT, 0);
     VarSet(VAR_ROCKETOPS_PROGRESS, 0);
     VarSet(VAR_ROCKETOPS_AGENT_TARGET, 0);
+    VarSet(VAR_ROCKETOPS_CHAIN_STATE, 0);
+    VarSet(VAR_ROCKETOPS_CH1_STAGE, 0);
+    VarSet(VAR_ROCKETOPS_CH2_STAGE, 0);
+    VarSet(VAR_ROCKETOPS_CH3_STAGE, 0);
     FlagClear(FLAG_ROCKETOPS_TERMINAL_UNLOCKED);
     FlagClear(FLAG_ROCKETOPS_COMMAND_COOLDOWN);
     FlagClear(FLAG_ROCKETOPS_ROUTE_SECURED);
     FlagClear(FLAG_ROCKETOPS_AGENT_DEPLOYED);
     FlagClear(FLAG_ROCKETOPS_DATA_DESTROYED);
     FlagClear(FLAG_ROCKETOPS_STAFF_EXTRACTED);
+    FlagClear(FLAG_ROCKETOPS_MILESTONE_CH1_LOGGED);
+    FlagClear(FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED);
+    FlagClear(FLAG_ROCKETOPS_MILESTONE_CH3_LOGGED);
 }
 
 static bool8 IsRocketOpsTriggerTypeValidForCommand(u16 commandId, u16 triggerType)
@@ -3740,6 +3747,8 @@ u16 Special_RocketOps_ValidateCommandContext(void)
     u16 chapterId = VarGet(VAR_ROCKETOPS_CHAPTER);
     u16 commandId = gSpecialVar_0x8004;
     u16 triggerType = gSpecialVar_0x8005;
+    u16 chapterStageVar;
+    u16 chapterStage;
 
     if (!FlagGet(FLAG_ROCKETOPS_TERMINAL_UNLOCKED))
         return FALSE;
@@ -3749,17 +3758,57 @@ u16 Special_RocketOps_ValidateCommandContext(void)
         return FALSE;
     if (commandId >= ROCKETOPS_COMMAND_COUNT)
         return FALSE;
+    if (!IsRocketOpsTriggerTypeValidForCommand(commandId, triggerType))
+        return FALSE;
 
-    return IsRocketOpsTriggerTypeValidForCommand(commandId, triggerType);
+    chapterStageVar = VAR_ROCKETOPS_CH1_STAGE + chapterId - 1;
+    chapterStage = VarGet(chapterStageVar);
+
+    if (chapterId == 1)
+    {
+        if (commandId == ROCKETOPS_COMMAND_SECURE_ROUTE)
+            return chapterStage == 0;
+        if (commandId == ROCKETOPS_COMMAND_DEPLOY_AGENT)
+            return chapterStage == 1;
+        if (commandId == ROCKETOPS_COMMAND_EXTRACT_STAFF)
+            return chapterStage == 2;
+        return FALSE;
+    }
+
+    if (chapterId == 2)
+    {
+        if (commandId == ROCKETOPS_COMMAND_SECURE_ROUTE)
+            return chapterStage == 0;
+        if (commandId == ROCKETOPS_COMMAND_DESTROY_DATA)
+            return chapterStage == 1;
+        if (commandId == ROCKETOPS_COMMAND_EXTRACT_STAFF)
+            return chapterStage == 2;
+        return FALSE;
+    }
+
+    if (commandId == ROCKETOPS_COMMAND_DEPLOY_AGENT)
+        return chapterStage == 0;
+    if (commandId == ROCKETOPS_COMMAND_DESTROY_DATA)
+        return chapterStage == 1;
+    if (commandId == ROCKETOPS_COMMAND_EXTRACT_STAFF)
+        return chapterStage == 2;
+    return FALSE;
 }
 
 u16 Special_RocketOps_WritebackState(void)
 {
     s32 alert;
+    u16 chapterId = VarGet(VAR_ROCKETOPS_CHAPTER);
     u16 commandId = gSpecialVar_0x8004;
+    u16 chapterStageVar;
 
     if (commandId >= ROCKETOPS_COMMAND_COUNT)
         return FALSE;
+
+    if (chapterId < 1 || chapterId > 3)
+        return FALSE;
+
+    chapterStageVar = VAR_ROCKETOPS_CH1_STAGE + chapterId - 1;
 
     switch (commandId)
     {
@@ -3769,11 +3818,15 @@ u16 Special_RocketOps_WritebackState(void)
         if (alert > 0)
             VarSet(VAR_ROCKETOPS_ALERT, alert - 1);
         VarSet(VAR_ROCKETOPS_PROGRESS, VarGet(VAR_ROCKETOPS_PROGRESS) + 1);
+        if (VarGet(chapterStageVar) == 0)
+            VarSet(chapterStageVar, 1);
         break;
     case ROCKETOPS_COMMAND_DEPLOY_AGENT:
         FlagSet(FLAG_ROCKETOPS_AGENT_DEPLOYED);
         VarSet(VAR_ROCKETOPS_AGENT_TARGET, gSpecialVar_0x8005);
         VarSet(VAR_ROCKETOPS_PROGRESS, VarGet(VAR_ROCKETOPS_PROGRESS) + 1);
+        if (VarGet(chapterStageVar) == 1)
+            VarSet(chapterStageVar, 2);
         break;
     case ROCKETOPS_COMMAND_DESTROY_DATA:
         FlagSet(FLAG_ROCKETOPS_DATA_DESTROYED);
@@ -3783,9 +3836,20 @@ u16 Special_RocketOps_WritebackState(void)
     case ROCKETOPS_COMMAND_EXTRACT_STAFF:
         FlagSet(FLAG_ROCKETOPS_STAFF_EXTRACTED);
         VarSet(VAR_ROCKETOPS_PROGRESS, VarGet(VAR_ROCKETOPS_PROGRESS) + 2);
+        if (VarGet(chapterStageVar) == 2)
+        {
+            VarSet(chapterStageVar, 3);
+            if (chapterId == 1)
+                FlagSet(FLAG_ROCKETOPS_MILESTONE_CH1_LOGGED);
+            else if (chapterId == 2)
+                FlagSet(FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED);
+            else
+                FlagSet(FLAG_ROCKETOPS_MILESTONE_CH3_LOGGED);
+        }
         break;
     }
 
+    VarSet(VAR_ROCKETOPS_CHAIN_STATE, VarGet(chapterStageVar));
     FlagSet(FLAG_ROCKETOPS_COMMAND_COOLDOWN);
     SyncGiovanniMemoryModeNpcState();
     return TRUE;

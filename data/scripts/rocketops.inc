@@ -5,29 +5,48 @@ EventScript_RocketOps_Terminal::
 	specialvar VAR_RESULT, Special_RocketOps_OpenTerminal
 	goto_if_eq VAR_RESULT, FALSE, EventScript_RocketOps_TerminalOffline
 	msgbox Text_RocketOpsTerminalBoot
+	goto_if_eq VAR_ROCKETOPS_CHAPTER, 1, EventScript_RocketOps_MenuLoop_C1
+	goto_if_eq VAR_ROCKETOPS_CHAPTER, 2, EventScript_RocketOps_MenuLoop_C2
+	goto_if_eq VAR_ROCKETOPS_CHAPTER, 3, EventScript_RocketOps_MenuLoop_C3
+	goto EventScript_RocketOps_CommandChapterMismatch
 
-EventScript_RocketOps_MenuLoop::
-	multichoice 0, 0, MULTICHOICE_ROCKETOPS_COMMANDS, FALSE
+EventScript_RocketOps_MenuLoop_C1::
+	multichoice 0, 0, MULTICHOICE_ROCKETOPS_COMMANDS_C1, FALSE
 	switch VAR_RESULT
 	case 0, EventScript_RocketOps_SelectSecureRoute
 	case 1, EventScript_RocketOps_SelectDeployAgent
-	case 2, EventScript_RocketOps_SelectDestroyData
-	case 3, EventScript_RocketOps_SelectExtractStaff
-	case 4, EventScript_RocketOps_Close
+	case 2, EventScript_RocketOps_SelectExtractStaff
+	case 3, EventScript_RocketOps_Close
+
+EventScript_RocketOps_MenuLoop_C2::
+	multichoice 0, 0, MULTICHOICE_ROCKETOPS_COMMANDS_C2, FALSE
+	switch VAR_RESULT
+	case 0, EventScript_RocketOps_SelectSecureRoute
+	case 1, EventScript_RocketOps_SelectDestroyData
+	case 2, EventScript_RocketOps_SelectExtractStaff
+	case 3, EventScript_RocketOps_Close
+
+EventScript_RocketOps_MenuLoop_C3::
+	multichoice 0, 0, MULTICHOICE_ROCKETOPS_COMMANDS_C3, FALSE
+	switch VAR_RESULT
+	case 0, EventScript_RocketOps_SelectDeployAgent
+	case 1, EventScript_RocketOps_SelectDestroyData
+	case 2, EventScript_RocketOps_SelectExtractStaff
+	case 3, EventScript_RocketOps_Close
 
 EventScript_RocketOps_SelectSecureRoute::
 	setvar VAR_0x8004, 0
 	specialvar VAR_RESULT, Special_RocketOps_ValidateCommandContext
 	goto_if_eq VAR_RESULT, TRUE, EventScript_RocketOps_Command_SecureRoute
 	msgbox Text_RocketOpsFailSecureRoute
-	goto EventScript_RocketOps_MenuLoop
+	goto EventScript_RocketOps_MenuReturn
 
 EventScript_RocketOps_SelectDeployAgent::
 	setvar VAR_0x8004, 1
 	specialvar VAR_RESULT, Special_RocketOps_ValidateCommandContext
 	goto_if_eq VAR_RESULT, TRUE, EventScript_RocketOps_Command_DeployAgent
 	msgbox Text_RocketOpsFailDeployAgent
-	goto EventScript_RocketOps_MenuLoop
+	goto EventScript_RocketOps_MenuReturn
 
 EventScript_RocketOps_SelectDestroyData::
 	setvar VAR_0x8004, 2
@@ -35,7 +54,7 @@ EventScript_RocketOps_SelectDestroyData::
 	goto_if_eq VAR_RESULT, TRUE, EventScript_RocketOps_Command_DestroyData
 	msgbox Text_RocketOpsFailDestroyData
 	addvar VAR_ROCKETOPS_ALERT, 1
-	goto EventScript_RocketOps_MenuLoop
+	goto EventScript_RocketOps_MenuReturn
 
 EventScript_RocketOps_SelectExtractStaff::
 	setvar VAR_0x8004, 3
@@ -43,6 +62,12 @@ EventScript_RocketOps_SelectExtractStaff::
 	goto_if_eq VAR_RESULT, TRUE, EventScript_RocketOps_Command_ExtractStaff
 	msgbox Text_RocketOpsFailExtractStaff
 	addvar VAR_ROCKETOPS_ALERT, 1
+	goto EventScript_RocketOps_MenuReturn
+
+EventScript_RocketOps_MenuReturn::
+	goto_if_eq VAR_ROCKETOPS_CHAPTER, 1, EventScript_RocketOps_MenuLoop_C1
+	goto_if_eq VAR_ROCKETOPS_CHAPTER, 2, EventScript_RocketOps_MenuLoop_C2
+	goto_if_eq VAR_ROCKETOPS_CHAPTER, 3, EventScript_RocketOps_MenuLoop_C3
 	goto EventScript_RocketOps_Close
 
 EventScript_RocketOps_Command_SecureRoute::

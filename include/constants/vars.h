@@ -201,10 +201,10 @@
 #define VAR_ROCKETOPS_ALERT        0x4093
 #define VAR_ROCKETOPS_PROGRESS     0x4094
 #define VAR_ROCKETOPS_AGENT_TARGET 0x4095
-#define VAR_0x4096                 0x4096
-#define VAR_0x4097                 0x4097
-#define VAR_0x4098                 0x4098
-#define VAR_0x4099                 0x4099
+#define VAR_ROCKETOPS_CHAIN_STATE  0x4096
+#define VAR_ROCKETOPS_CH1_STAGE    0x4097
+#define VAR_ROCKETOPS_CH2_STAGE    0x4098
+#define VAR_ROCKETOPS_CH3_STAGE    0x4099
 #define VAR_0x409A                 0x409A
 #define VAR_0x409B                 0x409B
 #define VAR_0x409C                 0x409C
