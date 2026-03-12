@@ -88,6 +88,7 @@ gStdScripts::
 gStdScriptsEnd::
 
 	.include "data/scripts/giovanni_shared_warps.inc"
+	.include "data/scripts/rocketops.inc"
 
 	.include "data/maps/BattleColosseum_2P/scripts.inc"
 	.include "data/maps/TradeCenter/scripts.inc"

@@ -28,27 +28,24 @@ SilphCo_11F_EventScript_MemorySpaceMarker::
 
 
 SilphCo_11F_EventScript_MemoryFieldAide::
-	lockall
-	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, SilphCo_11F_EventScript_MemoryFieldAideOffline
-	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, SilphCo_11F_EventScript_MemoryFieldAideOffline
-	goto_if_ne VAR_CHAPTER_ID, 2, SilphCo_11F_EventScript_MemoryFieldAideMismatch
-	goto_if_unset FLAG_GIO_MEM_CH1_COMPLETE, SilphCo_11F_EventScript_MemoryFieldAideMismatch
-	goto_if_set FLAG_GIO_MEM_CH2_COMPLETE, SilphCo_11F_EventScript_MemoryFieldAideMismatch
-	msgbox SilphCo_11F_Text_MemoryFieldAideIntro
-	special HealPlayerParty
-	msgbox SilphCo_11F_Text_MemoryFieldAideDone
-	releaseall
-	end
+	setvar VAR_0x8005, 2 @ ROCKETOPS_TRIGGER_SURVEILLANCE_NODE
+	goto EventScript_RocketOps_Terminal
 
-SilphCo_11F_EventScript_MemoryFieldAideMismatch::
-	msgbox SilphCo_11F_Text_MemoryFieldAideMismatch
-	releaseall
-	end
+EventScript_RocketOps_Command_SecureRoute_C2::
+	msgbox SilphCo_11F_Text_RocketOps_SecureRoute_C2
+	goto EventScript_RocketOps_CommandFinalize
 
-SilphCo_11F_EventScript_MemoryFieldAideOffline::
-	msgbox SilphCo_11F_Text_MemoryFieldAideOffline
-	releaseall
-	end
+EventScript_RocketOps_Command_DeployAgent_C2::
+	msgbox SilphCo_11F_Text_RocketOps_DeployAgent_C2
+	goto EventScript_RocketOps_CommandFinalize
+
+EventScript_RocketOps_Command_DestroyData_C2::
+	msgbox SilphCo_11F_Text_RocketOps_DestroyData_C2
+	goto EventScript_RocketOps_CommandFinalize
+
+EventScript_RocketOps_Command_ExtractStaff_C2::
+	msgbox SilphCo_11F_Text_RocketOps_ExtractStaff_C2
+	goto EventScript_RocketOps_CommandFinalize
 
 SilphCo_11F_OnLoad::
 	call_if_unset FLAG_SILPH_11F_DOOR, EventScript_Close11FDoor

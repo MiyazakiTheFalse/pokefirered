@@ -1528,6 +1528,14 @@
 #define FLAG_0x8FE                                                  (SYS_FLAGS + 0xFE)
 #define FLAG_0x8FF                                                  (SYS_FLAGS + 0xFF)
 
+// RocketOps runtime flags.
+#define FLAG_ROCKETOPS_TERMINAL_UNLOCKED                             FLAG_0x8E5
+#define FLAG_ROCKETOPS_COMMAND_COOLDOWN                              FLAG_0x8E6
+#define FLAG_ROCKETOPS_ROUTE_SECURED                                 FLAG_0x8E7
+#define FLAG_ROCKETOPS_AGENT_DEPLOYED                                FLAG_0x8E8
+#define FLAG_ROCKETOPS_DATA_DESTROYED                                FLAG_0x8E9
+#define FLAG_ROCKETOPS_STAFF_EXTRACTED                               FLAG_0x8EA
+
 // Viridian Gym Giovanni memory mode runtime flags.
 #define FLAG_GIO_MEM_SEQUENCE_VIEWED                                 FLAG_0x8EE
 #define FLAG_GIO_MEM_CH1_STARTED                                     FLAG_0x8EF

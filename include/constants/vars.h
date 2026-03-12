@@ -197,10 +197,10 @@
 #define VAR_0x408F                 0x408F
 #define VAR_MODE_GIOVANNI_MEMORY   0x4090
 #define VAR_CHAPTER_ID             0x4091
-#define VAR_0x4092                 0x4092
-#define VAR_0x4093                 0x4093
-#define VAR_0x4094                 0x4094
-#define VAR_0x4095                 0x4095
+#define VAR_ROCKETOPS_CHAPTER      0x4092
+#define VAR_ROCKETOPS_ALERT        0x4093
+#define VAR_ROCKETOPS_PROGRESS     0x4094
+#define VAR_ROCKETOPS_AGENT_TARGET 0x4095
 #define VAR_0x4096                 0x4096
 #define VAR_0x4097                 0x4097
 #define VAR_0x4098                 0x4098
