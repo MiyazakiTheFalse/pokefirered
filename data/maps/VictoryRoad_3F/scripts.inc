@@ -31,7 +31,12 @@ VictoryRoad_3F_EventScript_FloorSwitchAlreadyPressed::
 
 VictoryRoad_3F_EventScript_George::
 	trainerbattle_single TRAINER_COOLTRAINER_GEORGE, VictoryRoad_3F_Text_GeorgeIntro, VictoryRoad_3F_Text_GeorgeDefeat
+	goto_if_set FLAG_ROCKET_DISBANDED, VictoryRoad_3F_EventScript_George_PostDisband
 	msgbox VictoryRoad_3F_Text_GeorgePostBattle, MSGBOX_AUTOCLOSE
+	end
+
+VictoryRoad_3F_EventScript_George_PostDisband::
+	msgbox VictoryRoad_3F_Text_GeorgePostBattle_PostDisband, MSGBOX_AUTOCLOSE
 	end
 
 VictoryRoad_3F_EventScript_Colby::

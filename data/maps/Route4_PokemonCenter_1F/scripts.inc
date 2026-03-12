@@ -16,7 +16,13 @@ Route4_PokemonCenter_1F_EventScript_Boy::
 
 Route4_PokemonCenter_1F_EventScript_Gentleman::
 	lock
+	goto_if_set FLAG_ROCKET_DISBANDED, Route4_PokemonCenter_1F_EventScript_Gentleman_PostDisband
 	msgbox Route4_PokemonCenter_1F_Text_TeamRocketAttacksCerulean
+	release
+	end
+
+Route4_PokemonCenter_1F_EventScript_Gentleman_PostDisband::
+	msgbox Route4_PokemonCenter_1F_Text_TeamRocketAftermath
 	release
 	end
 

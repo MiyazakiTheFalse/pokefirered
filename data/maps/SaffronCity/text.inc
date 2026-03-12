@@ -113,3 +113,30 @@ SaffronCity_Text_HowCanClubNotRecognizeLance::
     .string "He's cool, and yet passionate!\l"
     .string "He's the greatest, LANCE!$"
 
+SaffronCity_Text_FormerRocket1::
+    .string "No one backs us anymore.\n"
+    .string "TEAM ROCKET is finished.$"
+
+SaffronCity_Text_FormerRocket2::
+    .string "The BOSS vanished after VIRIDIAN.\n"
+    .string "So did our plans.$"
+
+SaffronCity_Text_FormerRocket3::
+    .string "I don't have the stomach to keep\n"
+    .string "fighting now.$"
+
+SaffronCity_Text_FormerRocket4::
+    .string "SAFFRON doesn't belong to us\n"
+    .string "anymore. Good.$"
+
+SaffronCity_Text_FormerRocket5::
+    .string "Turns out crime feels exciting\n"
+    .string "right up until it ends badly.$"
+
+SaffronCity_Text_FormerRocket6::
+    .string "Sorry about before...\n"
+    .string "I was looking for a fight.$"
+
+SaffronCity_Text_FormerRocket7::
+    .string "No more schemes with SILPH.\n"
+    .string "We're done exploiting anyone.$"

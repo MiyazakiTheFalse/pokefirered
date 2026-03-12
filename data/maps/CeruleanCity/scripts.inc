@@ -175,11 +175,27 @@ CeruleanCity_EventScript_Grunt::
 	end
 
 CeruleanCity_EventScript_GruntDefeated::
+	goto_if_set FLAG_ROCKET_DISBANDED, CeruleanCity_EventScript_GruntDefeated_PostDisband
 	msgbox CeruleanCity_Text_OkayIllReturnStolenTM
 	checkitemspace ITEM_TM28
 	goto_if_eq VAR_RESULT, FALSE, CeruleanCity_EventScript_NoRoomForTM28
 	giveitem_msg CeruleanCity_Text_RecoveredTM28FromGrunt, ITEM_TM28
 	msgbox CeruleanCity_Text_BetterGetMovingBye
+	closemessage
+	fadescreen FADE_TO_BLACK
+	removeobject LOCALID_CERULEAN_GRUNT
+	fadescreen FADE_FROM_BLACK
+	setflag FLAG_GOT_TM28_FROM_ROCKET
+	release
+	end
+
+
+CeruleanCity_EventScript_GruntDefeated_PostDisband::
+	msgbox CeruleanCity_Text_OkayIllReturnStolenTM_PostDisband
+	checkitemspace ITEM_TM28
+	goto_if_eq VAR_RESULT, FALSE, CeruleanCity_EventScript_NoRoomForTM28
+	giveitem_msg CeruleanCity_Text_RecoveredTM28FromGrunt, ITEM_TM28
+	msgbox CeruleanCity_Text_BetterGetMovingBye_PostDisband
 	closemessage
 	fadescreen FADE_TO_BLACK
 	removeobject LOCALID_CERULEAN_GRUNT
@@ -226,7 +242,17 @@ CeruleanCity_EventScript_GruntTrigger::
 CeruleanCity_EventScript_Policeman::
 	lock
 	faceplayer
+	goto_if_set FLAG_ROCKET_DISBANDED, CeruleanCity_EventScript_Policeman_PostDisband
 	msgbox CeruleanCity_Text_PeopleHereWereRobbed
+	closemessage
+	applymovement LOCALID_CERULEAN_POLICEMAN, Common_Movement_FaceOriginalDirection
+	waitmovement 0
+	release
+	end
+
+
+CeruleanCity_EventScript_Policeman_PostDisband::
+	msgbox CeruleanCity_Text_PeopleHereWereRobbed_PostDisband
 	closemessage
 	applymovement LOCALID_CERULEAN_POLICEMAN, Common_Movement_FaceOriginalDirection
 	waitmovement 0

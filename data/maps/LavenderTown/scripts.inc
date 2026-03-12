@@ -27,7 +27,12 @@ LavenderTown_EventScript_WorkerM::
 	end
 
 LavenderTown_EventScript_Boy::
+	goto_if_set FLAG_ROCKET_DISBANDED, LavenderTown_EventScript_Boy_PostDisband
 	msgbox LavenderTown_Text_GhostsAppearedInTower, MSGBOX_NPC
+	end
+
+LavenderTown_EventScript_Boy_PostDisband::
+	msgbox LavenderTown_Text_GhostsAftermath, MSGBOX_NPC
 	end
 
 LavenderTown_EventScript_TownSign::

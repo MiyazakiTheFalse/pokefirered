@@ -189,3 +189,19 @@ CeruleanCity_Text_GymSign::
     .string "LEADER: MISTY\l"
     .string "The Tomboyish Mermaid!$"
 
+
+
+CeruleanCity_Text_OkayIllReturnStolenTM_PostDisband::
+    .string "Tch...\n"
+    .string "Guess there is no TEAM\n"
+    .string "ROCKET left to report to.$"
+
+CeruleanCity_Text_BetterGetMovingBye_PostDisband::
+    .string "Take your TM and go.\n"
+    .string "I'm done with this racket.$"
+
+CeruleanCity_Text_PeopleHereWereRobbed_PostDisband::
+    .string "Reports are way down since TEAM\n"
+    .string "ROCKET collapsed.\p"
+    .string "We're still returning stolen goods,\n"
+    .string "but CERULEAN can breathe again.$"

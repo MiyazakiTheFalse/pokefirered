@@ -34,6 +34,17 @@ CeladonCity_Text_GetLostOrIllPunchYou::
 CeladonCity_Text_KeepOutOfTeamRocketsWay::
     .string "Keep out of TEAM ROCKET's way!$"
 
+CeladonCity_Text_FormerRocketGrunt1::
+    .string "No orders, no hideout, no BOSS...\p"
+    .string "TEAM ROCKET's done.\n"
+    .string "I'm just passing through CELADON.$"
+
+CeladonCity_Text_FormerRocketGrunt2::
+    .string "I was rough when I ran with\n"
+    .string "TEAM ROCKET.\p"
+    .string "Now I'm trying to keep my head down\n"
+    .string "and stay out of trouble.$"
+
 CeladonCity_Text_ExplainXAccuracyDireHit::
     .string "TRAINER TIPS\p"
     .string "X ACCURACY boosts the accuracy of\n"

@@ -205,6 +205,7 @@ ViridianCity_Gym_EventScript_DefeatedGiovanni::
 	goto_if_set FLAG_GIO_MEM_CH3_COMPLETE, ViridianCity_Gym_EventScript_DefeatedGiovanniMemory
 	famechecker FAMECHECKER_GIOVANNI, 3
 	setflag FLAG_HIDE_MISC_KANTO_ROCKETS
+	setflag FLAG_ROCKET_DISBANDED
 	setflag FLAG_DEFEATED_LEADER_GIOVANNI
 	setflag FLAG_BADGE08_GET
 	setvar VAR_MAP_SCENE_ROUTE22, 3

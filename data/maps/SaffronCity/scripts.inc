@@ -12,31 +12,66 @@ SaffronCity_EventScript_MoveDoorGuardGrunt::
 	return
 
 SaffronCity_EventScript_RocketGrunt1::
+	goto_if_set FLAG_ROCKET_DISBANDED, SaffronCity_EventScript_RocketGrunt1_PostDisband
 	msgbox SaffronCity_Text_WhatDoYouWantGetLost, MSGBOX_NPC
 	end
 
+SaffronCity_EventScript_RocketGrunt1_PostDisband::
+	msgbox SaffronCity_Text_FormerRocket1, MSGBOX_NPC
+	end
+
 SaffronCity_EventScript_RocketGrunt2::
+	goto_if_set FLAG_ROCKET_DISBANDED, SaffronCity_EventScript_RocketGrunt2_PostDisband
 	msgbox SaffronCity_Text_BossTakeTownForTeamRocket, MSGBOX_NPC
 	end
 
+SaffronCity_EventScript_RocketGrunt2_PostDisband::
+	msgbox SaffronCity_Text_FormerRocket2, MSGBOX_NPC
+	end
+
 SaffronCity_EventScript_RocketGrunt3::
+	goto_if_set FLAG_ROCKET_DISBANDED, SaffronCity_EventScript_RocketGrunt3_PostDisband
 	msgbox SaffronCity_Text_DontGetDefiantOrIllHurtYou, MSGBOX_NPC
 	end
 
+SaffronCity_EventScript_RocketGrunt3_PostDisband::
+	msgbox SaffronCity_Text_FormerRocket3, MSGBOX_NPC
+	end
+
 SaffronCity_EventScript_RocketGrunt4::
+	goto_if_set FLAG_ROCKET_DISBANDED, SaffronCity_EventScript_RocketGrunt4_PostDisband
 	msgbox SaffronCity_Text_SaffronBelongsToTeamRocket, MSGBOX_NPC
 	end
 
+SaffronCity_EventScript_RocketGrunt4_PostDisband::
+	msgbox SaffronCity_Text_FormerRocket4, MSGBOX_NPC
+	end
+
 SaffronCity_EventScript_RocketGrunt5::
+	goto_if_set FLAG_ROCKET_DISBANDED, SaffronCity_EventScript_RocketGrunt5_PostDisband
 	msgbox SaffronCity_Text_CriminalLifeMakesMeFeelAlive, MSGBOX_NPC
 	end
 
+SaffronCity_EventScript_RocketGrunt5_PostDisband::
+	msgbox SaffronCity_Text_FormerRocket5, MSGBOX_NPC
+	end
+
 SaffronCity_EventScript_RocketGrunt6::
+	goto_if_set FLAG_ROCKET_DISBANDED, SaffronCity_EventScript_RocketGrunt6_PostDisband
 	msgbox SaffronCity_Text_WatchWhereYoureWalking, MSGBOX_NPC
 	end
 
+SaffronCity_EventScript_RocketGrunt6_PostDisband::
+	msgbox SaffronCity_Text_FormerRocket6, MSGBOX_NPC
+	end
+
 SaffronCity_EventScript_RocketGrunt7::
+	goto_if_set FLAG_ROCKET_DISBANDED, SaffronCity_EventScript_RocketGrunt7_PostDisband
 	msgbox SaffronCity_Text_WeCanExploitMonsAroundWorld, MSGBOX_NPC
+	end
+
+SaffronCity_EventScript_RocketGrunt7_PostDisband::
+	msgbox SaffronCity_Text_FormerRocket7, MSGBOX_NPC
 	end
 
 SaffronCity_EventScript_DoorGuardGrunt::

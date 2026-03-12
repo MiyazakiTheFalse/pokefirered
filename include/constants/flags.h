@@ -1548,6 +1548,9 @@
 #define FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATED                     FLAG_0x8FE
 #define FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATION_FAILED             FLAG_0x8FF
 
+// Canonical post-League world state flags.
+#define FLAG_ROCKET_DISBANDED                                       FLAG_0x8ED
+
 #define FLAGS_COUNT (FLAG_0x8FF + 1)
 
 // Special Flags (Stored in EWRAM (sSpecialFlags, not in the SaveBlock)

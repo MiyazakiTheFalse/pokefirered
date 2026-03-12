@@ -98,3 +98,8 @@ VictoryRoad_3F_Text_TyraNotEnoughMons::
     .string "TYRA: You can't battle with us if\n"
     .string "you have only one POKéMON.$"
 
+
+
+VictoryRoad_3F_Text_GeorgePostBattle_PostDisband::
+    .string "So, you're the one who ended\n"
+    .string "TEAM ROCKET for good?$"

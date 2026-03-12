@@ -40,3 +40,10 @@ LavenderTown_Text_PokemonTowerSign::
     .string "POKéMON TOWER\n"
     .string "Becalm the Spirits of POKéMON$"
 
+
+
+LavenderTown_Text_GhostsAftermath::
+    .string "The tower feels calmer now that\n"
+    .string "TEAM ROCKET is gone.\p"
+    .string "People still come to pray, but\n"
+    .string "the anger has faded.$"

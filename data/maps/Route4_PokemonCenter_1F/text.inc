@@ -52,3 +52,10 @@ Route4_PokemonCenter_1F_Text_ShouldStoreMonsUsingPC::
 Route4_PokemonCenter_1F_Text_ItsANewspaper::
     .string "It's a newspaper.$"
 
+
+
+Route4_PokemonCenter_1F_Text_TeamRocketAftermath::
+    .string "Funny, the papers finally ran a\n"
+    .string "quiet front page today.\p"
+    .string "No TEAM ROCKET raids.\n"
+    .string "Maybe this peace will stick.$"

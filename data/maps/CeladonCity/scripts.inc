@@ -52,11 +52,21 @@ CeladonCity_EventScript_Poliwrath::
 	end
 
 CeladonCity_EventScript_RocketGrunt1::
+	goto_if_set FLAG_ROCKET_DISBANDED, CeladonCity_EventScript_RocketGrunt1_PostDisband
 	msgbox CeladonCity_Text_KeepOutOfTeamRocketsWay, MSGBOX_NPC
 	end
 
+CeladonCity_EventScript_RocketGrunt1_PostDisband::
+	msgbox CeladonCity_Text_FormerRocketGrunt1, MSGBOX_NPC
+	end
+
 CeladonCity_EventScript_RocketGrunt2::
+	goto_if_set FLAG_ROCKET_DISBANDED, CeladonCity_EventScript_RocketGrunt2_PostDisband
 	msgbox CeladonCity_Text_GetLostOrIllPunchYou, MSGBOX_NPC
+	end
+
+CeladonCity_EventScript_RocketGrunt2_PostDisband::
+	msgbox CeladonCity_Text_FormerRocketGrunt2, MSGBOX_NPC
 	end
 
 CeladonCity_EventScript_Boy::
