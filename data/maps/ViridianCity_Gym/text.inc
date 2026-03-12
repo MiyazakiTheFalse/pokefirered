@@ -1,11 +1,11 @@
 ViridianCity_Gym_Text_GiovanniIntro::
     .string "So, you made it to me again.\n"
     .string "Persistent... and strong.\p"
-    .string "I was ready to rebuild TEAM ROCKET\n"
-    .string "from the shadows.\p"
-    .string "But if you stand in my way,\n"
-    .string "I will crush you without mercy!\p"
-    .string "Come, then!\n"
+    .string "You tore through my hideouts and\n"
+    .string "read the containment protocol notes.\p"
+    .string "Even the soul-reactive sample reports\n"
+    .string "didn't turn you back.\p"
+    .string "Then stand your ground!\n"
     .string "Face GIOVANNI at full power!{PLAY_BGM}{MUS_ENCOUNTER_ROCKET}$"
 
 ViridianCity_Gym_Text_GiovanniDefeat::

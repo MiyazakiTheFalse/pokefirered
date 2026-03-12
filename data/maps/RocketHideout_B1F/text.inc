@@ -19,7 +19,9 @@ RocketHideout_B1F_Text_Grunt2Defeat::
 
 RocketHideout_B1F_Text_Grunt2PostBattle::
     .string "This hideout stores\n"
-    .string "condensed SOUL energy.$"
+    .string "condensed SOUL energy.\p"
+    .string "We keep a containment protocol log\n"
+    .string "next to the vault.$"
 
 RocketHideout_B1F_Text_Grunt3Intro::
     .string "Intruder alert!$"
@@ -29,7 +31,9 @@ RocketHideout_B1F_Text_Grunt3Defeat::
 
 RocketHideout_B1F_Text_Grunt3PostBattle::
     .string "SILPH SCOPE? Humph!\n"
-    .string "I don't know where it is.$"
+    .string "I don't know where it is.\p"
+    .string "All I heard was: \"soul-reactive\n"
+    .string "sample moved downstairs.\"$"
 
 RocketHideout_B1F_Text_Grunt4Intro::
     .string "Why did you come here?$"
