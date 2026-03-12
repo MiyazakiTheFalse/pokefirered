@@ -83,3 +83,19 @@ RocketHideout_B4F_Text_MemoryMedicTerminalMismatch::
 RocketHideout_B4F_Text_MemoryMedicTerminalOffline::
     .string "The terminal is dead. It only responds\n"
     .string "inside GIOVANNI's memory fragment.$"
+
+RocketHideout_B4F_Text_RocketOps_SecureRoute_C1::
+    .string "[ROCKETOPS:C1] Secure route confirmed\n"
+    .string "One hallway loop has been stabilized.$"
+
+RocketHideout_B4F_Text_RocketOps_DeployAgent_C1::
+    .string "[ROCKETOPS:C1] Agent seeded into the\n"
+    .string "hideout net. Hidden switch highlighted.$"
+
+RocketHideout_B4F_Text_RocketOps_DestroyData_C1::
+    .string "[ROCKETOPS:C1] Backup trainer roster\n"
+    .string "deleted from local records.$"
+
+RocketHideout_B4F_Text_RocketOps_ExtractStaff_C1::
+    .string "[ROCKETOPS:C1] Medic evac corridor open.\n"
+    .string "Temporary hub heal point activated.$"

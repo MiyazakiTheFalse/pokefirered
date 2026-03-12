@@ -1143,6 +1143,10 @@ extern const u8 gText_Exit[];
 extern const u8 gText_HealPokemon[];
 extern const u8 gText_LevelUpPokemon[];
 extern const u8 gText_UpgradeStamina[];
+extern const u8 gText_RocketOpsSecureRoute[];
+extern const u8 gText_RocketOpsDeployAgent[];
+extern const u8 gText_RocketOpsDestroyData[];
+extern const u8 gText_RocketOpsExtractStaff[];
 
 // wireless_communication_status_screen
 extern const u8 gText_Dynamic0Players[];

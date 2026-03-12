@@ -136,6 +136,25 @@ enum GiovanniBeatFallback
     GIO_BEAT_FALLBACK_CH3,
 };
 
+
+enum RocketOpsCommandId
+{
+    ROCKETOPS_COMMAND_SECURE_ROUTE,
+    ROCKETOPS_COMMAND_DEPLOY_AGENT,
+    ROCKETOPS_COMMAND_DESTROY_DATA,
+    ROCKETOPS_COMMAND_EXTRACT_STAFF,
+    ROCKETOPS_COMMAND_COUNT,
+};
+
+enum RocketOpsTriggerType
+{
+    ROCKETOPS_TRIGGER_NONE,
+    ROCKETOPS_TRIGGER_CONTROL_NODE,
+    ROCKETOPS_TRIGGER_SURVEILLANCE_NODE,
+    ROCKETOPS_TRIGGER_ARCHIVE_NODE,
+    ROCKETOPS_TRIGGER_EXTRACTION_NODE,
+};
+
 struct GiovanniBeatFlagGate
 {
     u16 flag;
@@ -3202,6 +3221,38 @@ static void Task_WingFlapSound(u8 taskId)
 }
 
 
+
+static void ResetRocketOpsState(void)
+{
+    VarSet(VAR_ROCKETOPS_CHAPTER, 0);
+    VarSet(VAR_ROCKETOPS_ALERT, 0);
+    VarSet(VAR_ROCKETOPS_PROGRESS, 0);
+    VarSet(VAR_ROCKETOPS_AGENT_TARGET, 0);
+    FlagClear(FLAG_ROCKETOPS_TERMINAL_UNLOCKED);
+    FlagClear(FLAG_ROCKETOPS_COMMAND_COOLDOWN);
+    FlagClear(FLAG_ROCKETOPS_ROUTE_SECURED);
+    FlagClear(FLAG_ROCKETOPS_AGENT_DEPLOYED);
+    FlagClear(FLAG_ROCKETOPS_DATA_DESTROYED);
+    FlagClear(FLAG_ROCKETOPS_STAFF_EXTRACTED);
+}
+
+static bool8 IsRocketOpsTriggerTypeValidForCommand(u16 commandId, u16 triggerType)
+{
+    switch (commandId)
+    {
+    case ROCKETOPS_COMMAND_SECURE_ROUTE:
+        return triggerType == ROCKETOPS_TRIGGER_CONTROL_NODE;
+    case ROCKETOPS_COMMAND_DEPLOY_AGENT:
+        return triggerType == ROCKETOPS_TRIGGER_SURVEILLANCE_NODE;
+    case ROCKETOPS_COMMAND_DESTROY_DATA:
+        return triggerType == ROCKETOPS_TRIGGER_ARCHIVE_NODE;
+    case ROCKETOPS_COMMAND_EXTRACT_STAFF:
+        return triggerType == ROCKETOPS_TRIGGER_EXTRACTION_NODE;
+    default:
+        return FALSE;
+    }
+}
+
 static bool8 GiovanniRocketProgressFlagsMatchSnapshot(const struct GiovanniMemoryModeFlagSnapshot *flags)
 {
     if (flags->hideMiscKantoRockets != FlagGet(FLAG_HIDE_MISC_KANTO_ROCKETS))
@@ -3282,6 +3333,8 @@ u16 StartGiovanniMemoryMode(void)
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATED);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATION_FAILED);
     VarSet(VAR_GIO_CHAPTER, 1);
+    ResetRocketOpsState();
+    VarSet(VAR_ROCKETOPS_CHAPTER, 1);
 
     gPlayerPartyCount = 1;
     ZeroPlayerPartyMons();
@@ -3316,6 +3369,7 @@ u16 AbortGiovanniMemoryMode(void)
 {
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK);
+    ResetRocketOpsState();
     RunGiovanniMemoryModeResetHooks(0);
     return TRUE;
 }
@@ -3366,6 +3420,7 @@ u16 RestoreGiovanniMemoryModeSnapshot(void)
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK);
     VarSet(VAR_GIO_CHAPTER, 0);
+    ResetRocketOpsState();
     GetGiovanniMemoryModeSnapshot()->valid = FALSE;
     RunGiovanniMemoryModeResetHooks(0);
     return TRUE;
@@ -3493,6 +3548,7 @@ u16 ReconcileGiovanniMemoryModeOutcome(void)
     FlagClear(FLAG_GIO_MEM_CH3_STARTED);
     FlagClear(FLAG_GIO_MEM_CH3_COMPLETE);
     RunGiovanniMemoryModeResetHooks(0);
+    ResetRocketOpsState();
 
     return TRUE;
 }
@@ -3508,6 +3564,83 @@ u16 SyncGiovanniMemoryModeNpcState(void)
     {
         RunGiovanniMemoryModeResetHooks(0);
     }
+    return TRUE;
+}
+
+
+u16 Special_RocketOps_OpenTerminal(void)
+{
+    u16 chapterId;
+
+    if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
+        return FALSE;
+
+    if (VarGet(VAR_MODE_GIOVANNI_MEMORY) != TRUE)
+        return FALSE;
+
+    chapterId = VarGet(VAR_CHAPTER_ID);
+    if (chapterId < 1 || chapterId > 3)
+        return FALSE;
+
+    VarSet(VAR_ROCKETOPS_CHAPTER, chapterId);
+    FlagSet(FLAG_ROCKETOPS_TERMINAL_UNLOCKED);
+    FlagClear(FLAG_ROCKETOPS_COMMAND_COOLDOWN);
+    return TRUE;
+}
+
+u16 Special_RocketOps_ValidateCommandContext(void)
+{
+    u16 chapterId = VarGet(VAR_ROCKETOPS_CHAPTER);
+    u16 commandId = gSpecialVar_0x8004;
+    u16 triggerType = gSpecialVar_0x8005;
+
+    if (!FlagGet(FLAG_ROCKETOPS_TERMINAL_UNLOCKED))
+        return FALSE;
+    if (FlagGet(FLAG_ROCKETOPS_COMMAND_COOLDOWN))
+        return FALSE;
+    if (chapterId < 1 || chapterId > 3)
+        return FALSE;
+    if (commandId >= ROCKETOPS_COMMAND_COUNT)
+        return FALSE;
+
+    return IsRocketOpsTriggerTypeValidForCommand(commandId, triggerType);
+}
+
+u16 Special_RocketOps_WritebackState(void)
+{
+    s32 alert;
+    u16 commandId = gSpecialVar_0x8004;
+
+    if (commandId >= ROCKETOPS_COMMAND_COUNT)
+        return FALSE;
+
+    switch (commandId)
+    {
+    case ROCKETOPS_COMMAND_SECURE_ROUTE:
+        FlagSet(FLAG_ROCKETOPS_ROUTE_SECURED);
+        alert = VarGet(VAR_ROCKETOPS_ALERT);
+        if (alert > 0)
+            VarSet(VAR_ROCKETOPS_ALERT, alert - 1);
+        VarSet(VAR_ROCKETOPS_PROGRESS, VarGet(VAR_ROCKETOPS_PROGRESS) + 1);
+        break;
+    case ROCKETOPS_COMMAND_DEPLOY_AGENT:
+        FlagSet(FLAG_ROCKETOPS_AGENT_DEPLOYED);
+        VarSet(VAR_ROCKETOPS_AGENT_TARGET, gSpecialVar_0x8005);
+        VarSet(VAR_ROCKETOPS_PROGRESS, VarGet(VAR_ROCKETOPS_PROGRESS) + 1);
+        break;
+    case ROCKETOPS_COMMAND_DESTROY_DATA:
+        FlagSet(FLAG_ROCKETOPS_DATA_DESTROYED);
+        VarSet(VAR_ROCKETOPS_ALERT, VarGet(VAR_ROCKETOPS_ALERT) + 1);
+        VarSet(VAR_ROCKETOPS_PROGRESS, VarGet(VAR_ROCKETOPS_PROGRESS) + 2);
+        break;
+    case ROCKETOPS_COMMAND_EXTRACT_STAFF:
+        FlagSet(FLAG_ROCKETOPS_STAFF_EXTRACTED);
+        VarSet(VAR_ROCKETOPS_PROGRESS, VarGet(VAR_ROCKETOPS_PROGRESS) + 2);
+        break;
+    }
+
+    FlagSet(FLAG_ROCKETOPS_COMMAND_COOLDOWN);
+    SyncGiovanniMemoryModeNpcState();
     return TRUE;
 }
 

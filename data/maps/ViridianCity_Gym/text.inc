@@ -206,3 +206,19 @@ ViridianCity_Gym_Text_GiovanniMemoryClosingMonologueFull::
 ViridianCity_Gym_Text_GiovanniMemoryClosingMonologueFallback::
     .string "[MEMORY] Residual echoes are fading.\n"
     .string "Hold position while the chamber stabilizes.$"
+
+ViridianCity_Gym_Text_RocketOps_SecureRoute_C3::
+    .string "[ROCKETOPS:C3] Flanking lane sealed.\n"
+    .string "Boss approach corridor now enforced.$"
+
+ViridianCity_Gym_Text_RocketOps_DeployAgent_C3::
+    .string "[ROCKETOPS:C3] Decoy released. Elite\n"
+    .string "guard activation timer delayed.$"
+
+ViridianCity_Gym_Text_RocketOps_DestroyData_C3::
+    .string "[ROCKETOPS:C3] Support archive purged.\n"
+    .string "One boss support routine removed.$"
+
+ViridianCity_Gym_Text_RocketOps_ExtractStaff_C3::
+    .string "[ROCKETOPS:C3] Hostage/staff extraction\n"
+    .string "completed for best-resolution path.$"

@@ -27,26 +27,25 @@ RocketHideout_B4F_EventScript_MemorySpaceMarker::
 	end
 
 RocketHideout_B4F_EventScript_MemoryMedicTerminal::
-	lockall
-	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, RocketHideout_B4F_EventScript_MemoryMedicTerminalOffline
-	goto_if_eq VAR_MODE_GIOVANNI_MEMORY, FALSE, RocketHideout_B4F_EventScript_MemoryMedicTerminalOffline
-	goto_if_ne VAR_CHAPTER_ID, 1, RocketHideout_B4F_EventScript_MemoryMedicTerminalMismatch
-	goto_if_set FLAG_GIO_MEM_CH1_COMPLETE, RocketHideout_B4F_EventScript_MemoryMedicTerminalMismatch
-	msgbox RocketHideout_B4F_Text_MemoryMedicTerminalIntro
+	setvar VAR_0x8005, 1 @ ROCKETOPS_TRIGGER_CONTROL_NODE
+	goto EventScript_RocketOps_Terminal
+
+EventScript_RocketOps_Command_SecureRoute_C1::
+	msgbox RocketHideout_B4F_Text_RocketOps_SecureRoute_C1
+	goto EventScript_RocketOps_CommandFinalize
+
+EventScript_RocketOps_Command_DeployAgent_C1::
+	msgbox RocketHideout_B4F_Text_RocketOps_DeployAgent_C1
+	goto EventScript_RocketOps_CommandFinalize
+
+EventScript_RocketOps_Command_DestroyData_C1::
+	msgbox RocketHideout_B4F_Text_RocketOps_DestroyData_C1
+	goto EventScript_RocketOps_CommandFinalize
+
+EventScript_RocketOps_Command_ExtractStaff_C1::
+	msgbox RocketHideout_B4F_Text_RocketOps_ExtractStaff_C1
 	special HealPlayerParty
-	msgbox RocketHideout_B4F_Text_MemoryMedicTerminalDone
-	releaseall
-	end
-
-RocketHideout_B4F_EventScript_MemoryMedicTerminalMismatch::
-	msgbox RocketHideout_B4F_Text_MemoryMedicTerminalMismatch
-	releaseall
-	end
-
-RocketHideout_B4F_EventScript_MemoryMedicTerminalOffline::
-	msgbox RocketHideout_B4F_Text_MemoryMedicTerminalOffline
-	releaseall
-	end
+	goto EventScript_RocketOps_CommandFinalize
 
 RocketHideout_B4F_OnLoad::
 	setvar NUM_DOOR_GRUNTS_DEFEATED, 0

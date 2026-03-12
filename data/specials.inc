@@ -472,4 +472,7 @@ gSpecials::
 	def_special ValidateGiovanniMemoryModeRocketFlags
 	def_special ValidateGiovanniInteractionOverlayForCurrentMap
 	def_special SyncGiovanniMemoryModeNpcState
+	def_special Special_RocketOps_OpenTerminal
+	def_special Special_RocketOps_ValidateCommandContext
+	def_special Special_RocketOps_WritebackState
 gSpecialsEnd::

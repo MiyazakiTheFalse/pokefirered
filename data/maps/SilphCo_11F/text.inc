@@ -119,3 +119,19 @@ SilphCo_11F_Text_MemoryFieldAideMismatch::
 SilphCo_11F_Text_MemoryFieldAideOffline::
     .string "This aide is a projection. It only\n"
     .string "exists during GIOVANNI memory chapters.$"
+
+SilphCo_11F_Text_RocketOps_SecureRoute_C2::
+    .string "[ROCKETOPS:C2] Route graph rewritten.\n"
+    .string "Objective path has been shortened.$"
+
+SilphCo_11F_Text_RocketOps_DeployAgent_C2::
+    .string "[ROCKETOPS:C2] Patrol vectors flagged.\n"
+    .string "Ambush probability reduced.$"
+
+SilphCo_11F_Text_RocketOps_DestroyData_C2::
+    .string "[ROCKETOPS:C2] Keycard requirement bypassed\n"
+    .string "at the cost of elevated alert heat.$"
+
+SilphCo_11F_Text_RocketOps_ExtractStaff_C2::
+    .string "[ROCKETOPS:C2] Scientist extracted.\n"
+    .string "Access code transferred to local cache.$"
