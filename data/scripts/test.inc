@@ -34,6 +34,26 @@ Test_EventScript_DebugSetRoute12EventActiveFlag::
 Test_EventScript_DebugClearRoute12EventActiveFlag::
 	clearflag FLAG_ROUTE12_BRIDGE_MIDPOINT_BLOCKERS
 	end
+Test_EventScript_DebugSetGiovanniChapter0::
+	setvar VAR_0x8004, 0
+	special DebugForceGiovanniMemoryModeChapterState
+	end
+
+Test_EventScript_DebugSetGiovanniChapter1::
+	setvar VAR_0x8004, 1
+	special DebugForceGiovanniMemoryModeChapterState
+	end
+
+Test_EventScript_DebugSetGiovanniChapter2::
+	setvar VAR_0x8004, 2
+	special DebugForceGiovanniMemoryModeChapterState
+	end
+
+Test_EventScript_DebugSetGiovanniChapter3::
+	setvar VAR_0x8004, 3
+	special DebugForceGiovanniMemoryModeChapterState
+	end
+
 #endif
 
 Test_Text_WelcomeToWorldOfPokemon::

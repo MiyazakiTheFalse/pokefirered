@@ -61,6 +61,7 @@ ViridianCity_Gym_EventScript_Giovanni::
 	specialvar VAR_RESULT, GetCorpseRunFieldBlockReason
 	goto_if_ne VAR_RESULT, 0, EventScript_CorpseRun_GymBattleBlocked
 	goto_if_set FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE, ViridianCity_Gym_EventScript_GiovanniStartBattle
+	call ViridianCity_Gym_EventScript_GiovanniPreBattlePrereqCheck
 	specialvar VAR_RESULT, StartGiovanniMemoryMode
 	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode
 	fadescreen FADE_TO_BLACK
@@ -69,7 +70,20 @@ ViridianCity_Gym_EventScript_Giovanni::
 	release
 	end
 
+ViridianCity_Gym_EventScript_GiovanniPreBattlePrereqCheck::
+	setvar VAR_0x8004, 0
+	specialvar VAR_RESULT, IsGiovanniNarrativeBeatReadySpecial
+	goto_if_eq VAR_RESULT, TRUE, EventScript_Return
+	setvar VAR_0x8004, 0
+	specialvar VAR_RESULT, GetGiovanniNarrativeBeatFallbackChapterSpecial
+	goto_if_eq VAR_RESULT, 1, ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode
+	goto ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode
+	return
+
 ViridianCity_Gym_EventScript_GiovanniStartBattle::
+	setvar VAR_0x8004, 4
+	specialvar VAR_RESULT, IsGiovanniNarrativeBeatReadySpecial
+	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode
 	specialvar VAR_RESULT, IsGiovanniMemoryModeReadyForBattle
 	goto_if_eq VAR_RESULT, FALSE, ViridianCity_Gym_EventScript_AbortGiovanniMemoryMode
 	trainerbattle_single TRAINER_LEADER_GIOVANNI, ViridianCity_Gym_Text_GiovanniIntro, ViridianCity_Gym_Text_GiovanniDefeat, ViridianCity_Gym_EventScript_DefeatedGiovanni, NO_MUSIC

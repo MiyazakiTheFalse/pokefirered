@@ -117,6 +117,165 @@ struct GiovanniMapOverlay
     u8 recoveryFallbackY;
 };
 
+enum GiovanniNarrativeBeatId
+{
+    GIO_BEAT_CH1_ENTRY,
+    GIO_BEAT_CH1_LOCAL_DIALOGUE,
+    GIO_BEAT_CH2_ENTRY,
+    GIO_BEAT_CH2_LOCAL_DIALOGUE,
+    GIO_BEAT_CH3_ENTRY,
+    GIO_BEAT_CH3_LOCAL_DIALOGUE,
+    GIO_BEAT_COUNT,
+};
+
+enum GiovanniBeatFallback
+{
+    GIO_BEAT_FALLBACK_ABORT,
+    GIO_BEAT_FALLBACK_CH1,
+    GIO_BEAT_FALLBACK_CH2,
+    GIO_BEAT_FALLBACK_CH3,
+};
+
+struct GiovanniBeatFlagGate
+{
+    u16 flag;
+    bool8 expectedSet;
+};
+
+struct GiovanniBeatVarGate
+{
+    u16 var;
+    u16 expectedValue;
+};
+
+struct GiovanniBeatGate
+{
+    const struct GiovanniBeatFlagGate *required;
+    u8 requiredCount;
+    const struct GiovanniBeatFlagGate *prohibited;
+    u8 prohibitedCount;
+    const struct GiovanniBeatVarGate *requiredVars;
+    u8 requiredVarCount;
+    u8 fallbackBehavior;
+};
+
+static const struct GiovanniBeatFlagGate sGiovanniBeatRequired_Ch1Entry[] =
+{
+    {FLAG_DEFEATED_BROCK, TRUE},
+};
+
+static const struct GiovanniBeatFlagGate sGiovanniBeatProhibited_Ch1Entry[] =
+{
+    {FLAG_HIDE_CELADON_ROCKETS, TRUE},
+    {FLAG_HIDE_SAFFRON_ROCKETS, TRUE},
+    {FLAG_DEFEATED_LEADER_GIOVANNI, TRUE},
+};
+
+static const struct GiovanniBeatFlagGate sGiovanniBeatRequired_Ch2Entry[] =
+{
+    {FLAG_HIDE_CELADON_ROCKETS, TRUE},
+};
+
+static const struct GiovanniBeatFlagGate sGiovanniBeatProhibited_Ch2Entry[] =
+{
+    {FLAG_HIDE_SAFFRON_ROCKETS, TRUE},
+    {FLAG_DEFEATED_LEADER_GIOVANNI, TRUE},
+};
+
+static const struct GiovanniBeatFlagGate sGiovanniBeatRequired_Ch3Entry[] =
+{
+    {FLAG_HIDE_CELADON_ROCKETS, TRUE},
+    {FLAG_HIDE_SAFFRON_ROCKETS, TRUE},
+    {FLAG_HIDE_SAFFRON_CIVILIANS, FALSE},
+};
+
+static const struct GiovanniBeatFlagGate sGiovanniBeatProhibited_Ch3Entry[] =
+{
+    {FLAG_DEFEATED_LEADER_GIOVANNI, TRUE},
+};
+
+static const struct GiovanniBeatVarGate sGiovanniBeatRequiredVars_Ch1LocalDialogue[] =
+{
+    {VAR_MODE_GIOVANNI_MEMORY, TRUE},
+    {VAR_CHAPTER_ID, 1},
+};
+
+static const struct GiovanniBeatVarGate sGiovanniBeatRequiredVars_Ch2LocalDialogue[] =
+{
+    {VAR_MODE_GIOVANNI_MEMORY, TRUE},
+    {VAR_CHAPTER_ID, 2},
+};
+
+static const struct GiovanniBeatVarGate sGiovanniBeatRequiredVars_Ch3LocalDialogue[] =
+{
+    {VAR_MODE_GIOVANNI_MEMORY, TRUE},
+    {VAR_CHAPTER_ID, 3},
+};
+
+static const struct GiovanniBeatGate sGiovanniBeatGates[GIO_BEAT_COUNT] =
+{
+    [GIO_BEAT_CH1_ENTRY] =
+    {
+        .required = sGiovanniBeatRequired_Ch1Entry,
+        .requiredCount = ARRAY_COUNT(sGiovanniBeatRequired_Ch1Entry),
+        .prohibited = sGiovanniBeatProhibited_Ch1Entry,
+        .prohibitedCount = ARRAY_COUNT(sGiovanniBeatProhibited_Ch1Entry),
+        .requiredVars = NULL,
+        .requiredVarCount = 0,
+        .fallbackBehavior = GIO_BEAT_FALLBACK_ABORT,
+    },
+    [GIO_BEAT_CH1_LOCAL_DIALOGUE] =
+    {
+        .required = sGiovanniBeatRequired_Ch1Entry,
+        .requiredCount = ARRAY_COUNT(sGiovanniBeatRequired_Ch1Entry),
+        .prohibited = sGiovanniBeatProhibited_Ch1Entry,
+        .prohibitedCount = ARRAY_COUNT(sGiovanniBeatProhibited_Ch1Entry),
+        .requiredVars = sGiovanniBeatRequiredVars_Ch1LocalDialogue,
+        .requiredVarCount = ARRAY_COUNT(sGiovanniBeatRequiredVars_Ch1LocalDialogue),
+        .fallbackBehavior = GIO_BEAT_FALLBACK_CH1,
+    },
+    [GIO_BEAT_CH2_ENTRY] =
+    {
+        .required = sGiovanniBeatRequired_Ch2Entry,
+        .requiredCount = ARRAY_COUNT(sGiovanniBeatRequired_Ch2Entry),
+        .prohibited = sGiovanniBeatProhibited_Ch2Entry,
+        .prohibitedCount = ARRAY_COUNT(sGiovanniBeatProhibited_Ch2Entry),
+        .requiredVars = NULL,
+        .requiredVarCount = 0,
+        .fallbackBehavior = GIO_BEAT_FALLBACK_CH1,
+    },
+    [GIO_BEAT_CH2_LOCAL_DIALOGUE] =
+    {
+        .required = sGiovanniBeatRequired_Ch2Entry,
+        .requiredCount = ARRAY_COUNT(sGiovanniBeatRequired_Ch2Entry),
+        .prohibited = sGiovanniBeatProhibited_Ch2Entry,
+        .prohibitedCount = ARRAY_COUNT(sGiovanniBeatProhibited_Ch2Entry),
+        .requiredVars = sGiovanniBeatRequiredVars_Ch2LocalDialogue,
+        .requiredVarCount = ARRAY_COUNT(sGiovanniBeatRequiredVars_Ch2LocalDialogue),
+        .fallbackBehavior = GIO_BEAT_FALLBACK_CH2,
+    },
+    [GIO_BEAT_CH3_ENTRY] =
+    {
+        .required = sGiovanniBeatRequired_Ch3Entry,
+        .requiredCount = ARRAY_COUNT(sGiovanniBeatRequired_Ch3Entry),
+        .prohibited = sGiovanniBeatProhibited_Ch3Entry,
+        .prohibitedCount = ARRAY_COUNT(sGiovanniBeatProhibited_Ch3Entry),
+        .requiredVars = NULL,
+        .requiredVarCount = 0,
+        .fallbackBehavior = GIO_BEAT_FALLBACK_CH2,
+    },
+    [GIO_BEAT_CH3_LOCAL_DIALOGUE] =
+    {
+        .required = sGiovanniBeatRequired_Ch3Entry,
+        .requiredCount = ARRAY_COUNT(sGiovanniBeatRequired_Ch3Entry),
+        .prohibited = sGiovanniBeatProhibited_Ch3Entry,
+        .prohibitedCount = ARRAY_COUNT(sGiovanniBeatProhibited_Ch3Entry),
+        .requiredVars = sGiovanniBeatRequiredVars_Ch3LocalDialogue,
+        .requiredVarCount = ARRAY_COUNT(sGiovanniBeatRequiredVars_Ch3LocalDialogue),
+        .fallbackBehavior = GIO_BEAT_FALLBACK_CH3,
+    },
+};
+
 enum
 {
     GIOVANNI_NPC_SET_NONE,
@@ -263,6 +422,65 @@ static bool8 IsOverlayWarpAllowed(const struct GiovanniMapOverlay *overlay, u8 w
 
     return (overlay->allowedWarpMask & (1 << warpId)) != 0;
 }
+
+static bool8 DoesGiovanniBeatGatePass(const struct GiovanniBeatGate *gate)
+{
+    u8 i;
+
+    for (i = 0; i < gate->requiredCount; i++)
+    {
+        if (FlagGet(gate->required[i].flag) != gate->required[i].expectedSet)
+            return FALSE;
+    }
+
+    for (i = 0; i < gate->prohibitedCount; i++)
+    {
+        if (FlagGet(gate->prohibited[i].flag) == gate->prohibited[i].expectedSet)
+            return FALSE;
+    }
+
+    for (i = 0; i < gate->requiredVarCount; i++)
+    {
+        if (VarGet(gate->requiredVars[i].var) != gate->requiredVars[i].expectedValue)
+            return FALSE;
+    }
+
+    return TRUE;
+}
+
+static u8 GetGiovanniBeatFallbackChapter(u8 fallbackBehavior)
+{
+    switch (fallbackBehavior)
+    {
+    case GIO_BEAT_FALLBACK_CH1:
+        return 1;
+    case GIO_BEAT_FALLBACK_CH2:
+        return 2;
+    case GIO_BEAT_FALLBACK_CH3:
+        return 3;
+    case GIO_BEAT_FALLBACK_ABORT:
+    default:
+        return 0;
+    }
+}
+
+static u8 ResolveGiovanniBeatFallbackChapter(u8 beatId)
+{
+    if (beatId >= GIO_BEAT_COUNT)
+        return 0;
+
+    return GetGiovanniBeatFallbackChapter(sGiovanniBeatGates[beatId].fallbackBehavior);
+}
+
+
+static bool8 IsGiovanniNarrativeBeatReady(u8 beatId)
+{
+    if (beatId >= GIO_BEAT_COUNT)
+        return FALSE;
+
+    return DoesGiovanniBeatGatePass(&sGiovanniBeatGates[beatId]);
+}
+
 
 
 static void ApplyGiovanniMemoryModeNpcFlags(u8 chapterId)
@@ -3024,6 +3242,9 @@ u16 StartGiovanniMemoryMode(void)
     if (FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
         return FALSE;
 
+    if (!IsGiovanniNarrativeBeatReady(GIO_BEAT_CH1_ENTRY))
+        return FALSE;
+
     GetGiovanniMemoryModeSnapshot()->valid = TRUE;
     GetGiovanniMemoryModeSnapshot()->playerPartyCount = gPlayerPartyCount;
     memcpy(GetGiovanniMemoryModeSnapshot()->playerParty, gPlayerParty, sizeof(gPlayerParty));
@@ -3240,6 +3461,9 @@ bool8 HandleGiovanniMemoryModeBootstrapOnLoad(void)
 
 u16 IsGiovanniMemoryModeReadyForBattle(void)
 {
+    if (!IsGiovanniNarrativeBeatReady(GIO_BEAT_CH3_ENTRY))
+        return FALSE;
+
     if (FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE)
      && FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED)
      && !FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
@@ -3284,6 +3508,70 @@ u16 SyncGiovanniMemoryModeNpcState(void)
     {
         RunGiovanniMemoryModeResetHooks(0);
     }
+    return TRUE;
+}
+
+u16 IsGiovanniNarrativeBeatReadySpecial(void)
+{
+    return IsGiovanniNarrativeBeatReady(gSpecialVar_0x8004);
+}
+
+u16 GetGiovanniNarrativeBeatFallbackChapterSpecial(void)
+{
+    return ResolveGiovanniBeatFallbackChapter(gSpecialVar_0x8004);
+}
+
+u16 DebugForceGiovanniMemoryModeChapterState(void)
+{
+    u8 chapterId = gSpecialVar_0x8004;
+
+    FlagClear(FLAG_GIO_MEM_CH1_STARTED);
+    FlagClear(FLAG_GIO_MEM_CH1_COMPLETE);
+    FlagClear(FLAG_GIO_MEM_CH2_STARTED);
+    FlagClear(FLAG_GIO_MEM_CH2_COMPLETE);
+    FlagClear(FLAG_GIO_MEM_CH3_STARTED);
+    FlagClear(FLAG_GIO_MEM_CH3_COMPLETE);
+
+    if (chapterId == 0)
+    {
+        FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE);
+        FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED);
+        FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER1_STARTED);
+        FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
+        FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
+        FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK);
+        VarSet(VAR_GIO_CHAPTER, 0);
+        RunGiovanniMemoryModeResetHooks(0);
+        return TRUE;
+    }
+
+    if (chapterId > 3)
+        return FALSE;
+
+    FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE);
+    FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED);
+    FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER1_STARTED);
+    FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
+    FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
+    FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK);
+    FlagSet(FLAG_GIO_MEM_SEQUENCE_VIEWED);
+
+    FlagSet(FLAG_GIO_MEM_CH1_STARTED);
+    if (chapterId >= 2)
+    {
+        FlagSet(FLAG_GIO_MEM_CH1_COMPLETE);
+        FlagSet(FLAG_GIO_MEM_CH2_STARTED);
+    }
+    if (chapterId >= 3)
+    {
+        FlagSet(FLAG_GIO_MEM_CH2_COMPLETE);
+        FlagSet(FLAG_GIO_MEM_CH3_STARTED);
+        FlagSet(FLAG_GIO_MEM_CH3_COMPLETE);
+        FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
+    }
+
+    VarSet(VAR_GIO_CHAPTER, chapterId);
+    RunGiovanniMemoryModeResetHooks(chapterId);
     return TRUE;
 }
 

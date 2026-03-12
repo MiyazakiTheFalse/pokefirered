@@ -466,6 +466,9 @@ gSpecials::
 	def_special ClearGiovanniMemoryModeCaptureLock
 	def_special IsGiovanniMemoryModeReadyForBattle
 	def_special ReconcileGiovanniMemoryModeOutcome
+	def_special IsGiovanniNarrativeBeatReadySpecial
+	def_special GetGiovanniNarrativeBeatFallbackChapterSpecial
+	def_special DebugForceGiovanniMemoryModeChapterState
 	def_special ValidateGiovanniMemoryModeRocketFlags
 	def_special ValidateGiovanniInteractionOverlayForCurrentMap
 	def_special SyncGiovanniMemoryModeNpcState
