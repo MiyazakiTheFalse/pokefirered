@@ -108,6 +108,7 @@ ViridianCity_Gym_EventScript_GiovanniMemoryTransitionCadence::
 	fadescreen FADE_TO_BLACK
 	warp MAP_VIRIDIAN_CITY_GYM, 17, 20
 	waitstate
+	special SetGiovanniMemoryModeChapter3Complete
 	special RestoreGiovanniMemoryModeSnapshot
 	special ClearGiovanniMemoryModeCaptureLock
 	fadescreen FADE_FROM_BLACK
