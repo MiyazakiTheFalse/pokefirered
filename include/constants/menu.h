@@ -72,6 +72,9 @@
 #define MULTICHOICE_PKMN_CENTER_NURSE                           65
 #define MULTICHOICE_PKMN_CENTER_LEVELUP_AMOUNT                  66
 #define MULTICHOICE_ROCKETOPS_COMMANDS                           67
+#define MULTICHOICE_ROCKETOPS_COMMANDS_C1                        68
+#define MULTICHOICE_ROCKETOPS_COMMANDS_C2                        69
+#define MULTICHOICE_ROCKETOPS_COMMANDS_C3                        70
 
 #define MULTICHOICE_NONE                                      255
 

@@ -138,6 +138,7 @@ SilphCo_11F_EventScript_BattleGiovanni::
 	end
 
 SilphCo_11F_EventScript_SetMemorySaffronOutcome::
+	call_if_set FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED, SilphCo_11F_EventScript_RocketOpsMilestoneConfirm
 	msgbox SilphCo_11F_Text_MemoryChapterOutro, MSGBOX_AUTOCLOSE
 	closemessage
 	setflag FLAG_GIO_MEM_CH2_COMPLETE
@@ -149,6 +150,10 @@ SilphCo_11F_EventScript_SetMemorySaffronOutcome::
 	special SyncGiovanniMemoryModeNpcState
 	releaseall
 	end
+
+SilphCo_11F_EventScript_RocketOpsMilestoneConfirm::
+	msgbox SilphCo_11F_Text_RocketOps_MilestoneLogged_C2, MSGBOX_AUTOCLOSE
+	return
 
 SilphCo_11F_EventScript_GiovanniApproachLeft::
 	applymovement LOCALID_SILPH_CO_GIOVANNI, SilphCo_11F_Movement_GiovanniApproachLeft

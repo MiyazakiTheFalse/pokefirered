@@ -104,6 +104,10 @@ SilphCo_11F_Text_MemoryChapterOutro::
     .string "[MEMORY:C2] Silph objective complete.\n"
     .string "Viridian confrontation is now the active\n"
     .string "chapter path.$"
+SilphCo_11F_Text_RocketOps_MilestoneLogged_C2::
+    .string "[ROCKETOPS:C2] Milestone logged. Silph\n"
+    .string "chain archived for Viridian transfer.$"
+
 
 SilphCo_11F_Text_MemoryExitBlocked::
     .string "[MEMORY] The projection destabilizes\n"

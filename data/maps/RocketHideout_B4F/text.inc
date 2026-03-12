@@ -68,6 +68,10 @@ RocketHideout_B4F_Text_MemoryChapterOutro::
     .string "[MEMORY:C1] Hideout objective complete.\n"
     .string "Silph route is now the active chapter\n"
     .string "path. Prepare for transfer.$"
+RocketHideout_B4F_Text_RocketOps_MilestoneLogged_C1::
+    .string "[ROCKETOPS:C1] Milestone logged. Celadon\n"
+    .string "chain archived for chapter transfer.$"
+
 
 RocketHideout_B4F_Text_MemoryExitBlocked::
     .string "[MEMORY] Unrelated exits are sealed in\n"

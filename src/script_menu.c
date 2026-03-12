@@ -66,6 +66,27 @@ static const struct MenuAction sMultichoiceList_RocketOpsCommands[] = {
     { gOtherText_Exit }
 };
 
+static const struct MenuAction sMultichoiceList_RocketOpsCommandsC1[] = {
+    { gText_RocketOpsSecureRoute },
+    { gText_RocketOpsDeployAgent },
+    { gText_RocketOpsExtractStaff },
+    { gOtherText_Exit }
+};
+
+static const struct MenuAction sMultichoiceList_RocketOpsCommandsC2[] = {
+    { gText_RocketOpsSecureRoute },
+    { gText_RocketOpsDestroyData },
+    { gText_RocketOpsExtractStaff },
+    { gOtherText_Exit }
+};
+
+static const struct MenuAction sMultichoiceList_RocketOpsCommandsC3[] = {
+    { gText_RocketOpsDeployAgent },
+    { gText_RocketOpsDestroyData },
+    { gText_RocketOpsExtractStaff },
+    { gOtherText_Exit }
+};
+
 static const struct MenuAction sMultichoiceList_TrainerCardIconTint[] = {
     { gText_Normal },
     { gText_Black },
@@ -587,6 +608,9 @@ static const struct MultichoiceListStruct sMultichoiceLists[] = {
     [MULTICHOICE_PKMN_CENTER_NURSE]                           = MULTICHOICE(sMultichoiceList_PkmnCenterNurse),
     [MULTICHOICE_PKMN_CENTER_LEVELUP_AMOUNT]                  = MULTICHOICE(sMultichoiceList_PkmnCenterLevelUpAmount),
     [MULTICHOICE_ROCKETOPS_COMMANDS]                           = MULTICHOICE(sMultichoiceList_RocketOpsCommands),
+    [MULTICHOICE_ROCKETOPS_COMMANDS_C1]                        = MULTICHOICE(sMultichoiceList_RocketOpsCommandsC1),
+    [MULTICHOICE_ROCKETOPS_COMMANDS_C2]                        = MULTICHOICE(sMultichoiceList_RocketOpsCommandsC2),
+    [MULTICHOICE_ROCKETOPS_COMMANDS_C3]                        = MULTICHOICE(sMultichoiceList_RocketOpsCommandsC3),
 };
 
 // From Cool to Berries goes unused
