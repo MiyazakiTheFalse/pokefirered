@@ -34,6 +34,24 @@ ViridianCity_Gym_EventScript_MemoryMedicKit::
 	setvar VAR_0x8005, 4 @ ROCKETOPS_TRIGGER_EXTRACTION_NODE
 	goto EventScript_RocketOps_Terminal
 
+ViridianCity_Gym_EventScript_MemoryDestroyDataConsole::
+	setvar VAR_0x8005, 3 @ ROCKETOPS_TRIGGER_ARCHIVE_NODE
+	goto EventScript_RocketOps_Terminal
+
+ViridianCity_Gym_EventScript_MemoryStaffEscortCheckpoint::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, ViridianCity_Gym_EventScript_MemorySpaceMarkerMismatch
+	goto_if_ne VAR_CHAPTER_ID, 3, ViridianCity_Gym_EventScript_MemorySpaceMarkerMismatch
+	setflag FLAG_GIO_MEM_CH3_STAFF_EXTRACTED
+	msgbox ViridianCity_Gym_Text_RocketOps_StaffCheckpoint_C3, MSGBOX_AUTOCLOSE
+	end
+
+ViridianCity_Gym_EventScript_MemoryEvacEndpoint::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, ViridianCity_Gym_EventScript_MemorySpaceMarkerMismatch
+	goto_if_ne VAR_CHAPTER_ID, 3, ViridianCity_Gym_EventScript_MemorySpaceMarkerMismatch
+	setflag FLAG_GIO_MEM_CH3_EVAC_COMPLETE
+	msgbox ViridianCity_Gym_Text_RocketOps_EvacEndpoint_C3, MSGBOX_AUTOCLOSE
+	end
+
 EventScript_RocketOps_Command_SecureRoute_C3::
 	msgbox ViridianCity_Gym_Text_RocketOps_SecureRoute_C3
 	goto EventScript_RocketOps_CommandFinalize
@@ -115,6 +133,9 @@ ViridianCity_Gym_EventScript_MemorySpaceMarkerMismatch::
 	return
 
 ViridianCity_Gym_EventScript_GiovanniMemoryTransitionCadence::
+	goto_if_unset FLAG_GIO_MEM_CH3_DATA_DESTROYED, ViridianCity_Gym_EventScript_GiovanniMemoryObjectivesIncomplete
+	goto_if_unset FLAG_GIO_MEM_CH3_STAFF_EXTRACTED, ViridianCity_Gym_EventScript_GiovanniMemoryObjectivesIncomplete
+	goto_if_unset FLAG_GIO_MEM_CH3_EVAC_COMPLETE, ViridianCity_Gym_EventScript_GiovanniMemoryObjectivesIncomplete
 	fadescreen FADE_TO_BLACK
 	warp MAP_VIRIDIAN_CITY_GYM, 17, 20
 	waitstate
@@ -126,6 +147,11 @@ ViridianCity_Gym_EventScript_GiovanniMemoryTransitionCadence::
 	special ReconcileGiovanniMemoryModeOutcome
 	special SyncGiovanniMemoryModeNpcState
 	goto ViridianCity_Gym_EventScript_GiovanniStartBattle
+	end
+
+ViridianCity_Gym_EventScript_GiovanniMemoryObjectivesIncomplete::
+	msgbox ViridianCity_Gym_Text_RocketReport_ObjectivesIncomplete, MSGBOX_AUTOCLOSE
+	release
 	end
 
 ViridianCity_Gym_EventScript_RocketOpsMilestoneConfirm::

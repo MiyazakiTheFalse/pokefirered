@@ -1535,9 +1535,14 @@
 #define FLAG_ROCKETOPS_AGENT_DEPLOYED                                FLAG_0x8E8
 #define FLAG_ROCKETOPS_DATA_DESTROYED                                FLAG_0x8E9
 #define FLAG_ROCKETOPS_STAFF_EXTRACTED                               FLAG_0x8EA
+#define FLAG_GIO_MEM_CH3_EVAC_COMPLETE                               FLAG_0x8EB
 #define FLAG_ROCKETOPS_MILESTONE_CH1_LOGGED                          FLAG_0x8E0
 #define FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED                          FLAG_0x8E1
 #define FLAG_ROCKETOPS_MILESTONE_CH3_LOGGED                          FLAG_0x8E2
+
+// Giovanni memory mode Chapter 3 objective aliases.
+#define FLAG_GIO_MEM_CH3_DATA_DESTROYED                              FLAG_ROCKETOPS_DATA_DESTROYED
+#define FLAG_GIO_MEM_CH3_STAFF_EXTRACTED                             FLAG_ROCKETOPS_STAFF_EXTRACTED
 
 // Viridian Gym Giovanni memory mode runtime flags.
 #define FLAG_GIO_MEM_SEQUENCE_VIEWED                                 FLAG_0x8EE

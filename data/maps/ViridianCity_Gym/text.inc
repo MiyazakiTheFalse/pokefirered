@@ -246,6 +246,20 @@ ViridianCity_Gym_Text_RocketReport_ObjectiveDone::
     .string "Chapter chain resolved; command traffic\n"
     .string "is terminating.$"
 
+
+ViridianCity_Gym_Text_RocketOps_StaffCheckpoint_C3::
+    .string "[ROCKETOPS:C3] Escort checkpoint locked.\n"
+    .string "Staff convoy moved to extraction lane.$"
+
+ViridianCity_Gym_Text_RocketOps_EvacEndpoint_C3::
+    .string "[ROCKETOPS:C3] Evac endpoint secured.\n"
+    .string "Chapter extraction cycle can now close.$"
+
+ViridianCity_Gym_Text_RocketReport_ObjectivesIncomplete::
+    .string "[REPORT:C3] Outstanding objectives:\n"
+    .string "Destroy data, escort staff, and complete\n"
+    .string "evacuation before final cadence.$"
+
 ViridianCity_Gym_Text_RocketOps_SecureRoute_C3::
     .string "[ROCKETOPS:C3] Flanking lane sealed.\n"
     .string "Boss approach corridor now enforced.$"
