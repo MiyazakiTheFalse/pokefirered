@@ -1539,6 +1539,9 @@
 #define FLAG_ROCKETOPS_MILESTONE_CH1_LOGGED                          FLAG_0x8E0
 #define FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED                          FLAG_0x8E1
 #define FLAG_ROCKETOPS_MILESTONE_CH3_LOGGED                          FLAG_0x8E2
+#define FLAG_GIO_MEM_CH3_ESCORT_SEGMENT_ACTIVE                        FLAG_0x8E3
+#define FLAG_GIO_MEM_CH3_ESCORT_CHECKPOINT_1                          FLAG_0x8E4
+#define FLAG_GIO_MEM_CH3_ESCORT_CHECKPOINT_2                          FLAG_0x8EC
 
 // Giovanni memory mode Chapter 3 objective aliases.
 #define FLAG_GIO_MEM_CH3_DATA_DESTROYED                              FLAG_ROCKETOPS_DATA_DESTROYED
