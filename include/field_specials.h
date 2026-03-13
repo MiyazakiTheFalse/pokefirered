@@ -40,6 +40,8 @@ void QuestLog_TryRecordDepartedLocation(void);
 u8 GetCorpseRunFieldBlockReason(void);
 u16 GetCorpseRunFieldBlockTextId(void);
 u16 StartGiovanniMemoryMode(void);
+u16 CompleteGiovanniMemoryModeChapter1(void);
+u16 CompleteGiovanniMemoryModeChapter2(void);
 u16 SetGiovanniMemoryModeChapter3Complete(void);
 u16 SetGiovanniMemoryModePartyForCurrentChapter(void);
 u16 AbortGiovanniMemoryMode(void);

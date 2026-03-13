@@ -25,6 +25,8 @@ DiglettsCave_SouthEntrance_EventScript_MemoryDesyncReturnToHub::
 DiglettsCave_SouthEntrance_EventScript_MemoryObjectiveMid::
 	setflag FLAG_GIO_MEM_CH2_STARTED
 	setvar VAR_GIO_CHAPTER, 2
+	setvar VAR_GIO_ACT, 1
+	setvar VAR_GIO_CHECKPOINT_ID, 0
 	end
 
 DiglettsCave_SouthEntrance_EventScript_OldMan::

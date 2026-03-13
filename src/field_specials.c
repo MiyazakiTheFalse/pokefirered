@@ -690,6 +690,25 @@ static void ReloadGiovanniMemoryModeNpcObjects(void)
     }
 }
 
+#define GIO_CAMPAIGN_STATE_NONE 0
+#define GIO_CAMPAIGN_STATE_CH1_ACT1 1
+#define GIO_CAMPAIGN_STATE_CH1_COMPLETE 2
+#define GIO_CAMPAIGN_STATE_CH2_COMPLETE 3
+#define GIO_CAMPAIGN_STATE_CH3_COMPLETE 4
+
+static void SetGiovanniCampaignProgress(u8 chapterId, u8 actId, u8 checkpointId, u8 campaignState)
+{
+    VarSet(VAR_GIO_CHAPTER, chapterId);
+    VarSet(VAR_GIO_ACT, actId);
+    VarSet(VAR_GIO_CHECKPOINT_ID, checkpointId);
+    VarSet(VAR_GIO_CAMPAIGN_STATE, campaignState);
+}
+
+static bool8 IsGiovanniCampaignComplete(void)
+{
+    return VarGet(VAR_GIO_CAMPAIGN_STATE) == GIO_CAMPAIGN_STATE_CH3_COMPLETE;
+}
+
 static void RunGiovanniMemoryModeResetHooks(u8 chapterId)
 {
     VarSet(VAR_MODE_GIOVANNI_MEMORY, chapterId != 0);
@@ -700,8 +719,15 @@ static void RunGiovanniMemoryModeResetHooks(u8 chapterId)
 
 static u8 GetGiovanniMemoryModeChapterId(void)
 {
+    u8 chapterId;
+
     if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
         return 0;
+
+    chapterId = VarGet(VAR_GIO_CHAPTER);
+    if (chapterId >= 1 && chapterId <= 3)
+        return chapterId;
+
     if (!FlagGet(FLAG_GIO_MEM_CH1_COMPLETE))
         return 1;
     if (!FlagGet(FLAG_GIO_MEM_CH2_COMPLETE))
@@ -3533,7 +3559,7 @@ u16 StartGiovanniMemoryMode(void)
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATED);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_VALIDATION_FAILED);
-    VarSet(VAR_GIO_CHAPTER, 1);
+    SetGiovanniCampaignProgress(1, 1, 0, GIO_CAMPAIGN_STATE_CH1_ACT1);
     SetWarpDestination(MAP_GROUP(MAP_ROCKET_HIDEOUT_B4F), MAP_NUM(MAP_ROCKET_HIDEOUT_B4F), WARP_ID_NONE, 19, 6);
     SetDynamicWarpWithCoords(0, MAP_GROUP(MAP_ROCKET_HIDEOUT_B4F), MAP_NUM(MAP_ROCKET_HIDEOUT_B4F), WARP_ID_NONE, 19, 6);
     ResetRocketOpsState();
@@ -3556,6 +3582,38 @@ u16 StartGiovanniMemoryMode(void)
     return TRUE;
 }
 
+u16 CompleteGiovanniMemoryModeChapter1(void)
+{
+    if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE) || FlagGet(FLAG_GIO_MEM_CH1_COMPLETE))
+        return FALSE;
+
+    FlagSet(FLAG_GIO_MEM_CH1_COMPLETE);
+    FlagSet(FLAG_GIO_MEM_CH2_STARTED);
+    FlagSet(FLAG_GIO_MEM_HIDE_CELADON_ROCKETS);
+    SetGiovanniCampaignProgress(2, 1, 0, GIO_CAMPAIGN_STATE_CH1_COMPLETE);
+    VarSet(VAR_ROCKETOPS_CHAPTER, 2);
+    RunGiovanniMemoryModeResetHooks(2);
+    return LoadGiovanniMemoryPartyTemplate(2);
+}
+
+u16 CompleteGiovanniMemoryModeChapter2(void)
+{
+    if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE)
+     || !FlagGet(FLAG_GIO_MEM_CH1_COMPLETE)
+     || FlagGet(FLAG_GIO_MEM_CH2_COMPLETE))
+        return FALSE;
+
+    FlagSet(FLAG_GIO_MEM_CH2_COMPLETE);
+    FlagSet(FLAG_GIO_MEM_CH3_STARTED);
+    FlagSet(FLAG_GIO_MEM_HIDE_SAFFRON_ROCKETS);
+    FlagClear(FLAG_GIO_MEM_HIDE_SAFFRON_CIVILIANS);
+    SetGiovanniCampaignProgress(3, 1, 0, GIO_CAMPAIGN_STATE_CH2_COMPLETE);
+    VarSet(VAR_ROCKETOPS_CHAPTER, 3);
+    ResetGiovanniChapter3EscortSegmentState();
+    RunGiovanniMemoryModeResetHooks(3);
+    return LoadGiovanniMemoryPartyTemplate(3);
+}
+
 u16 SetGiovanniMemoryModeChapter3Complete(void)
 {
     if (!FlagGet(FLAG_GIO_MEM_CH3_DATA_DESTROYED)
@@ -3563,7 +3621,7 @@ u16 SetGiovanniMemoryModeChapter3Complete(void)
      || !FlagGet(FLAG_GIO_MEM_CH3_EVAC_COMPLETE))
         return FALSE;
 
-    VarSet(VAR_GIO_CHAPTER, 3);
+    SetGiovanniCampaignProgress(3, 2, 3, GIO_CAMPAIGN_STATE_CH3_COMPLETE);
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
     FlagSet(FLAG_GIO_MEM_CH3_STARTED);
     FlagSet(FLAG_GIO_MEM_CH3_COMPLETE);
@@ -3589,6 +3647,7 @@ u16 AbortGiovanniMemoryMode(void)
 {
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK);
+    SetGiovanniCampaignProgress(0, 0, 0, GIO_CAMPAIGN_STATE_NONE);
     ResetRocketOpsState();
     RunGiovanniMemoryModeResetHooks(0);
     return TRUE;
@@ -3639,7 +3698,7 @@ u16 RestoreGiovanniMemoryModeSnapshot(void)
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE);
     FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK);
-    VarSet(VAR_GIO_CHAPTER, 0);
+    SetGiovanniCampaignProgress(0, 0, 0, IsGiovanniCampaignComplete() ? GIO_CAMPAIGN_STATE_CH3_COMPLETE : GIO_CAMPAIGN_STATE_NONE);
     ResetRocketOpsState();
     GetGiovanniMemoryModeSnapshot()->valid = FALSE;
     RunGiovanniMemoryModeResetHooks(0);
@@ -3656,21 +3715,21 @@ bool8 HandleGiovanniMemoryModeWhiteout(void)
 
     if (!FlagGet(FLAG_GIO_MEM_CH1_COMPLETE))
     {
-        VarSet(VAR_GIO_CHAPTER, 1);
+        SetGiovanniCampaignProgress(1, 1, VarGet(VAR_GIO_CHECKPOINT_ID), VarGet(VAR_GIO_CAMPAIGN_STATE));
         SetWarpDestination(MAP_GROUP(MAP_ROCKET_HIDEOUT_B4F), MAP_NUM(MAP_ROCKET_HIDEOUT_B4F), WARP_ID_NONE, 18, 6);
         return TRUE;
     }
 
     if (!FlagGet(FLAG_GIO_MEM_CH2_COMPLETE))
     {
-        VarSet(VAR_GIO_CHAPTER, 2);
+        SetGiovanniCampaignProgress(2, 1, VarGet(VAR_GIO_CHECKPOINT_ID), VarGet(VAR_GIO_CAMPAIGN_STATE));
         SetWarpDestination(MAP_GROUP(MAP_SILPH_CO_11F), MAP_NUM(MAP_SILPH_CO_11F), WARP_ID_NONE, 6, 13);
         return TRUE;
     }
 
     if (FlagGet(FLAG_GIO_MEM_CH3_COMPLETE))
     {
-        VarSet(VAR_GIO_CHAPTER, 3);
+        SetGiovanniCampaignProgress(3, VarGet(VAR_GIO_ACT), VarGet(VAR_GIO_CHECKPOINT_ID), VarGet(VAR_GIO_CAMPAIGN_STATE));
         if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED)
          && RestoreGiovanniMemoryModeSnapshot() == FALSE)
         {
@@ -3681,7 +3740,7 @@ bool8 HandleGiovanniMemoryModeWhiteout(void)
         return TRUE;
     }
 
-    VarSet(VAR_GIO_CHAPTER, 3);
+    SetGiovanniCampaignProgress(3, VarGet(VAR_GIO_ACT), VarGet(VAR_GIO_CHECKPOINT_ID), VarGet(VAR_GIO_CAMPAIGN_STATE));
     if (FlagGet(FLAG_GIO_MEM_CH3_ESCORT_CHECKPOINT_2))
         SetWarpDestination(MAP_GROUP(MAP_VIRIDIAN_CITY_GYM), MAP_NUM(MAP_VIRIDIAN_CITY_GYM), WARP_ID_NONE, 11, 7);
     else if (FlagGet(FLAG_GIO_MEM_CH3_ESCORT_CHECKPOINT_1))
@@ -3704,7 +3763,7 @@ bool8 HandleGiovanniMemoryModeBootstrapOnLoad(void)
 
     if (!FlagGet(FLAG_GIO_MEM_CH1_COMPLETE))
     {
-        VarSet(VAR_GIO_CHAPTER, 1);
+        SetGiovanniCampaignProgress(1, 1, VarGet(VAR_GIO_CHECKPOINT_ID), VarGet(VAR_GIO_CAMPAIGN_STATE));
         gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_ROCKET_HIDEOUT_B4F);
         gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_ROCKET_HIDEOUT_B4F);
         gSaveBlock1Ptr->location.warpId = WARP_ID_NONE;
@@ -3713,7 +3772,7 @@ bool8 HandleGiovanniMemoryModeBootstrapOnLoad(void)
     }
     else if (!FlagGet(FLAG_GIO_MEM_CH2_COMPLETE))
     {
-        VarSet(VAR_GIO_CHAPTER, 2);
+        SetGiovanniCampaignProgress(2, 1, VarGet(VAR_GIO_CHECKPOINT_ID), VarGet(VAR_GIO_CAMPAIGN_STATE));
         gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_SILPH_CO_11F);
         gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_SILPH_CO_11F);
         gSaveBlock1Ptr->location.warpId = WARP_ID_NONE;
@@ -3722,7 +3781,7 @@ bool8 HandleGiovanniMemoryModeBootstrapOnLoad(void)
     }
     else if (!FlagGet(FLAG_GIO_MEM_CH3_COMPLETE))
     {
-        VarSet(VAR_GIO_CHAPTER, 3);
+        SetGiovanniCampaignProgress(3, VarGet(VAR_GIO_ACT), VarGet(VAR_GIO_CHECKPOINT_ID), VarGet(VAR_GIO_CAMPAIGN_STATE));
         gSaveBlock1Ptr->location.mapGroup = MAP_GROUP(MAP_VIRIDIAN_CITY_GYM);
         gSaveBlock1Ptr->location.mapNum = MAP_NUM(MAP_VIRIDIAN_CITY_GYM);
         gSaveBlock1Ptr->location.warpId = WARP_ID_NONE;
@@ -3744,7 +3803,7 @@ bool8 HandleGiovanniMemoryModeBootstrapOnLoad(void)
     }
     else
     {
-        VarSet(VAR_GIO_CHAPTER, 3);
+        SetGiovanniCampaignProgress(3, VarGet(VAR_GIO_ACT), VarGet(VAR_GIO_CHECKPOINT_ID), VarGet(VAR_GIO_CAMPAIGN_STATE));
         if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED)
          && RestoreGiovanniMemoryModeSnapshot() == FALSE)
         {
@@ -3769,7 +3828,8 @@ u16 IsGiovanniMemoryModeReadyForBattle(void)
     if (!IsGiovanniNarrativeBeatReady(GIO_BEAT_CH3_ENTRY))
         return FALSE;
 
-    if (FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE)
+    if (IsGiovanniCampaignComplete()
+     && FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE)
      && FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_RESTORED)
      && !FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
         return TRUE;
@@ -3799,6 +3859,9 @@ u16 ReconcileGiovanniMemoryModeOutcome(void)
     FlagClear(FLAG_GIO_MEM_CH3_COMPLETE);
     RunGiovanniMemoryModeResetHooks(0);
     ResetRocketOpsState();
+
+    if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE))
+        SetGiovanniCampaignProgress(0, 0, 0, GIO_CAMPAIGN_STATE_NONE);
 
     return TRUE;
 }
@@ -4005,7 +4068,7 @@ u16 DebugForceGiovanniMemoryModeChapterState(void)
         FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
         FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_ABORTED);
         FlagClear(FLAG_SYS_GIOVANNI_MEMORY_MODE_CAPTURE_LOCK);
-        VarSet(VAR_GIO_CHAPTER, 0);
+        SetGiovanniCampaignProgress(0, 0, 0, GIO_CAMPAIGN_STATE_NONE);
         ResetGiovanniChapter3EscortSegmentState();
         RunGiovanniMemoryModeResetHooks(0);
         return TRUE;
@@ -4036,7 +4099,7 @@ u16 DebugForceGiovanniMemoryModeChapterState(void)
         FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
     }
 
-    VarSet(VAR_GIO_CHAPTER, chapterId);
+    SetGiovanniCampaignProgress(chapterId, 1, 0, chapterId == 3 ? GIO_CAMPAIGN_STATE_CH3_COMPLETE : (chapterId == 2 ? GIO_CAMPAIGN_STATE_CH2_COMPLETE : GIO_CAMPAIGN_STATE_CH1_ACT1));
     RunGiovanniMemoryModeResetHooks(chapterId);
     return TRUE;
 }

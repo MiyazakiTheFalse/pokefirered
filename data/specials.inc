@@ -460,6 +460,8 @@ gSpecials::
 	def_special LoopWingFlapSound
 	def_special CreateEnemyEventMon
 	def_special StartGiovanniMemoryMode
+	def_special CompleteGiovanniMemoryModeChapter1
+	def_special CompleteGiovanniMemoryModeChapter2
 	def_special SetGiovanniMemoryModeChapter3Complete
 	def_special SetGiovanniMemoryModePartyForCurrentChapter
 	def_special AbortGiovanniMemoryMode

@@ -25,6 +25,8 @@ DiglettsCave_NorthEntrance_EventScript_MemoryDesyncReturnToHub::
 DiglettsCave_NorthEntrance_EventScript_MemoryObjectiveBegin::
 	setflag FLAG_GIO_MEM_CH1_STARTED
 	setvar VAR_GIO_CHAPTER, 1
+	setvar VAR_GIO_ACT, 1
+	setvar VAR_GIO_CHECKPOINT_ID, 0
 	end
 
 DiglettsCave_NorthEntrance_EventScript_Hiker::

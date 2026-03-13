@@ -159,11 +159,8 @@ SilphCo_11F_EventScript_SetMemorySaffronOutcome::
 	call_if_set FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED, SilphCo_11F_EventScript_RocketOpsMilestoneConfirm
 	msgbox SilphCo_11F_Text_MemoryChapterOutro, MSGBOX_AUTOCLOSE
 	closemessage
-	setflag FLAG_GIO_MEM_CH2_COMPLETE
-	setvar VAR_GIO_CHAPTER, 3
-	setflag FLAG_GIO_MEM_HIDE_SAFFRON_ROCKETS
-	clearflag FLAG_GIO_MEM_HIDE_SAFFRON_CIVILIANS
-	special SetGiovanniMemoryModePartyForCurrentChapter
+	specialvar VAR_RESULT, CompleteGiovanniMemoryModeChapter2
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	special SyncGiovanniMemoryModeNpcState
 	releaseall
 	end

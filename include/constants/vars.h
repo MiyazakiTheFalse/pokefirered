@@ -193,8 +193,8 @@
 
 #define VAR_MAP_SCENE_ROUTE12       0x408C
 #define VAR_GIO_CHAPTER            0x408D
-#define VAR_0x408E                 0x408E
-#define VAR_0x408F                 0x408F
+#define VAR_GIO_ACT                0x408E
+#define VAR_GIO_CHECKPOINT_ID      0x408F
 #define VAR_MODE_GIOVANNI_MEMORY   0x4090
 #define VAR_CHAPTER_ID             0x4091
 #define VAR_ROCKETOPS_CHAPTER      0x4092
@@ -205,7 +205,7 @@
 #define VAR_ROCKETOPS_CH1_STAGE    0x4097
 #define VAR_ROCKETOPS_CH2_STAGE    0x4098
 #define VAR_ROCKETOPS_CH3_STAGE    0x4099
-#define VAR_0x409A                 0x409A
+#define VAR_GIO_CAMPAIGN_STATE     0x409A
 #define VAR_0x409B                 0x409B
 #define VAR_0x409C                 0x409C
 #define VAR_0x409D                 0x409D

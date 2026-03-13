@@ -106,11 +106,8 @@ RocketHideout_B4F_EventScript_SetMemoryCeladonOutcome::
 	call_if_set FLAG_ROCKETOPS_MILESTONE_CH1_LOGGED, RocketHideout_B4F_EventScript_RocketOpsMilestoneConfirm
 	msgbox RocketHideout_B4F_Text_MemoryChapterOutro, MSGBOX_AUTOCLOSE
 	closemessage
-	setflag FLAG_GIO_MEM_CH1_COMPLETE
-	setflag FLAG_GIO_MEM_CH2_STARTED
-	setvar VAR_GIO_CHAPTER, 2
-	setflag FLAG_GIO_MEM_HIDE_CELADON_ROCKETS
-	special SetGiovanniMemoryModePartyForCurrentChapter
+	specialvar VAR_RESULT, CompleteGiovanniMemoryModeChapter1
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	special SyncGiovanniMemoryModeNpcState
 	setdynamicwarp MAP_SILPH_CO_11F, 5, 14
 	return
