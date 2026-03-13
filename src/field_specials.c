@@ -3648,10 +3648,15 @@ u16 RestoreGiovanniMemoryModeSnapshot(void)
 
 bool8 HandleGiovanniMemoryModeWhiteout(void)
 {
+    u8 chapterId;
+
     if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
         return FALSE;
 
-    RunGiovanniMemoryModeResetHooks(GetGiovanniMemoryModeChapterId());
+    chapterId = GetGiovanniMemoryModeChapterId();
+    RunGiovanniMemoryModeResetHooks(chapterId);
+    VarSet(VAR_ROCKETOPS_CHAPTER, chapterId);
+    VarSet(VAR_ROCKETOPS_CHAIN_STATE, VarGet(VAR_ROCKETOPS_CH1_STAGE + chapterId - 1));
     ReconcileGiovanniChapter3EscortSegmentState();
 
     if (!FlagGet(FLAG_GIO_MEM_CH1_COMPLETE))
@@ -3696,10 +3701,15 @@ bool8 HandleGiovanniMemoryModeWhiteout(void)
 
 bool8 HandleGiovanniMemoryModeBootstrapOnLoad(void)
 {
+    u8 chapterId;
+
     if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
         return FALSE;
 
-    RunGiovanniMemoryModeResetHooks(GetGiovanniMemoryModeChapterId());
+    chapterId = GetGiovanniMemoryModeChapterId();
+    RunGiovanniMemoryModeResetHooks(chapterId);
+    VarSet(VAR_ROCKETOPS_CHAPTER, chapterId);
+    VarSet(VAR_ROCKETOPS_CHAIN_STATE, VarGet(VAR_ROCKETOPS_CH1_STAGE + chapterId - 1));
     ReconcileGiovanniChapter3EscortSegmentState();
 
     if (!FlagGet(FLAG_GIO_MEM_CH1_COMPLETE))

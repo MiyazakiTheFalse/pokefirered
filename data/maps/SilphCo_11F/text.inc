@@ -108,6 +108,11 @@ SilphCo_11F_Text_RocketOps_MilestoneLogged_C2::
     .string "[ROCKETOPS:C2] Milestone logged. Silph\n"
     .string "chain archived for Viridian transfer.$"
 
+SilphCo_11F_Text_RocketReport_ObjectivesIncomplete::
+    .string "[REPORT:C2] RocketOps milestone missing.\n"
+    .string "Complete chapter commands before advancing\n"
+    .string "to Viridian.$"
+
 
 SilphCo_11F_Text_MemoryExitBlocked::
     .string "[MEMORY] The projection destabilizes\n"

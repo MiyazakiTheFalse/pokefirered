@@ -156,6 +156,7 @@ SilphCo_11F_EventScript_BattleGiovanni::
 	end
 
 SilphCo_11F_EventScript_SetMemorySaffronOutcome::
+	goto_if_unset FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED, SilphCo_11F_EventScript_MemoryChapterObjectivesIncomplete
 	call_if_set FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED, SilphCo_11F_EventScript_RocketOpsMilestoneConfirm
 	msgbox SilphCo_11F_Text_MemoryChapterOutro, MSGBOX_AUTOCLOSE
 	closemessage
@@ -165,6 +166,15 @@ SilphCo_11F_EventScript_SetMemorySaffronOutcome::
 	clearflag FLAG_GIO_MEM_HIDE_SAFFRON_CIVILIANS
 	special SetGiovanniMemoryModePartyForCurrentChapter
 	special SyncGiovanniMemoryModeNpcState
+	releaseall
+	end
+
+SilphCo_11F_EventScript_MemoryChapterObjectivesIncomplete::
+	msgbox SilphCo_11F_Text_RocketReport_ObjectivesIncomplete, MSGBOX_AUTOCLOSE
+	setvar VAR_MAP_SCENE_SILPH_CO_11F, 0
+	addobject LOCALID_SILPH_CO_GIOVANNI
+	addobject LOCALID_SILPH_CO_11F_GRUNT1
+	addobject LOCALID_SILPH_CO_11F_GRUNT2
 	releaseall
 	end
 

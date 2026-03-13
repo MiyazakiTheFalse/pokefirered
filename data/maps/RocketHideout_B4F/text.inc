@@ -72,6 +72,11 @@ RocketHideout_B4F_Text_RocketOps_MilestoneLogged_C1::
     .string "[ROCKETOPS:C1] Milestone logged. Celadon\n"
     .string "chain archived for chapter transfer.$"
 
+RocketHideout_B4F_Text_RocketReport_ObjectivesIncomplete::
+    .string "[REPORT:C1] RocketOps milestone missing.\n"
+    .string "Complete chapter commands before leaving\n"
+    .string "for the next fragment.$"
+
 
 RocketHideout_B4F_Text_MemoryExitBlocked::
     .string "[MEMORY] Unrelated exits are sealed in\n"
