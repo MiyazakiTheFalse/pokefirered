@@ -24,7 +24,17 @@
       "dest_warp_id": "WARP_ID_DYNAMIC"
     }
   ],
-  "coord_events": [],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 2,
+      "y": 5,
+      "elevation": 3,
+      "var": "VAR_TEMP_0",
+      "var_value": 0,
+      "script": "SilphCo_Elevator_EventScript_MemoryExitGuard"
+    }
+  ],
   "bg_events": [
     {
       "type": "sign",

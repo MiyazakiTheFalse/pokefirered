@@ -1,5 +1,11 @@
 SilphCo_Elevator_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, SilphCo_Elevator_OnTransition
 	.byte 0
+
+SilphCo_Elevator_OnTransition::
+	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
+	end
 
 SilphCo_Elevator_EventScript_FloorSelect::
 	lockall
@@ -144,6 +150,23 @@ SilphCo_Elevator_EventScript_MoveElevator::
 	waitstate
 	setflag FLAG_TEMP_2
 	return
+
+SilphCo_Elevator_EventScript_MemoryDesyncReturnToHub::
+	warp MAP_SILPH_CO_11F, 6, 14
+	waitstate
+	end
+
+SilphCo_Elevator_EventScript_MemoryExitGuard::
+	setvar VAR_0x8004, 2
+	call EventScript_GiovanniSharedWarp_ResolvePrecedence
+	goto_if_eq VAR_RESULT, GIO_SHARED_WARP_RESULT_NORMAL_ROUTE, EventScript_Nothing
+	goto_if_eq VAR_RESULT, GIO_SHARED_WARP_RESULT_LOCKED_FALLBACK, SilphCo_Elevator_EventScript_MemoryDesyncReturnToHub
+	lockall
+	msgbox SilphCo_Elevator_Text_MemoryExitBlocked
+	warp MAP_SILPH_CO_11F, 6, 14
+	waitstate
+	releaseall
+	end
 
 SilphCo_Elevator_EventScript_MemoryRouteTo11F::
 	setdynamicwarp MAP_SILPH_CO_11F, 255, 13, 3

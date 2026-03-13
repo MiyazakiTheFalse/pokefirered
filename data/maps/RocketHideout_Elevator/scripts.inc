@@ -1,5 +1,11 @@
 RocketHideout_Elevator_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, RocketHideout_Elevator_OnTransition
 	.byte 0
+
+RocketHideout_Elevator_OnTransition::
+	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
+	end
 
 RocketHideout_Elevator_EventScript_FloorSelect::
 	lockall
@@ -85,6 +91,23 @@ RocketHideout_Elevator_EventScript_MoveElevator::
 	waitstate
 	setflag FLAG_TEMP_2
 	return
+
+RocketHideout_Elevator_EventScript_MemoryDesyncReturnToHub::
+	warp MAP_ROCKET_HIDEOUT_B4F, 19, 6
+	waitstate
+	end
+
+RocketHideout_Elevator_EventScript_MemoryExitGuard::
+	setvar VAR_0x8004, 1
+	call EventScript_GiovanniSharedWarp_ResolvePrecedence
+	goto_if_eq VAR_RESULT, GIO_SHARED_WARP_RESULT_NORMAL_ROUTE, EventScript_Nothing
+	goto_if_eq VAR_RESULT, GIO_SHARED_WARP_RESULT_LOCKED_FALLBACK, RocketHideout_Elevator_EventScript_MemoryDesyncReturnToHub
+	lockall
+	msgbox RocketHideout_Elevator_Text_MemoryExitBlocked
+	warp MAP_ROCKET_HIDEOUT_B4F, 19, 6
+	waitstate
+	releaseall
+	end
 
 RocketHideout_Elevator_EventScript_MemoryRouteToB4F::
 	setdynamicwarp MAP_ROCKET_HIDEOUT_B4F, 255, 20, 23
