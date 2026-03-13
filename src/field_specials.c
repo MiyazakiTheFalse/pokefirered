@@ -3421,6 +3421,11 @@ static void ResetRocketOpsState(void)
     FlagClear(FLAG_ROCKETOPS_MILESTONE_CH1_LOGGED);
     FlagClear(FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED);
     FlagClear(FLAG_ROCKETOPS_MILESTONE_CH3_LOGGED);
+    FlagClear(FLAG_GIO_MEM_CH1_CONVOY_COMPLETE);
+    FlagClear(FLAG_GIO_MEM_CH1_DUGTRIO_BOSS_DEFEATED);
+    FlagClear(FLAG_GIO_MEM_CH2_HIDEOUT_CLEARED);
+    FlagClear(FLAG_GIO_MEM_CH2_CELADON_ADMIN_BATTLE_WON);
+    FlagClear(FLAG_GIO_MEM_CH3_FINAL_TUNNEL_DEFENSE_BATTLE_WON);
 }
 
 static bool8 IsRocketOpsTriggerTypeValidForCommand(u16 commandId, u16 triggerType)
@@ -3584,7 +3589,11 @@ u16 StartGiovanniMemoryMode(void)
 
 u16 CompleteGiovanniMemoryModeChapter1(void)
 {
-    if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE) || FlagGet(FLAG_GIO_MEM_CH1_COMPLETE))
+    if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE)
+     || FlagGet(FLAG_GIO_MEM_CH1_COMPLETE)
+     || !FlagGet(FLAG_ROCKET_SUPPLY_NETWORK_ESTABLISHED)
+     || !FlagGet(FLAG_GIO_MEM_CH1_CONVOY_COMPLETE)
+     || !FlagGet(FLAG_GIO_MEM_CH1_DUGTRIO_BOSS_DEFEATED))
         return FALSE;
 
     FlagSet(FLAG_GIO_MEM_CH1_COMPLETE);
@@ -3600,7 +3609,10 @@ u16 CompleteGiovanniMemoryModeChapter2(void)
 {
     if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE)
      || !FlagGet(FLAG_GIO_MEM_CH1_COMPLETE)
-     || FlagGet(FLAG_GIO_MEM_CH2_COMPLETE))
+     || FlagGet(FLAG_GIO_MEM_CH2_COMPLETE)
+     || !FlagGet(FLAG_SILPH_INFILTRATION_PREPARED)
+     || !FlagGet(FLAG_GIO_MEM_CH2_HIDEOUT_CLEARED)
+     || !FlagGet(FLAG_GIO_MEM_CH2_CELADON_ADMIN_BATTLE_WON))
         return FALSE;
 
     FlagSet(FLAG_GIO_MEM_CH2_COMPLETE);
@@ -3616,9 +3628,10 @@ u16 CompleteGiovanniMemoryModeChapter2(void)
 
 u16 SetGiovanniMemoryModeChapter3Complete(void)
 {
-    if (!FlagGet(FLAG_GIO_MEM_CH3_DATA_DESTROYED)
+    if (!FlagGet(FLAG_ROCKET_DATA_DESTROYED)
+     || !FlagGet(FLAG_ROCKET_EVACUATION_COMPLETE)
      || !FlagGet(FLAG_GIO_MEM_CH3_STAFF_EXTRACTED)
-     || !FlagGet(FLAG_GIO_MEM_CH3_EVAC_COMPLETE))
+     || !FlagGet(FLAG_GIO_MEM_CH3_FINAL_TUNNEL_DEFENSE_BATTLE_WON))
         return FALSE;
 
     SetGiovanniCampaignProgress(3, 2, 3, GIO_CAMPAIGN_STATE_CH3_COMPLETE);
