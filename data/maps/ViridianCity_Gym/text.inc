@@ -275,3 +275,20 @@ ViridianCity_Gym_Text_RocketOps_DestroyData_C3::
 ViridianCity_Gym_Text_RocketOps_ExtractStaff_C3::
     .string "[ROCKETOPS:C3] Hostage/staff extraction\n"
     .string "completed for best-resolution path.$"
+
+ViridianCity_Gym_Text_MemoryRecoveryStationIntro::
+    .string "[MEMORY] Recovery station online.\n"
+    .string "Escort corridor stabilized for push\n"
+    .string "through the combat gate.$"
+
+ViridianCity_Gym_Text_MemoryRecoveryStationDone::
+    .string "[MEMORY] Team integrity restored.\n"
+    .string "Proceed to extraction checkpoint.$"
+
+ViridianCity_Gym_Text_RocketOps_StaffCheckpointDone_C3::
+    .string "[ROCKETOPS:C3] Staff convoy already\n"
+    .string "advanced past this checkpoint.$"
+
+ViridianCity_Gym_Text_RocketOps_EvacEndpointLocked_C3::
+    .string "[ROCKETOPS:C3] Escort route not staged.\n"
+    .string "Reach checkpoint alpha first.$"
