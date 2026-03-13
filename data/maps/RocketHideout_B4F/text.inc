@@ -114,6 +114,22 @@ RocketHideout_B4F_Text_RocketOps_ExtractStaff_C1::
     .string "[ROCKETOPS:C1] Medic evac corridor open.\n"
     .string "Temporary hub heal point activated.$"
 
+
+RocketHideout_B4F_Text_RocketOps_StatusReport_SecureCorridor_C1::
+    .string "[REPORT:C1] Corridor lock acknowledged.\n"
+    .string "Blast shutters around the Giovanni hall\n"
+    .string "have been disengaged.$"
+
+RocketHideout_B4F_Text_RocketOps_StatusReport_HoldPosition_C1::
+    .string "[REPORT:C1] Hold position confirmed.\n"
+    .string "Basement patrols are freezing in place\n"
+    .string "to avoid crossfire near civilians.$"
+
+RocketHideout_B4F_Text_RocketOps_StatusReport_OpenRoute_C1::
+    .string "[REPORT:C1] Open route relayed.\n"
+    .string "Service lane to the medic corridor is\n"
+    .string "now marked as safe passage.$"
+
 RocketHideout_B4F_Text_GruntReport_ObjectiveLive::
     .string "[REPORT:C1] Storefront pressure is still\n"
     .string "high. Keep civilians moving away from\n"

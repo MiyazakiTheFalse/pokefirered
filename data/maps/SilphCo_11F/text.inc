@@ -150,6 +150,22 @@ SilphCo_11F_Text_RocketOps_ExtractStaff_C2::
     .string "[ROCKETOPS:C2] Scientist extracted.\n"
     .string "Access code transferred to local cache.$"
 
+
+SilphCo_11F_Text_RocketOps_StatusReport_SecureCorridor_C2::
+    .string "[REPORT:C2] Secure corridor order accepted.\n"
+    .string "11F blast door is unlocked and command\n"
+    .string "has a direct line to the office.$"
+
+SilphCo_11F_Text_RocketOps_StatusReport_HoldPosition_C2::
+    .string "[REPORT:C2] Hold position order accepted.\n"
+    .string "Hall patrol units pulled off the lane to\n"
+    .string "prevent friendly interference.$"
+
+SilphCo_11F_Text_RocketOps_StatusReport_OpenRoute_C2::
+    .string "[REPORT:C2] Open route order accepted.\n"
+    .string "A low-heat approach path is now routed\n"
+    .string "to the executive breach point.$"
+
 SilphCo_11F_Text_GruntReport_ObjectiveLive::
     .string "[REPORT:C2] Executive floor still locked\n"
     .string "down. Keep pressure on SILPH control\n"

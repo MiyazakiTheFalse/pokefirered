@@ -42,15 +42,26 @@ SilphCo_11F_EventScript_MemoryFieldAide::
 	goto EventScript_RocketOps_Terminal
 
 EventScript_RocketOps_Command_SecureRoute_C2::
+	setflag FLAG_ROCKETOPS_ORDER_SECURE_CORRIDOR
+	setflag FLAG_SILPH_11F_DOOR
+	call EventScript_Open11FDoor
+	special DrawWholeMapView
 	msgbox SilphCo_11F_Text_RocketOps_SecureRoute_C2
+	msgbox SilphCo_11F_Text_RocketOps_StatusReport_SecureCorridor_C2, MSGBOX_AUTOCLOSE
 	goto EventScript_RocketOps_CommandFinalize
 
 EventScript_RocketOps_Command_DeployAgent_C2::
+	setflag FLAG_ROCKETOPS_ORDER_HOLD_POSITION
+	removeobject LOCALID_SILPH_CO_11F_GRUNT1
+	removeobject LOCALID_SILPH_CO_11F_GRUNT2
 	msgbox SilphCo_11F_Text_RocketOps_DeployAgent_C2
+	msgbox SilphCo_11F_Text_RocketOps_StatusReport_HoldPosition_C2, MSGBOX_AUTOCLOSE
 	goto EventScript_RocketOps_CommandFinalize
 
 EventScript_RocketOps_Command_DestroyData_C2::
+	setflag FLAG_ROCKETOPS_ORDER_OPEN_ROUTE
 	msgbox SilphCo_11F_Text_RocketOps_DestroyData_C2
+	msgbox SilphCo_11F_Text_RocketOps_StatusReport_OpenRoute_C2, MSGBOX_AUTOCLOSE
 	goto EventScript_RocketOps_CommandFinalize
 
 EventScript_RocketOps_Command_ExtractStaff_C2::
@@ -58,7 +69,14 @@ EventScript_RocketOps_Command_ExtractStaff_C2::
 	goto EventScript_RocketOps_CommandFinalize
 
 SilphCo_11F_OnLoad::
+	goto_if_set FLAG_ROCKETOPS_ORDER_SECURE_CORRIDOR, SilphCo_11F_OnLoad_OpenDoor
 	call_if_unset FLAG_SILPH_11F_DOOR, EventScript_Close11FDoor
+	goto SilphCo_11F_OnLoad_End
+
+SilphCo_11F_OnLoad_OpenDoor::
+	setflag FLAG_SILPH_11F_DOOR
+	call EventScript_Open11FDoor
+SilphCo_11F_OnLoad_End::
 	end
 
 SilphCo_11F_EventScript_President::

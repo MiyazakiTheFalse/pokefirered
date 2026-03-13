@@ -1543,6 +1543,11 @@
 #define FLAG_GIO_MEM_CH3_ESCORT_CHECKPOINT_1                          FLAG_0x8E4
 #define FLAG_GIO_MEM_CH3_ESCORT_CHECKPOINT_2                          FLAG_0x8EC
 
+// RocketOps authority order outcomes.
+#define FLAG_ROCKETOPS_ORDER_SECURE_CORRIDOR                          FLAG_0x8D0
+#define FLAG_ROCKETOPS_ORDER_HOLD_POSITION                            FLAG_0x8D1
+#define FLAG_ROCKETOPS_ORDER_OPEN_ROUTE                               FLAG_0x8D2
+
 // Giovanni memory mode Chapter 3 objective aliases.
 #define FLAG_GIO_MEM_CH3_DATA_DESTROYED                              FLAG_ROCKETOPS_DATA_DESTROYED
 #define FLAG_GIO_MEM_CH3_STAFF_EXTRACTED                             FLAG_ROCKETOPS_STAFF_EXTRACTED

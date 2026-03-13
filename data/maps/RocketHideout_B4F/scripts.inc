@@ -43,15 +43,23 @@ RocketHideout_B4F_EventScript_MemoryMedicTerminal::
 	goto EventScript_RocketOps_Terminal
 
 EventScript_RocketOps_Command_SecureRoute_C1::
+	setflag FLAG_ROCKETOPS_ORDER_SECURE_CORRIDOR
+	call RocketHideout_B4F_EventScript_RemoveBarrier
+	special DrawWholeMapView
 	msgbox RocketHideout_B4F_Text_RocketOps_SecureRoute_C1
+	msgbox RocketHideout_B4F_Text_RocketOps_StatusReport_SecureCorridor_C1, MSGBOX_AUTOCLOSE
 	goto EventScript_RocketOps_CommandFinalize
 
 EventScript_RocketOps_Command_DeployAgent_C1::
+	setflag FLAG_ROCKETOPS_ORDER_HOLD_POSITION
 	msgbox RocketHideout_B4F_Text_RocketOps_DeployAgent_C1
+	msgbox RocketHideout_B4F_Text_RocketOps_StatusReport_HoldPosition_C1, MSGBOX_AUTOCLOSE
 	goto EventScript_RocketOps_CommandFinalize
 
 EventScript_RocketOps_Command_DestroyData_C1::
+	setflag FLAG_ROCKETOPS_ORDER_OPEN_ROUTE
 	msgbox RocketHideout_B4F_Text_RocketOps_DestroyData_C1
+	msgbox RocketHideout_B4F_Text_RocketOps_StatusReport_OpenRoute_C1, MSGBOX_AUTOCLOSE
 	goto EventScript_RocketOps_CommandFinalize
 
 EventScript_RocketOps_Command_ExtractStaff_C1::
@@ -63,7 +71,9 @@ RocketHideout_B4F_OnLoad::
 	setvar NUM_DOOR_GRUNTS_DEFEATED, 0
 	call_if_defeated TRAINER_TEAM_ROCKET_GRUNT_16, RocketHideout_B4F_EventScript_CountGruntDefeated
 	call_if_defeated TRAINER_TEAM_ROCKET_GRUNT_17, RocketHideout_B4F_EventScript_CountGruntDefeated
+	goto_if_set FLAG_ROCKETOPS_ORDER_SECURE_CORRIDOR, RocketHideout_B4F_OnLoad_End
 	call_if_ne NUM_DOOR_GRUNTS_DEFEATED, 2, RocketHideout_B4F_EventScript_SetBarrier
+RocketHideout_B4F_OnLoad_End::
 	end
 
 RocketHideout_B4F_EventScript_CountGruntDefeated::

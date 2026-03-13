@@ -247,6 +247,22 @@ ViridianCity_Gym_Text_RocketReport_ObjectiveDone::
     .string "is terminating.$"
 
 
+
+ViridianCity_Gym_Text_RocketOps_StatusReport_SecureCorridor_C3::
+    .string "[REPORT:C3] Secure corridor order accepted.\n"
+    .string "Command ring narrowed to the boss lane\n"
+    .string "with perimeter doors reinforced.$"
+
+ViridianCity_Gym_Text_RocketOps_StatusReport_HoldPosition_C3::
+    .string "[REPORT:C3] Hold position order accepted.\n"
+    .string "Outer guard pairs are pinned to static\n"
+    .string "posts and no longer sweep the gym.$"
+
+ViridianCity_Gym_Text_RocketOps_StatusReport_OpenRoute_C3::
+    .string "[REPORT:C3] Open route order accepted.\n"
+    .string "Escort checkpoint alpha is now marked as\n"
+    .string "a safe route for extraction.$"
+
 ViridianCity_Gym_Text_RocketOps_StaffCheckpoint_C3::
     .string "[ROCKETOPS:C3] Escort checkpoint locked.\n"
     .string "Staff convoy moved to extraction lane.$"

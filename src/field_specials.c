@@ -3387,6 +3387,9 @@ static void ResetRocketOpsState(void)
     FlagClear(FLAG_ROCKETOPS_AGENT_DEPLOYED);
     FlagClear(FLAG_ROCKETOPS_DATA_DESTROYED);
     FlagClear(FLAG_ROCKETOPS_STAFF_EXTRACTED);
+    FlagClear(FLAG_ROCKETOPS_ORDER_SECURE_CORRIDOR);
+    FlagClear(FLAG_ROCKETOPS_ORDER_HOLD_POSITION);
+    FlagClear(FLAG_ROCKETOPS_ORDER_OPEN_ROUTE);
     FlagClear(FLAG_GIO_MEM_CH3_EVAC_COMPLETE);
     ResetGiovanniChapter3EscortSegmentState();
     FlagClear(FLAG_ROCKETOPS_MILESTONE_CH1_LOGGED);
@@ -3815,9 +3818,17 @@ u16 SyncGiovanniMemoryModeNpcState(void)
 }
 
 
+static bool8 AreRocketOpsAuthorityOrdersComplete(void)
+{
+    return FlagGet(FLAG_ROCKETOPS_ORDER_SECURE_CORRIDOR)
+        && FlagGet(FLAG_ROCKETOPS_ORDER_HOLD_POSITION)
+        && FlagGet(FLAG_ROCKETOPS_ORDER_OPEN_ROUTE);
+}
+
 u16 Special_RocketOps_OpenTerminal(void)
 {
     u16 chapterId;
+    u16 chapterStageVar;
 
     if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
         return FALSE;
@@ -3828,6 +3839,14 @@ u16 Special_RocketOps_OpenTerminal(void)
     chapterId = VarGet(VAR_CHAPTER_ID);
     if (chapterId < 1 || chapterId > 3)
         return FALSE;
+
+    chapterStageVar = VAR_ROCKETOPS_CH1_STAGE + chapterId - 1;
+    if (VarGet(chapterStageVar) == 0)
+    {
+        FlagClear(FLAG_ROCKETOPS_ORDER_SECURE_CORRIDOR);
+        FlagClear(FLAG_ROCKETOPS_ORDER_HOLD_POSITION);
+        FlagClear(FLAG_ROCKETOPS_ORDER_OPEN_ROUTE);
+    }
 
     VarSet(VAR_ROCKETOPS_CHAPTER, chapterId);
     FlagSet(FLAG_ROCKETOPS_TERMINAL_UNLOCKED);
@@ -3938,12 +3957,15 @@ u16 Special_RocketOps_WritebackState(void)
         if (VarGet(chapterStageVar) == 2)
         {
             VarSet(chapterStageVar, 3);
-            if (chapterId == 1)
-                FlagSet(FLAG_ROCKETOPS_MILESTONE_CH1_LOGGED);
-            else if (chapterId == 2)
-                FlagSet(FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED);
-            else
-                FlagSet(FLAG_ROCKETOPS_MILESTONE_CH3_LOGGED);
+            if (AreRocketOpsAuthorityOrdersComplete())
+            {
+                if (chapterId == 1)
+                    FlagSet(FLAG_ROCKETOPS_MILESTONE_CH1_LOGGED);
+                else if (chapterId == 2)
+                    FlagSet(FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED);
+                else
+                    FlagSet(FLAG_ROCKETOPS_MILESTONE_CH3_LOGGED);
+            }
         }
         break;
     }
