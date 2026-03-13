@@ -1548,6 +1548,19 @@
 #define FLAG_ROCKETOPS_ORDER_HOLD_POSITION                            FLAG_0x8D1
 #define FLAG_ROCKETOPS_ORDER_OPEN_ROUTE                               FLAG_0x8D2
 
+// Giovanni memory mode chapter gate encounter flags.
+#define FLAG_GIO_MEM_CH1_CONVOY_COMPLETE                              FLAG_0x8D3
+#define FLAG_GIO_MEM_CH1_DUGTRIO_BOSS_DEFEATED                        FLAG_0x8D4
+#define FLAG_GIO_MEM_CH2_HIDEOUT_CLEARED                              FLAG_0x8D5
+#define FLAG_GIO_MEM_CH2_CELADON_ADMIN_BATTLE_WON                     FLAG_0x8D6
+#define FLAG_GIO_MEM_CH3_FINAL_TUNNEL_DEFENSE_BATTLE_WON              FLAG_0x8D7
+
+// Giovanni memory mode chapter gate objective aliases.
+#define FLAG_ROCKET_SUPPLY_NETWORK_ESTABLISHED                        FLAG_ROCKETOPS_MILESTONE_CH1_LOGGED
+#define FLAG_SILPH_INFILTRATION_PREPARED                              FLAG_ROCKETOPS_MILESTONE_CH2_LOGGED
+#define FLAG_ROCKET_DATA_DESTROYED                                    FLAG_GIO_MEM_CH3_DATA_DESTROYED
+#define FLAG_ROCKET_EVACUATION_COMPLETE                               FLAG_GIO_MEM_CH3_EVAC_COMPLETE
+
 // Giovanni memory mode Chapter 3 objective aliases.
 #define FLAG_GIO_MEM_CH3_DATA_DESTROYED                              FLAG_ROCKETOPS_DATA_DESTROYED
 #define FLAG_GIO_MEM_CH3_STAFF_EXTRACTED                             FLAG_ROCKETOPS_STAFF_EXTRACTED
