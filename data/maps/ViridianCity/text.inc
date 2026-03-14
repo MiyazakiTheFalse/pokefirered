@@ -11,6 +11,12 @@ ViridianCity_Text_GymClosedWonderWhoLeaderIs::
 ViridianCity_Text_ViridiansGymLeaderReturned::
     .string "VIRIDIAN GYM's LEADER returned!$"
 
+ViridianCity_Text_GymLeaderReturnedRocketGone::
+    .string "VIRIDIAN GYM's LEADER returned...\n"
+    .string "then TEAM ROCKET fell apart.\p"
+    .string "Maybe this city can finally settle\n"
+    .string "down again.$"
+
 ViridianCity_Text_WantToKnowAboutCaterpillarMons::
     .string "You want to know about the two\n"
     .string "kinds of caterpillar POKéMON?$"

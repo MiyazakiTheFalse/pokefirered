@@ -123,3 +123,7 @@ CeladonCity_Text_SomeoneStoleSilphScope::
     .string "But I lost sight of him!\n"
     .string "Where'd he go?$"
 
+CeladonCity_Text_SilphScopeRecovered::
+    .string "The SILPH SCOPE made it back to us.\p"
+    .string "With TEAM ROCKET scattered, our\n"
+    .string "couriers can breathe again.$"
