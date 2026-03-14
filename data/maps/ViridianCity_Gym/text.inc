@@ -1,10 +1,9 @@
 ViridianCity_Gym_Text_GiovanniIntro::
-    .string "So, you made it to me again.\n"
-    .string "Persistent... and strong.\p"
-    .string "You tore through my hideouts and\n"
-    .string "read the containment protocol notes.\p"
-    .string "Even the soul-reactive sample reports\n"
-    .string "didn't turn you back.\p"
+    .string "You never saw the system.\p"
+    .string "You only saw the pieces.\p"
+    .string "And yet you destroyed it.\p"
+    .string "So now we settle this directly.\n"
+    .string "No diversions. No noise.\p"
     .string "Then stand your ground!\n"
     .string "Face GIOVANNI at full power!{PLAY_BGM}{MUS_ENCOUNTER_ROCKET}$"
 
@@ -18,15 +17,30 @@ ViridianCity_Gym_Text_GiovanniDefeat::
 ViridianCity_Gym_Text_GiovanniPostBattle::
     .string "I have no excuse for this loss.\n"
     .string "My men will not forgive it.\p"
+    .string "Team Rocket is finished.\p"
     .string "Reports kept arriving: dock crews forced\n"
     .string "out, Celadon shelves squeezed, families\n"
     .string "driven by rushed evacuations.\p"
-    .string "From this day on, TEAM ROCKET\n"
-    .string "is dissolved.\p"
     .string "I will leave and train in silence\n"
     .string "until I find my answer.\p"
     .string "We may meet again someday.\n"
     .string "Until then... farewell.$"
+
+ViridianCity_Gym_Text_GiovanniPreBattleContextPresent::
+    .string "This city became a board of pressure\n"
+    .string "points, and I moved every piece by hand.\p"
+    .string "Strategy without restraint always claims\n"
+    .string "a cost no report can hide.$"
+
+ViridianCity_Gym_Text_GiovanniPreBattleContextMemory::
+    .string "The memory echoes every decision back\n"
+    .string "at me as if it were still unfolding.\p"
+    .string "A commander survives by planning ahead.\n"
+    .string "A man survives by facing what he planned.$"
+
+ViridianCity_Gym_Text_GiovanniPostBattleMemoryAddon::
+    .string "Remember what you saw in these echoes.\n"
+    .string "Ambition without limits devours its own.$"
 
 ViridianCity_Gym_Text_ExplainEarthBadgeTakeThis::
     .string "The EARTHBADGE will make POKéMON\n"
