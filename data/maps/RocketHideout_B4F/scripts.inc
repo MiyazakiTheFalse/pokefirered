@@ -27,6 +27,8 @@ RocketHideout_B4F_EventScript_MemoryDesyncReturnToHub::
 RocketHideout_B4F_EventScript_MemorySpaceMarker::
 	goto_if_ne VAR_CHAPTER_ID, 1, RocketHideout_B4F_EventScript_MemoryChapterMismatchMarker
 	goto_if_set FLAG_GIO_MEM_CH1_COMPLETE, RocketHideout_B4F_EventScript_MemorySpaceMarkerComplete
+	setvar VAR_GIO_ACT, 1
+	setvar VAR_GIO_CHECKPOINT_ID, 0
 	msgbox RocketHideout_B4F_Text_MemoryChapterIntro, MSGBOX_AUTOCLOSE
 	end
 
