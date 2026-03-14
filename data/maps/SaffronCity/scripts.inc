@@ -3,6 +3,8 @@ SaffronCity_MapScripts::
 	.byte 0
 
 SaffronCity_OnTransition::
+	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	setworldmapflag FLAG_WORLD_MAP_SAFFRON_CITY
 	call_if_unset FLAG_RESCUED_MR_FUJI, SaffronCity_EventScript_MoveDoorGuardGrunt
 	end
@@ -156,4 +158,12 @@ SaffronCity_EventScript_SilphProductSign::
 
 SaffronCity_EventScript_TrainerFanClubSign::
 	msgbox SaffronCity_Text_TrainerFanClubSign, MSGBOX_SIGN
+	end
+
+SaffronCity_EventScript_MemoryRouteCheckpoint::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	goto_if_ne VAR_CHAPTER_ID, 2, EventScript_Nothing
+	setflag FLAG_GIO_MEM_CH2_HIDEOUT_CLEARED
+	setvar VAR_GIO_ACT, 2
+	setvar VAR_GIO_CHECKPOINT_ID, 1
 	end

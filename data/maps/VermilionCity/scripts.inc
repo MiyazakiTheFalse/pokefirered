@@ -21,6 +21,8 @@ VermilionCity_Movement_ExitSSAnne::
 	step_end
 
 VermilionCity_OnTransition::
+	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	setworldmapflag FLAG_WORLD_MAP_VERMILION_CITY
 	call_if_set FLAG_TALKED_TO_OAKS_AIDE_IN_VERMILION, VermilionCity_EventScript_HideOaksAide
 	end
@@ -263,4 +265,12 @@ VermilionCity_EventScript_GymSign::
 
 VermilionCity_EventScript_HarborSign::
 	msgbox VermilionCity_Text_VermilionHarbor, MSGBOX_SIGN
+	end
+
+VermilionCity_EventScript_MemoryRouteCheckpoint::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	goto_if_ne VAR_CHAPTER_ID, 1, EventScript_Nothing
+	setflag FLAG_GIO_MEM_CH1_CONVOY_COMPLETE
+	setvar VAR_GIO_ACT, 3
+	setvar VAR_GIO_CHECKPOINT_ID, 2
 	end

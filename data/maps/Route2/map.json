@@ -191,7 +191,17 @@
       "dest_warp_id": "1"
     }
   ],
-  "coord_events": [],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 17,
+      "y": 11,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Route2_EventScript_MemoryRouteCheckpoint"
+    }
+  ],
   "bg_events": [
     {
       "type": "sign",

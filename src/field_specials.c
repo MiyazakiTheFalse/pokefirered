@@ -164,7 +164,7 @@ struct GiovanniMapOverlay
 {
     u16 map;
     u8 chapterId;
-    u8 allowedWarpMask;
+    u16 allowedWarpMask;
     u16 enabledTriggerMask;
     u8 npcSetId;
     u8 guaranteedProgressWarpId;
@@ -364,60 +364,86 @@ enum
 static const struct GiovanniMapOverlay sGiovanniMapOverlays[] =
 {
     {
+        .map = MAP_VIRIDIAN_CITY,
+        .chapterId = 1,
+        .allowedWarpMask = (1 << 2),
+        .enabledTriggerMask = (1 << 0),
+        .npcSetId = GIOVANNI_NPC_SET_NONE,
+        .guaranteedProgressWarpId = 2,
+        .safeReturnMap = MAP_DIGLETTS_CAVE_NORTH_ENTRANCE,
+        .safeReturnX = 3,
+        .safeReturnY = 4,
+        .recoveryFallbackX = 21,
+        .recoveryFallbackY = 8,
+    },
+    {
+        .map = MAP_ROUTE2,
+        .chapterId = 1,
+        .allowedWarpMask = (1 << 3),
+        .enabledTriggerMask = 0,
+        .npcSetId = GIOVANNI_NPC_SET_NONE,
+        .guaranteedProgressWarpId = 3,
+        .safeReturnMap = MAP_DIGLETTS_CAVE_NORTH_ENTRANCE,
+        .safeReturnX = 3,
+        .safeReturnY = 4,
+        .recoveryFallbackX = 17,
+        .recoveryFallbackY = 12,
+    },
+    {
         .map = MAP_DIGLETTS_CAVE_NORTH_ENTRANCE,
         .chapterId = 1,
         .allowedWarpMask = (1 << 0) | (1 << 1),
         .enabledTriggerMask = (1 << 0),
         .npcSetId = GIOVANNI_NPC_SET_NONE,
         .guaranteedProgressWarpId = 0,
-        .safeReturnMap = MAP_ROCKET_HIDEOUT_B4F,
-        .safeReturnX = 19,
-        .safeReturnY = 6,
+        .safeReturnMap = MAP_DIGLETTS_CAVE_NORTH_ENTRANCE,
+        .safeReturnX = 3,
+        .safeReturnY = 4,
         .recoveryFallbackX = 3,
         .recoveryFallbackY = 4,
     },
     {
-        .map = MAP_ROCKET_HIDEOUT_B4F,
+        .map = MAP_ROUTE11,
         .chapterId = 1,
         .allowedWarpMask = (1 << 0),
-        .enabledTriggerMask = (1 << 0) | (1 << 1) | (1 << 2),
+        .enabledTriggerMask = 0,
         .npcSetId = GIOVANNI_NPC_SET_NONE,
         .guaranteedProgressWarpId = 0,
-        .safeReturnMap = MAP_ROCKET_HIDEOUT_B4F,
-        .safeReturnX = 19,
-        .safeReturnY = 6,
-        .recoveryFallbackX = 19,
-        .recoveryFallbackY = 6,
+        .safeReturnMap = MAP_DIGLETTS_CAVE_SOUTH_ENTRANCE,
+        .safeReturnX = 82,
+        .safeReturnY = 70,
+        .recoveryFallbackX = 6,
+        .recoveryFallbackY = 8,
     },
     {
-        .map = MAP_ROCKET_HIDEOUT_ELEVATOR,
+        .map = MAP_VERMILION_CITY,
         .chapterId = 1,
-        .allowedWarpMask = (1 << 0) | (1 << 1),
+        .allowedWarpMask = (1 << 9),
+        .enabledTriggerMask = 0,
+        .npcSetId = GIOVANNI_NPC_SET_NONE,
+        .guaranteedProgressWarpId = 9,
+        .safeReturnMap = MAP_ROUTE11,
+        .safeReturnX = 6,
+        .safeReturnY = 8,
+        .recoveryFallbackX = 14,
+        .recoveryFallbackY = 24,
+    },
+    {
+        .map = MAP_CELADON_CITY,
+        .chapterId = 2,
+        .allowedWarpMask = (1 << 0),
         .enabledTriggerMask = 0,
         .npcSetId = GIOVANNI_NPC_SET_NONE,
         .guaranteedProgressWarpId = 0,
-        .safeReturnMap = MAP_ROCKET_HIDEOUT_B4F,
-        .safeReturnX = 19,
-        .safeReturnY = 6,
-        .recoveryFallbackX = 1,
-        .recoveryFallbackY = 5,
-    },
-    {
-        .map = MAP_VIRIDIAN_CITY,
-        .chapterId = 3,
-        .allowedWarpMask = (1 << 2),
-        .enabledTriggerMask = 0,
-        .npcSetId = GIOVANNI_NPC_SET_NONE,
-        .guaranteedProgressWarpId = 2,
-        .safeReturnMap = MAP_VIRIDIAN_CITY_GYM,
-        .safeReturnX = 17,
-        .safeReturnY = 21,
-        .recoveryFallbackX = 17,
-        .recoveryFallbackY = 21,
+        .safeReturnMap = MAP_CELADON_CITY_GAME_CORNER,
+        .safeReturnX = 10,
+        .safeReturnY = 11,
+        .recoveryFallbackX = 34,
+        .recoveryFallbackY = 22,
     },
     {
         .map = MAP_CELADON_CITY_GAME_CORNER,
-        .chapterId = 1,
+        .chapterId = 2,
         .allowedWarpMask = (1 << 3),
         .enabledTriggerMask = (1 << 0) | (1 << 1) | (1 << 2),
         .npcSetId = GIOVANNI_NPC_SET_CELADON_GAME_CORNER,
@@ -429,47 +455,86 @@ static const struct GiovanniMapOverlay sGiovanniMapOverlays[] =
         .recoveryFallbackY = 6,
     },
     {
+        .map = MAP_ROCKET_HIDEOUT_B4F,
+        .chapterId = 2,
+        .allowedWarpMask = (1 << 0),
+        .enabledTriggerMask = (1 << 0) | (1 << 1) | (1 << 2),
+        .npcSetId = GIOVANNI_NPC_SET_NONE,
+        .guaranteedProgressWarpId = 0,
+        .safeReturnMap = MAP_CELADON_CITY_GAME_CORNER,
+        .safeReturnX = 10,
+        .safeReturnY = 11,
+        .recoveryFallbackX = 19,
+        .recoveryFallbackY = 6,
+    },
+    {
+        .map = MAP_ROCKET_HIDEOUT_ELEVATOR,
+        .chapterId = 2,
+        .allowedWarpMask = (1 << 0) | (1 << 1),
+        .enabledTriggerMask = 0,
+        .npcSetId = GIOVANNI_NPC_SET_NONE,
+        .guaranteedProgressWarpId = 0,
+        .safeReturnMap = MAP_ROCKET_HIDEOUT_B4F,
+        .safeReturnX = 19,
+        .safeReturnY = 6,
+        .recoveryFallbackX = 1,
+        .recoveryFallbackY = 5,
+    },
+    {
         .map = MAP_UNDERGROUND_PATH_NORTH_SOUTH_TUNNEL,
         .chapterId = 2,
         .allowedWarpMask = (1 << 0) | (1 << 1),
         .enabledTriggerMask = (1 << 0) | (1 << 1),
         .npcSetId = GIOVANNI_NPC_SET_NONE,
         .guaranteedProgressWarpId = 0,
-        .safeReturnMap = MAP_SILPH_CO_11F,
-        .safeReturnX = 6,
-        .safeReturnY = 14,
+        .safeReturnMap = MAP_SAFFRON_CITY,
+        .safeReturnX = 34,
+        .safeReturnY = 29,
         .recoveryFallbackX = 6,
         .recoveryFallbackY = 14,
     },
     {
-        .map = MAP_DIGLETTS_CAVE_SOUTH_ENTRANCE,
+        .map = MAP_SAFFRON_CITY,
         .chapterId = 2,
+        .allowedWarpMask = (1 << 0),
+        .enabledTriggerMask = 0,
+        .npcSetId = GIOVANNI_NPC_SET_NONE,
+        .guaranteedProgressWarpId = 0,
+        .safeReturnMap = MAP_UNDERGROUND_PATH_NORTH_SOUTH_TUNNEL,
+        .safeReturnX = 4,
+        .safeReturnY = 4,
+        .recoveryFallbackX = 33,
+        .recoveryFallbackY = 29,
+    },
+    {
+        .map = MAP_DIGLETTS_CAVE_SOUTH_ENTRANCE,
+        .chapterId = 3,
         .allowedWarpMask = (1 << 0) | (1 << 1),
         .enabledTriggerMask = (1 << 0),
         .npcSetId = GIOVANNI_NPC_SET_NONE,
         .guaranteedProgressWarpId = 1,
-        .safeReturnMap = MAP_SILPH_CO_11F,
-        .safeReturnX = 6,
-        .safeReturnY = 14,
+        .safeReturnMap = MAP_VIRIDIAN_CITY_GYM,
+        .safeReturnX = 17,
+        .safeReturnY = 21,
         .recoveryFallbackX = 82,
         .recoveryFallbackY = 70,
     },
     {
         .map = MAP_SILPH_CO_11F,
-        .chapterId = 2,
+        .chapterId = 3,
         .allowedWarpMask = 0x07,
         .enabledTriggerMask = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 4),
         .npcSetId = GIOVANNI_NPC_SET_SILPH_CO,
         .guaranteedProgressWarpId = 1,
-        .safeReturnMap = MAP_SILPH_CO_11F,
-        .safeReturnX = 6,
-        .safeReturnY = 14,
+        .safeReturnMap = MAP_VIRIDIAN_CITY_GYM,
+        .safeReturnX = 17,
+        .safeReturnY = 21,
         .recoveryFallbackX = 6,
         .recoveryFallbackY = 14,
     },
     {
         .map = MAP_SILPH_CO_ELEVATOR,
-        .chapterId = 2,
+        .chapterId = 3,
         .allowedWarpMask = (1 << 0),
         .enabledTriggerMask = 0,
         .npcSetId = GIOVANNI_NPC_SET_NONE,
@@ -479,6 +544,32 @@ static const struct GiovanniMapOverlay sGiovanniMapOverlays[] =
         .safeReturnY = 14,
         .recoveryFallbackX = 2,
         .recoveryFallbackY = 5,
+    },
+    {
+        .map = MAP_ROUTE2,
+        .chapterId = 3,
+        .allowedWarpMask = (1 << 3),
+        .enabledTriggerMask = 0,
+        .npcSetId = GIOVANNI_NPC_SET_NONE,
+        .guaranteedProgressWarpId = 3,
+        .safeReturnMap = MAP_VIRIDIAN_CITY_GYM,
+        .safeReturnX = 17,
+        .safeReturnY = 21,
+        .recoveryFallbackX = 17,
+        .recoveryFallbackY = 12,
+    },
+    {
+        .map = MAP_SAFFRON_CITY,
+        .chapterId = 3,
+        .allowedWarpMask = (1 << 0),
+        .enabledTriggerMask = 0,
+        .npcSetId = GIOVANNI_NPC_SET_NONE,
+        .guaranteedProgressWarpId = 0,
+        .safeReturnMap = MAP_SILPH_CO_11F,
+        .safeReturnX = 6,
+        .safeReturnY = 14,
+        .recoveryFallbackX = 33,
+        .recoveryFallbackY = 29,
     },
     {
         .map = MAP_VIRIDIAN_CITY_GYM,
@@ -495,17 +586,24 @@ static const struct GiovanniMapOverlay sGiovanniMapOverlays[] =
     },
 };
 
-static const struct GiovanniMapOverlay *GetGiovanniOverlayForMap(u16 map)
+static const struct GiovanniMapOverlay *GetGiovanniOverlayForMap(u16 map, u8 chapterId)
 {
     u8 i;
+    const struct GiovanniMapOverlay *fallback = NULL;
 
     for (i = 0; i < ARRAY_COUNT(sGiovanniMapOverlays); i++)
     {
         if (sGiovanniMapOverlays[i].map == map)
-            return &sGiovanniMapOverlays[i];
+        {
+            if (sGiovanniMapOverlays[i].chapterId == chapterId)
+                return &sGiovanniMapOverlays[i];
+
+            if (fallback == NULL)
+                fallback = &sGiovanniMapOverlays[i];
+        }
     }
 
-    return NULL;
+    return fallback;
 }
 
 static void WarpPlayerToGiovanniOverlaySafeReturn(const struct GiovanniMapOverlay *overlay)
@@ -559,7 +657,7 @@ static void ApplyGiovanniOverlayNpcSet(const struct GiovanniMapOverlay *overlay)
 
 static bool8 IsOverlayWarpAllowed(const struct GiovanniMapOverlay *overlay, u8 warpId)
 {
-    if (warpId >= 8)
+    if (warpId >= 16)
         return FALSE;
 
     return (overlay->allowedWarpMask & (1 << warpId)) != 0;
@@ -4192,7 +4290,7 @@ u16 ValidateGiovanniInteractionOverlayForCurrentMap(void)
     u16 map = (gSaveBlock1Ptr->location.mapGroup << 8) | gSaveBlock1Ptr->location.mapNum;
     u8 chapterId = GetGiovanniMemoryModeChapterId();
 
-    overlay = GetGiovanniOverlayForMap(map);
+    overlay = GetGiovanniOverlayForMap(map, chapterId);
     if (overlay == NULL)
         return TRUE;
 

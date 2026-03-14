@@ -246,3 +246,12 @@ ViridianCity_EventScript_DoTutorialBattle::
 	giveitem ITEM_TEACHY_TV
 	msgbox ViridianCity_Text_WatchThatToLearnBasics
 	return
+
+ViridianCity_EventScript_MemoryRouteCheckpoint::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	goto_if_ne VAR_CHAPTER_ID, 3, EventScript_Nothing
+	setflag FLAG_GIO_MEM_CH3_STARTED
+	setvar VAR_GIO_CHAPTER, 3
+	setvar VAR_GIO_ACT, 1
+	setvar VAR_GIO_CHECKPOINT_ID, 0
+	end

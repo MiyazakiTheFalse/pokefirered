@@ -3,6 +3,8 @@ CeladonCity_MapScripts::
 	.byte 0
 
 CeladonCity_OnTransition::
+	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
+	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	setworldmapflag FLAG_WORLD_MAP_CELADON_CITY
 	end
 
@@ -110,4 +112,13 @@ CeladonCity_EventScript_PrizeExchangeSign::
 
 CeladonCity_EventScript_GameCornerSign::
 	msgbox CeladonCity_Text_GameCornerSign, MSGBOX_SIGN
+	end
+
+CeladonCity_EventScript_MemoryRouteCheckpoint::
+	goto_if_unset FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE, EventScript_Nothing
+	goto_if_ne VAR_CHAPTER_ID, 2, EventScript_Nothing
+	setflag FLAG_GIO_MEM_CH2_STARTED
+	setvar VAR_GIO_CHAPTER, 2
+	setvar VAR_GIO_ACT, 1
+	setvar VAR_GIO_CHECKPOINT_ID, 0
 	end
