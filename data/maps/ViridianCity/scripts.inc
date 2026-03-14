@@ -98,7 +98,13 @@ ViridianCity_EventScript_OldMan::
 	end
 
 ViridianCity_EventScript_OldManGymLeaderReturned::
+	goto_if_set FLAG_ROCKET_DISBANDED, ViridianCity_EventScript_OldManGymLeaderReturned_PostDisband
 	msgbox ViridianCity_Text_ViridiansGymLeaderReturned
+	release
+	end
+
+ViridianCity_EventScript_OldManGymLeaderReturned_PostDisband::
+	msgbox ViridianCity_Text_GymLeaderReturnedRocketGone
 	release
 	end
 

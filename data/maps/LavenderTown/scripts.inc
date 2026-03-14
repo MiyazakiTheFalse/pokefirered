@@ -23,7 +23,12 @@ LavenderTown_EventScript_LittleGirlBelieve::
 	end
 
 LavenderTown_EventScript_WorkerM::
+	goto_if_set FLAG_ROCKET_DISBANDED, LavenderTown_EventScript_WorkerM_PostDisband
 	msgbox LavenderTown_Text_TownKnownAsMonGraveSite, MSGBOX_NPC
+	end
+
+LavenderTown_EventScript_WorkerM_PostDisband::
+	msgbox LavenderTown_Text_TownKnownAsMonGraveSite_PostDisband, MSGBOX_NPC
 	end
 
 LavenderTown_EventScript_Boy::

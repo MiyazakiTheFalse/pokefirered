@@ -16,6 +16,12 @@ LavenderTown_Text_TownKnownAsMonGraveSite::
     .string "Memorial services are held in\n"
     .string "POKéMON TOWER.$"
 
+LavenderTown_Text_TownKnownAsMonGraveSite_PostDisband::
+    .string "This town is still a resting place\n"
+    .string "for POKéMON.\p"
+    .string "Without TEAM ROCKET around, more\n"
+    .string "families can visit in peace.$"
+
 LavenderTown_Text_GhostsAppearedInTower::
     .string "Ghosts appeared in POKéMON TOWER.\p"
     .string "I think they're the spirits of\n"

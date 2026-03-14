@@ -6,8 +6,18 @@ SaffronCity_OnTransition::
 	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
 	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	setworldmapflag FLAG_WORLD_MAP_SAFFRON_CITY
+	call_if_set FLAG_ROCKET_DISBANDED, SaffronCity_EventScript_HideRocketsAfterDisband
+	call_if_unset FLAG_ROCKET_DISBANDED, SaffronCity_EventScript_ShowRocketsBeforeDisband
 	call_if_unset FLAG_RESCUED_MR_FUJI, SaffronCity_EventScript_MoveDoorGuardGrunt
 	end
+
+SaffronCity_EventScript_HideRocketsAfterDisband::
+	setflag FLAG_HIDE_SAFFRON_ROCKETS
+	return
+
+SaffronCity_EventScript_ShowRocketsBeforeDisband::
+	clearflag FLAG_HIDE_SAFFRON_ROCKETS
+	return
 
 SaffronCity_EventScript_MoveDoorGuardGrunt::
 	setobjectxyperm LOCALID_SAFFRON_DOOR_GUARD_GRUNT, 33, 31

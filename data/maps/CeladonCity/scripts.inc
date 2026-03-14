@@ -6,7 +6,17 @@ CeladonCity_OnTransition::
 	specialvar VAR_RESULT, ValidateGiovanniInteractionOverlayForCurrentMap
 	goto_if_eq VAR_RESULT, FALSE, EventScript_Return
 	setworldmapflag FLAG_WORLD_MAP_CELADON_CITY
+	call_if_set FLAG_ROCKET_DISBANDED, CeladonCity_EventScript_HideRocketsAfterDisband
+	call_if_unset FLAG_ROCKET_DISBANDED, CeladonCity_EventScript_ShowRocketsBeforeDisband
 	end
+
+CeladonCity_EventScript_HideRocketsAfterDisband::
+	setflag FLAG_HIDE_CELADON_ROCKETS
+	return
+
+CeladonCity_EventScript_ShowRocketsBeforeDisband::
+	clearflag FLAG_HIDE_CELADON_ROCKETS
+	return
 
 CeladonCity_EventScript_LittleGirl::
 	msgbox CeladonCity_Text_GotMyKoffingInCinnabar, MSGBOX_NPC
@@ -76,7 +86,12 @@ CeladonCity_EventScript_Boy::
 	end
 
 CeladonCity_EventScript_SilphCoScientist::
+	goto_if_set FLAG_ROCKET_DISBANDED, CeladonCity_EventScript_SilphCoScientist_PostDisband
 	msgbox CeladonCity_Text_SomeoneStoleSilphScope, MSGBOX_NPC
+	end
+
+CeladonCity_EventScript_SilphCoScientist_PostDisband::
+	msgbox CeladonCity_Text_SilphScopeRecovered, MSGBOX_NPC
 	end
 
 CeladonCity_EventScript_TrainerTips1::
