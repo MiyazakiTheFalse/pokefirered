@@ -54,6 +54,15 @@ ViridianCity_Gym_EventScript_MemoryRecoveryStation::
 	msgbox ViridianCity_Gym_Text_MemoryRecoveryStationDone, MSGBOX_AUTOCLOSE
 	end
 
+
+ViridianCity_Gym_EventScript_MemorySecureRouteConsole::
+	setvar VAR_0x8005, 1 @ ROCKETOPS_TRIGGER_CONTROL_NODE
+	goto EventScript_RocketOps_Terminal
+
+ViridianCity_Gym_EventScript_MemoryDeployAgentConsole::
+	setvar VAR_0x8005, 2 @ ROCKETOPS_TRIGGER_SURVEILLANCE_NODE
+	goto EventScript_RocketOps_Terminal
+
 ViridianCity_Gym_EventScript_MemoryDestroyDataConsole::
 	setvar VAR_0x8005, 3 @ ROCKETOPS_TRIGGER_ARCHIVE_NODE
 	goto EventScript_RocketOps_Terminal
@@ -82,15 +91,8 @@ ViridianCity_Gym_EventScript_MemoryEvacEndpoint::
 	goto_if_ne VAR_CHAPTER_ID, 3, ViridianCity_Gym_EventScript_MemorySpaceMarkerMismatch
 	goto_if_unset FLAG_GIO_MEM_CH3_ESCORT_CHECKPOINT_1, ViridianCity_Gym_EventScript_MemoryEvacEndpointLocked
 	setflag FLAG_GIO_MEM_CH3_ESCORT_CHECKPOINT_2
-	setflag FLAG_ROCKET_EVACUATION_COMPLETE
-	setflag FLAG_GIO_MEM_CH3_FINAL_TUNNEL_DEFENSE_BATTLE_WON
-	setvar VAR_GIO_ACT, 4
-	setvar VAR_GIO_CHECKPOINT_ID, 2
-	clearflag FLAG_GIO_MEM_CH3_ESCORT_SEGMENT_ACTIVE
-	msgbox ViridianCity_Gym_Text_RocketOps_EvacEndpoint_C3, MSGBOX_AUTOCLOSE
-	msgbox ViridianCity_Gym_Text_MemoryAct4DecisionScene, MSGBOX_AUTOCLOSE
-	setflag FLAG_ROCKET_DISBANDED
-	end
+	setvar VAR_0x8005, 4 @ ROCKETOPS_TRIGGER_EXTRACTION_NODE
+	goto EventScript_RocketOps_Terminal
 
 ViridianCity_Gym_EventScript_MemoryEvacEndpointLocked::
 	msgbox ViridianCity_Gym_Text_RocketOps_EvacEndpointLocked_C3, MSGBOX_AUTOCLOSE
@@ -118,7 +120,16 @@ EventScript_RocketOps_Command_DestroyData_C3::
 	goto EventScript_RocketOps_CommandFinalize
 
 EventScript_RocketOps_Command_ExtractStaff_C3::
+	setflag FLAG_ROCKETOPS_ORDER_SECURE_CORRIDOR
+	setflag FLAG_ROCKET_EVACUATION_COMPLETE
+	setflag FLAG_GIO_MEM_CH3_FINAL_TUNNEL_DEFENSE_BATTLE_WON
+	setvar VAR_GIO_ACT, 4
+	setvar VAR_GIO_CHECKPOINT_ID, 2
+	clearflag FLAG_GIO_MEM_CH3_ESCORT_SEGMENT_ACTIVE
 	msgbox ViridianCity_Gym_Text_RocketOps_ExtractStaff_C3
+	msgbox ViridianCity_Gym_Text_RocketOps_EvacEndpoint_C3, MSGBOX_AUTOCLOSE
+	msgbox ViridianCity_Gym_Text_MemoryAct4DecisionScene, MSGBOX_AUTOCLOSE
+	setflag FLAG_ROCKET_DISBANDED
 	goto EventScript_RocketOps_CommandFinalize
 
 ViridianCity_Gym_EventScript_Giovanni::

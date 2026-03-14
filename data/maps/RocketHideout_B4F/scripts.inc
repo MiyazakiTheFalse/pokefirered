@@ -44,6 +44,18 @@ RocketHideout_B4F_EventScript_MemoryMedicTerminal::
 	setvar VAR_0x8005, 1 @ ROCKETOPS_TRIGGER_CONTROL_NODE
 	goto EventScript_RocketOps_Terminal
 
+RocketHideout_B4F_EventScript_MemoryDeployAgentTerminal::
+	setvar VAR_0x8005, 2 @ ROCKETOPS_TRIGGER_SURVEILLANCE_NODE
+	goto EventScript_RocketOps_Terminal
+
+RocketHideout_B4F_EventScript_MemoryDestroyDataTerminal::
+	setvar VAR_0x8005, 3 @ ROCKETOPS_TRIGGER_ARCHIVE_NODE
+	goto EventScript_RocketOps_Terminal
+
+RocketHideout_B4F_EventScript_MemoryExtractStaffTerminal::
+	setvar VAR_0x8005, 4 @ ROCKETOPS_TRIGGER_EXTRACTION_NODE
+	goto EventScript_RocketOps_Terminal
+
 EventScript_RocketOps_Command_SecureRoute_C1::
 	setflag FLAG_ROCKETOPS_ORDER_SECURE_CORRIDOR
 	call RocketHideout_B4F_EventScript_RemoveBarrier
@@ -65,6 +77,7 @@ EventScript_RocketOps_Command_DestroyData_C1::
 	goto EventScript_RocketOps_CommandFinalize
 
 EventScript_RocketOps_Command_ExtractStaff_C1::
+	setflag FLAG_ROCKETOPS_ORDER_OPEN_ROUTE
 	msgbox RocketHideout_B4F_Text_RocketOps_ExtractStaff_C1
 	special HealPlayerParty
 	goto EventScript_RocketOps_CommandFinalize

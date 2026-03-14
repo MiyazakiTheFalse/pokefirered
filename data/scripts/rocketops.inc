@@ -5,34 +5,15 @@ EventScript_RocketOps_Terminal::
 	specialvar VAR_RESULT, Special_RocketOps_OpenTerminal
 	goto_if_eq VAR_RESULT, FALSE, EventScript_RocketOps_TerminalOffline
 	msgbox Text_RocketOpsTerminalBoot
-	goto_if_eq VAR_ROCKETOPS_CHAPTER, 1, EventScript_RocketOps_MenuLoop_C1
-	goto_if_eq VAR_ROCKETOPS_CHAPTER, 2, EventScript_RocketOps_MenuLoop_C2
-	goto_if_eq VAR_ROCKETOPS_CHAPTER, 3, EventScript_RocketOps_MenuLoop_C3
-	goto EventScript_RocketOps_CommandChapterMismatch
 
-EventScript_RocketOps_MenuLoop_C1::
-	multichoice 0, 0, MULTICHOICE_ROCKETOPS_COMMANDS_C1, FALSE
+EventScript_RocketOps_MenuLoop::
+	multichoice 0, 0, MULTICHOICE_ROCKETOPS_COMMANDS, FALSE
 	switch VAR_RESULT
 	case 0, EventScript_RocketOps_SelectSecureRoute
 	case 1, EventScript_RocketOps_SelectDeployAgent
-	case 2, EventScript_RocketOps_SelectExtractStaff
-	case 3, EventScript_RocketOps_Close
-
-EventScript_RocketOps_MenuLoop_C2::
-	multichoice 0, 0, MULTICHOICE_ROCKETOPS_COMMANDS_C2, FALSE
-	switch VAR_RESULT
-	case 0, EventScript_RocketOps_SelectSecureRoute
-	case 1, EventScript_RocketOps_SelectDestroyData
-	case 2, EventScript_RocketOps_SelectExtractStaff
-	case 3, EventScript_RocketOps_Close
-
-EventScript_RocketOps_MenuLoop_C3::
-	multichoice 0, 0, MULTICHOICE_ROCKETOPS_COMMANDS_C3, FALSE
-	switch VAR_RESULT
-	case 0, EventScript_RocketOps_SelectDeployAgent
-	case 1, EventScript_RocketOps_SelectDestroyData
-	case 2, EventScript_RocketOps_SelectExtractStaff
-	case 3, EventScript_RocketOps_Close
+	case 2, EventScript_RocketOps_SelectDestroyData
+	case 3, EventScript_RocketOps_SelectExtractStaff
+	case 4, EventScript_RocketOps_Close
 
 EventScript_RocketOps_SelectSecureRoute::
 	setvar VAR_0x8004, 0
@@ -65,10 +46,7 @@ EventScript_RocketOps_SelectExtractStaff::
 	goto EventScript_RocketOps_MenuReturn
 
 EventScript_RocketOps_MenuReturn::
-	goto_if_eq VAR_ROCKETOPS_CHAPTER, 1, EventScript_RocketOps_MenuLoop_C1
-	goto_if_eq VAR_ROCKETOPS_CHAPTER, 2, EventScript_RocketOps_MenuLoop_C2
-	goto_if_eq VAR_ROCKETOPS_CHAPTER, 3, EventScript_RocketOps_MenuLoop_C3
-	goto EventScript_RocketOps_Close
+	goto EventScript_RocketOps_MenuLoop
 
 EventScript_RocketOps_Command_SecureRoute::
 	goto_if_eq VAR_ROCKETOPS_CHAPTER, 1, EventScript_RocketOps_Command_SecureRoute_C1

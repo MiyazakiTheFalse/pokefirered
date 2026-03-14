@@ -41,6 +41,18 @@ SilphCo_11F_EventScript_MemoryFieldAide::
 	setvar VAR_0x8005, 2 @ ROCKETOPS_TRIGGER_SURVEILLANCE_NODE
 	goto EventScript_RocketOps_Terminal
 
+SilphCo_11F_EventScript_MemorySecureRouteTerminal::
+	setvar VAR_0x8005, 1 @ ROCKETOPS_TRIGGER_CONTROL_NODE
+	goto EventScript_RocketOps_Terminal
+
+SilphCo_11F_EventScript_MemoryDestroyDataTerminal::
+	setvar VAR_0x8005, 3 @ ROCKETOPS_TRIGGER_ARCHIVE_NODE
+	goto EventScript_RocketOps_Terminal
+
+SilphCo_11F_EventScript_MemoryExtractStaffTerminal::
+	setvar VAR_0x8005, 4 @ ROCKETOPS_TRIGGER_EXTRACTION_NODE
+	goto EventScript_RocketOps_Terminal
+
 EventScript_RocketOps_Command_SecureRoute_C2::
 	setflag FLAG_ROCKETOPS_ORDER_SECURE_CORRIDOR
 	setflag FLAG_SILPH_11F_DOOR
@@ -65,6 +77,7 @@ EventScript_RocketOps_Command_DestroyData_C2::
 	goto EventScript_RocketOps_CommandFinalize
 
 EventScript_RocketOps_Command_ExtractStaff_C2::
+	setflag FLAG_ROCKETOPS_ORDER_HOLD_POSITION
 	msgbox SilphCo_11F_Text_RocketOps_ExtractStaff_C2
 	goto EventScript_RocketOps_CommandFinalize
 
