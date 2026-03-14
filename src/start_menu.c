@@ -567,7 +567,7 @@ static bool8 StartMenuLinkPlayerCallback(void)
 
 static bool8 StartCB_Save1(void)
 {
-    if (FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
+    if (IsGiovanniMemorySaveBlocked())
     {
         StringExpandPlaceholders(gStringVar4, gText_GiovanniMemorySaveBlocked);
         ShowFieldMessage(gStringVar4);
