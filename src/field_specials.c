@@ -813,6 +813,46 @@ static bool8 IsGiovanniCampaignComplete(void)
     return VarGet(VAR_GIO_CAMPAIGN_STATE) == GIO_CAMPAIGN_STATE_CH3_COMPLETE;
 }
 
+static bool8 IsGiovanniObjectiveInProgress(void)
+{
+    u8 chapterId;
+    u16 chapterStage;
+
+    if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE))
+        return FALSE;
+
+    chapterId = GetGiovanniMemoryModeChapterId();
+    if (chapterId < 1 || chapterId > 3)
+        return FALSE;
+
+    chapterStage = VarGet(VAR_ROCKETOPS_CH1_STAGE + chapterId - 1);
+    if (chapterId == 3)
+    {
+        if (FlagGet(FLAG_GIO_MEM_CH3_ESCORT_SEGMENT_ACTIVE))
+            return TRUE;
+        if (!FlagGet(FLAG_GIO_MEM_CH3_FINAL_TUNNEL_DEFENSE_BATTLE_WON) && chapterStage >= 3)
+            return TRUE;
+    }
+
+    return chapterStage < 3;
+}
+
+bool8 IsGiovanniMemorySaveBlocked(void)
+{
+    return IsGiovanniObjectiveInProgress();
+}
+
+static u8 GetGiovanniActFromChapterStage(u8 chapterId, u8 chapterStage)
+{
+    if (chapterId == 0)
+        return 0;
+
+    if (chapterStage >= 3)
+        return 2;
+
+    return 1;
+}
+
 static u8 GetSanitizedGiovanniCheckpointId(u8 chapterId, u8 checkpointId)
 {
     switch (chapterId)
@@ -862,7 +902,7 @@ static void WriteGiovanniActCheckpointFromCurrentState(void)
 
     chapterId = GetGiovanniMemoryModeChapterId();
     checkpointId = GetSanitizedGiovanniCheckpointId(chapterId, VarGet(VAR_GIO_CHECKPOINT_ID));
-    SetGiovanniCampaignProgress(chapterId, VarGet(VAR_GIO_ACT), checkpointId, VarGet(VAR_GIO_CAMPAIGN_STATE));
+    SetGiovanniCampaignProgress(chapterId, GetGiovanniActFromChapterStage(chapterId, VarGet(VAR_ROCKETOPS_CH1_STAGE + chapterId - 1)), checkpointId, VarGet(VAR_GIO_CAMPAIGN_STATE));
 }
 
 
@@ -897,7 +937,7 @@ static bool8 RestoreGiovanniCheckpointContextForRestart(bool8 setWarp)
     checkpointId = GetSanitizedGiovanniCheckpointId(chapterId, VarGet(VAR_GIO_CHECKPOINT_ID));
     chapterStageVar = VAR_ROCKETOPS_CH1_STAGE + chapterId - 1;
 
-    SetGiovanniCampaignProgress(chapterId, VarGet(VAR_GIO_ACT), checkpointId, VarGet(VAR_GIO_CAMPAIGN_STATE));
+    SetGiovanniCampaignProgress(chapterId, GetGiovanniActFromChapterStage(chapterId, VarGet(chapterStageVar)), checkpointId, VarGet(VAR_GIO_CAMPAIGN_STATE));
     RunGiovanniMemoryModeResetHooks(chapterId);
     VarSet(VAR_ROCKETOPS_CHAPTER, chapterId);
     VarSet(VAR_ROCKETOPS_CHAIN_STATE, VarGet(chapterStageVar));

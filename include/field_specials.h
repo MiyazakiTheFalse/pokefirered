@@ -61,5 +61,6 @@ u16 Special_RocketOps_ValidateCommandContext(void);
 u16 Special_RocketOps_WritebackState(void);
 bool8 HandleGiovanniMemoryModeWhiteout(void);
 bool8 HandleGiovanniMemoryModeBootstrapOnLoad(void);
+bool8 IsGiovanniMemorySaveBlocked(void);
 
 #endif // GUARD_FIELD_SPECIALS_H
