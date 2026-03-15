@@ -3879,11 +3879,17 @@ u16 StartGiovanniMemoryMode(void)
 
 u16 CompleteGiovanniMemoryModeChapter1(void)
 {
+    bool8 objectiveGateSatisfied;
+    bool8 encounterGateSatisfied;
+
+    objectiveGateSatisfied = FlagGet(FLAG_ROCKET_SUPPLY_NETWORK_ESTABLISHED);
+    encounterGateSatisfied = FlagGet(FLAG_GIO_MEM_CH1_CONVOY_COMPLETE)
+                          && FlagGet(FLAG_GIO_MEM_CH1_DUGTRIO_BOSS_DEFEATED);
+
     if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE)
      || FlagGet(FLAG_GIO_MEM_CH1_COMPLETE)
-     || !FlagGet(FLAG_ROCKET_SUPPLY_NETWORK_ESTABLISHED)
-     || !FlagGet(FLAG_GIO_MEM_CH1_CONVOY_COMPLETE)
-     || !FlagGet(FLAG_GIO_MEM_CH1_DUGTRIO_BOSS_DEFEATED))
+     || !objectiveGateSatisfied
+     || !encounterGateSatisfied)
         return FALSE;
 
     FlagSet(FLAG_GIO_MEM_CH1_COMPLETE);
@@ -3898,12 +3904,18 @@ u16 CompleteGiovanniMemoryModeChapter1(void)
 
 u16 CompleteGiovanniMemoryModeChapter2(void)
 {
+    bool8 objectiveGateSatisfied;
+    bool8 encounterGateSatisfied;
+
+    objectiveGateSatisfied = FlagGet(FLAG_SILPH_INFILTRATION_PREPARED);
+    encounterGateSatisfied = FlagGet(FLAG_GIO_MEM_CH2_HIDEOUT_CLEARED)
+                          && FlagGet(FLAG_GIO_MEM_CH2_CELADON_ADMIN_BATTLE_WON);
+
     if (!FlagGet(FLAG_SYS_GIOVANNI_MEMORY_MODE_ACTIVE)
      || !FlagGet(FLAG_GIO_MEM_CH1_COMPLETE)
      || FlagGet(FLAG_GIO_MEM_CH2_COMPLETE)
-     || !FlagGet(FLAG_SILPH_INFILTRATION_PREPARED)
-     || !FlagGet(FLAG_GIO_MEM_CH2_HIDEOUT_CLEARED)
-     || !FlagGet(FLAG_GIO_MEM_CH2_CELADON_ADMIN_BATTLE_WON))
+     || !objectiveGateSatisfied
+     || !encounterGateSatisfied)
         return FALSE;
 
     FlagSet(FLAG_GIO_MEM_CH2_COMPLETE);
@@ -3920,10 +3932,15 @@ u16 CompleteGiovanniMemoryModeChapter2(void)
 
 u16 SetGiovanniMemoryModeChapter3Complete(void)
 {
-    if (!FlagGet(FLAG_ROCKET_DATA_DESTROYED)
-     || !FlagGet(FLAG_ROCKET_EVACUATION_COMPLETE)
-     || !FlagGet(FLAG_GIO_MEM_CH3_STAFF_EXTRACTED)
-     || !FlagGet(FLAG_GIO_MEM_CH3_FINAL_TUNNEL_DEFENSE_BATTLE_WON))
+    bool8 objectiveGateSatisfied;
+    bool8 encounterGateSatisfied;
+
+    objectiveGateSatisfied = FlagGet(FLAG_ROCKET_DATA_DESTROYED)
+                          && FlagGet(FLAG_ROCKET_EVACUATION_COMPLETE);
+    encounterGateSatisfied = FlagGet(FLAG_GIO_MEM_CH3_FINAL_TUNNEL_DEFENSE_BATTLE_WON);
+
+    if (!objectiveGateSatisfied
+     || !encounterGateSatisfied)
         return FALSE;
 
     SetGiovanniCampaignProgress(3, 2, 3, GIO_CAMPAIGN_STATE_CH3_COMPLETE);
