@@ -75,6 +75,14 @@ struct GiovanniPartyTemplateMon
     u16 moves[MAX_MON_MOVES];
 };
 
+struct GiovanniPartyLoadMon
+{
+    u16 species;
+    u8 level;
+    u16 heldItem;
+    u16 moves[MAX_MON_MOVES];
+};
+
 struct GiovanniPartyTemplate
 {
     u8 chapterId;
@@ -3705,20 +3713,10 @@ static const struct GiovanniPartyTemplate *GetGiovanniPartyTemplateByChapter(u8 
 
 static bool8 IsGiovanniTemplateMonLegal(const struct GiovanniPartyTemplateMon *mon)
 {
-    u8 i;
-
     if (mon->species <= SPECIES_NONE || mon->species >= NUM_SPECIES)
         return FALSE;
     if (mon->level == 0 || mon->level > MAX_LEVEL)
         return FALSE;
-    if (mon->heldItem >= ITEMS_COUNT)
-        return FALSE;
-
-    for (i = 0; i < MAX_MON_MOVES; i++)
-    {
-        if (mon->moves[i] >= MOVES_COUNT)
-            return FALSE;
-    }
 
     return TRUE;
 }
@@ -3742,7 +3740,9 @@ static bool8 ValidateGiovanniPartyTemplate(const struct GiovanniPartyTemplate *t
 static bool8 LoadGiovanniMemoryPartyTemplate(u8 chapterId)
 {
     const struct GiovanniPartyTemplate *template = GetGiovanniPartyTemplateByChapter(chapterId);
+    struct GiovanniPartyLoadMon sanitizedMons[PARTY_SIZE];
     u8 i, j;
+    u8 sanitizedCount = 0;
     u16 heldItem;
 
     if (template == NULL)
@@ -3751,20 +3751,43 @@ static bool8 LoadGiovanniMemoryPartyTemplate(u8 chapterId)
     if (!ValidateGiovanniPartyTemplate(template))
         return FALSE;
 
-    ZeroPlayerPartyMons();
-    gPlayerPartyCount = template->monCount;
-
     for (i = 0; i < template->monCount; i++)
     {
-        CreateMon(&gPlayerParty[i], template->mons[i].species, template->mons[i].level, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
+        const struct GiovanniPartyTemplateMon *sourceMon = &template->mons[i];
+        struct GiovanniPartyLoadMon *sanitizedMon;
 
-        heldItem = template->mons[i].heldItem;
+        if (!IsGiovanniTemplateMonLegal(sourceMon))
+            continue;
+
+        sanitizedMon = &sanitizedMons[sanitizedCount++];
+        sanitizedMon->species = sourceMon->species;
+        sanitizedMon->level = sourceMon->level;
+        sanitizedMon->heldItem = (sourceMon->heldItem < ITEMS_COUNT) ? sourceMon->heldItem : ITEM_NONE;
+
+        for (j = 0; j < MAX_MON_MOVES; j++)
+        {
+            u16 move = sourceMon->moves[j];
+            sanitizedMon->moves[j] = (move < MOVES_COUNT) ? move : MOVE_NONE;
+        }
+    }
+
+    if (sanitizedCount == 0)
+        return FALSE;
+
+    ZeroPlayerPartyMons();
+    gPlayerPartyCount = sanitizedCount;
+
+    for (i = 0; i < sanitizedCount; i++)
+    {
+        CreateMon(&gPlayerParty[i], sanitizedMons[i].species, sanitizedMons[i].level, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
+
+        heldItem = sanitizedMons[i].heldItem;
         SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &heldItem);
 
         for (j = 0; j < MAX_MON_MOVES; j++)
         {
-            if (template->mons[i].moves[j] != MOVE_NONE)
-                SetMonMoveSlot(&gPlayerParty[i], template->mons[i].moves[j], j);
+            if (sanitizedMons[i].moves[j] != MOVE_NONE)
+                SetMonMoveSlot(&gPlayerParty[i], sanitizedMons[i].moves[j], j);
         }
     }
 
