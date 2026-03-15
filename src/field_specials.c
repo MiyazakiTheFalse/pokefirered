@@ -855,6 +855,13 @@ static u8 GetGiovanniActFromChapterStage(u8 chapterId, u8 chapterStage)
     if (chapterId == 0)
         return 0;
 
+    if (chapterId == 3)
+    {
+        if (chapterStage >= 3)
+            return 4;
+        return chapterStage + 1;
+    }
+
     if (chapterStage >= 3)
         return 2;
 
@@ -3957,16 +3964,21 @@ u16 SetGiovanniMemoryModeChapter3Complete(void)
 {
     bool8 objectiveGateSatisfied;
     bool8 encounterGateSatisfied;
+    bool8 actGateSatisfied;
 
     objectiveGateSatisfied = FlagGet(FLAG_ROCKET_DATA_DESTROYED)
                           && FlagGet(FLAG_ROCKET_EVACUATION_COMPLETE);
     encounterGateSatisfied = FlagGet(FLAG_GIO_MEM_CH3_FINAL_TUNNEL_DEFENSE_BATTLE_WON);
+    actGateSatisfied = VarGet(VAR_GIO_ACT) >= 4
+                    && VarGet(VAR_ROCKETOPS_CH3_STAGE) >= 3
+                    && FlagGet(FLAG_GIO_MEM_CH3_ESCORT_CHECKPOINT_2);
 
     if (!objectiveGateSatisfied
-     || !encounterGateSatisfied)
+     || !encounterGateSatisfied
+     || !actGateSatisfied)
         return FALSE;
 
-    SetGiovanniCampaignProgress(3, 2, 3, GIO_CAMPAIGN_STATE_CH3_COMPLETE);
+    SetGiovanniCampaignProgress(3, 4, 3, GIO_CAMPAIGN_STATE_CH3_COMPLETE);
     WriteGiovanniActCheckpointFromCurrentState();
     FlagSet(FLAG_SYS_GIOVANNI_MEMORY_MODE_CHAPTER3_COMPLETE);
     FlagSet(FLAG_GIO_MEM_CH3_STARTED);
@@ -4375,13 +4387,17 @@ u16 Special_RocketOps_WritebackState(void)
         FlagSet(FLAG_ROCKETOPS_AGENT_DEPLOYED);
         VarSet(VAR_ROCKETOPS_AGENT_TARGET, gSpecialVar_0x8005);
         VarSet(VAR_ROCKETOPS_PROGRESS, VarGet(VAR_ROCKETOPS_PROGRESS) + 1);
-        if (VarGet(chapterStageVar) == 1)
+        if (chapterId == 3 && VarGet(chapterStageVar) == 0)
+            VarSet(chapterStageVar, 1);
+        else if (chapterId != 3 && VarGet(chapterStageVar) == 1)
             VarSet(chapterStageVar, 2);
         break;
     case ROCKETOPS_COMMAND_DESTROY_DATA:
         FlagSet(FLAG_ROCKETOPS_DATA_DESTROYED);
         VarSet(VAR_ROCKETOPS_ALERT, VarGet(VAR_ROCKETOPS_ALERT) + 1);
         VarSet(VAR_ROCKETOPS_PROGRESS, VarGet(VAR_ROCKETOPS_PROGRESS) + 2);
+        if (chapterId == 3 && VarGet(chapterStageVar) == 1)
+            VarSet(chapterStageVar, 2);
         break;
     case ROCKETOPS_COMMAND_EXTRACT_STAFF:
         FlagSet(FLAG_ROCKETOPS_STAFF_EXTRACTED);

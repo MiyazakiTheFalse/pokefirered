@@ -253,8 +253,13 @@ ViridianCity_Gym_Text_GiovanniMemoryClosingMonologueFallback::
 
 ViridianCity_Gym_Text_MemoryAct1ObjectiveInit::
     .string "[OBJECTIVE:C3] Act 1 initialized in Saffron.\n"
-    .string "Act 2 archive purge and Act 3 escort\n"
-    .string "checkpoints are now live.$"
+    .string "Act 2 now targets Silph maintenance/\n"
+    .string "research archive nodes for purge.$"
+
+ViridianCity_Gym_Text_MemoryAct2ArchivePurge::
+    .string "[OBJECTIVE:C3 ACT2] Archive-destruction\n"
+    .string "orders relayed to Silph maintenance and\n"
+    .string "research nodes. Purge all records.$"
 
 ViridianCity_Gym_Text_MemoryAct3EscortRoute::
     .string "[OBJECTIVE:C3 ACT3] Escort the scientist\n"
@@ -270,6 +275,11 @@ ViridianCity_Gym_Text_MemoryAct5PresentResume::
     .string "[MEMORY:C3 ACT5] Present-time Viridian\n"
     .string "returns. GIOVANNI's final monologue ends;\n"
     .string "battle protocol begins.$"
+
+ViridianCity_Gym_Text_MemoryFinalDefenseEncounter::
+    .string "[MEMORY:C3] Final tunnel defense holds\n"
+    .string "long enough for the convoy to clear the\n"
+    .string "Viridian outskirts perimeter.$"
 
 ViridianCity_Gym_Text_RocketReport_ObjectiveLive::
     .string "[REPORT:C3] Command ring is still live.\n"
